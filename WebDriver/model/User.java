@@ -2,22 +2,11 @@ package model;
 
 import java.sql.Date;
 
+import model.AbstractModels.AbstractUser;
 import model.UserDataModel.UserAccess;
 
-public class User {
-    private final int id;
-    private UserAccess userAccess;
-    private Date createdUserDate;
-
+public class User extends AbstractUser {
     public User(int id, UserAccess userAccess, Date date){
-        this.id = id;
-        this.userAccess = userAccess;
-        this.createdUserDate = date;
+        super(id, userAccess, date);
     }
-
-    public int getUserId() { return this.id; }
-    public String getUserLogin() { return this.userAccess.getUserLogin(); }
-    public String getUserPassword() { return this.userAccess.getUserPassword(); }
-    public String getUserEmail() { return this.userAccess.getUserEmail();}
-    public String getCreatedUserDate() { return this.createdUserDate.toString(); }
 }
