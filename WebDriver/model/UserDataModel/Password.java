@@ -14,7 +14,7 @@ public class Password{
 
     private void validate(String pass){
         if(pass.length() < 3)
-            throw new IllegalArgumentException("[ERRO] O e-mail inserido não é válido.");
-        Objects.requireNonNull(pass, "Password can't be less than 3 caracters.");
+            throw new IllegalArgumentException("Password cannot be less than 3 characters.");
+        Objects.requireNonNull(pass, "Password cannot be null");
     }
 }

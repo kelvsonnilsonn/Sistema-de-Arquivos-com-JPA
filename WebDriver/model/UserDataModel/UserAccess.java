@@ -5,7 +5,7 @@ public class UserAccess{
     private Password password;
     private Email email;
 
-    public UserAccess(String login, Password password, Email email){
+    public UserAccess(String login, Password password, model.UserDataModel.Email email){
         this.login = login;
         this.password = password;
         this.email = email;
