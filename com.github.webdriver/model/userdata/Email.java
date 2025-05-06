@@ -1,6 +1,6 @@
-package model.UserDataModel;
+package model.userdata;
 
-import model.DataRegex.EmailRegex;
+import model.dataregex.EmailRegex;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package model.UserDataModel;
+package model.userdata;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
 package model;
 
-import model.FileDataModel.FileInformations;
+import model.filedatas.FileInformations;
 
 public class File {
     private FileInformations fileInformations;

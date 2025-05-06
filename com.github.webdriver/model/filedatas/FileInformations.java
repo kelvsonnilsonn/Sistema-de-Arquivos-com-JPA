@@ -1,4 +1,4 @@
-package model.FileDataModel;
+package model.filedatas;
 
 public class FileInformations {
     private final int id;

@@ -1,4 +1,4 @@
-package model.DataRegex;
+package model.dataregex;
 
 public class EmailRegex {
     private static final String EMAIL_REGEX =

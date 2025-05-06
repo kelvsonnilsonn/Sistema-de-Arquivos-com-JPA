@@ -1,6 +1,6 @@
-package model.InstitutionDataModel;
+package model.institutiondata;
 
-import model.InstitutionDataModel.AddressDataModel.ZipCode;
+import model.institutiondata.addressdata.ZipCode;
 
 public class Address {
     private ZipCode zipcode;          // CEP (formato: "12345-678" ou "12345678")

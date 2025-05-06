@@ -1,10 +1,14 @@
-package model.AbstractModels;
+package model.abstractmodels;
 
-import model.UserDataModel.UserAccess;
+import model.userdata.UserAccess;
 
 import java.sql.Date;
 
-public abstract class AbstractUser {
+public abstract class AbstractUser {            // Essa classe serve como um modelo para generalizar os usuários.
+                                                // É "abstract" para que não possa ser instanciada.
+                                                // Um usuário tem todos esses métodos e atributos abaixo, assim como o administrador
+                                                // Por isso, User É UM AbstractUser e Administrator É UM AbstractUser
+                                                // Polimorfismo aplicado para melhor manutenção de código futuro.
     private final int id_admin;
     private UserAccess userAccess;
     private Date createdUserDate;

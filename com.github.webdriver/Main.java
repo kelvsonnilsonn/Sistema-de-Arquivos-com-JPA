@@ -1,7 +1,7 @@
 import model.User;
-import model.UserDataModel.Email;
-import model.UserDataModel.Password;
-import model.UserDataModel.UserAccess;
+import model.userdata.Email;
+import model.userdata.Password;
+import model.userdata.UserAccess;
 
 import java.sql.Date;
 

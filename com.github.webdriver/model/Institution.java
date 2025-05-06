@@ -1,6 +1,6 @@
 package model;
 
-import model.InstitutionDataModel.Address;
+import model.institutiondata.Address;
 
 public class Institution {
     private final int id;

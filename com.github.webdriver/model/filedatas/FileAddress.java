@@ -1,4 +1,4 @@
-package model.FileDataModel;
+package model.filedatas;
 
 public class FileAddress {
     private String fileLocation;

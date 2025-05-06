@@ -1,11 +1,11 @@
-package model.UserDataModel;
+package model.userdata;
 
 public class UserAccess{
     private String login;
     private Password password;
     private Email email;
 
-    public UserAccess(String login, Password password, model.UserDataModel.Email email){
+    public UserAccess(String login, Password password, model.userdata.Email email){
         this.login = login;
         this.password = password;
         this.email = email;

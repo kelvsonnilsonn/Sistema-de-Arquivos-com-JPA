@@ -1,4 +1,4 @@
-package model.FileDataModel;
+package model.filedatas;
 
 import java.sql.Date;
 

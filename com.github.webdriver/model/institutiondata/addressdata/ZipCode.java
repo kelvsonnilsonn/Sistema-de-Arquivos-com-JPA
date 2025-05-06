@@ -1,6 +1,6 @@
-package model.InstitutionDataModel.AddressDataModel;
+package model.institutiondata.addressdata;
 
-import model.DataRegex.ZipCodeRegex;
+import model.dataregex.ZipCodeRegex;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

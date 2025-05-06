@@ -1,7 +1,7 @@
 package model;
 
-import model.AbstractModels.AbstractUser;
-import model.UserDataModel.UserAccess;
+import model.abstractmodels.AbstractUser;
+import model.userdata.UserAccess;
 
 import java.sql.Date;
 
