@@ -1,0 +1,17 @@
+package com.orizon.webdriver.domain.model.file.filedatas;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.sql.Date;
+
+@Getter
+@Setter
+public class FileData {
+    private FileAddress fileAddress;
+    private int fileSize;
+    private Date fileReleaseDate;
+
+    public void setFileLocation(String location) {this.fileAddress.setFileLocation(location);}
+    public void setFileURL(String URL) {this.fileAddress.setFileLocation(URL);}
+}
