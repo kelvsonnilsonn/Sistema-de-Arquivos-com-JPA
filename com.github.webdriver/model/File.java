@@ -3,8 +3,8 @@ package model;
 import model.filedatas.FileInformations;
 
 public class File {
-    private FileInformations fileInformations;
-    private permissions[] filePermissions;
+    private final FileInformations fileInformations;
+    private final permissions[] filePermissions;
     
     public File(FileInformations fileInformations, permissions[] filePermissions){
         this.fileInformations = fileInformations;

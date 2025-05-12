@@ -9,4 +9,6 @@ public class Administrator extends AbstractUser {
     public Administrator(int id, UserAccess userAccess, Date date){
         super(id, userAccess, date);
     }
+
+
 }

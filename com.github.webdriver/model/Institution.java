@@ -6,7 +6,7 @@ public class Institution {
     private final int id;
     private String name;
     private String socialCause;
-    private Address address;
+    private final Address address;
 
     public Institution(int id, String name, String socialCause, Address address){
         this.id = id;
