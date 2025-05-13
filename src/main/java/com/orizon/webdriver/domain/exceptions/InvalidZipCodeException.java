@@ -1,4 +1,4 @@
-package com.orizon.webdriver.exceptions;
+package com.orizon.webdriver.domain.exceptions;
 
 public class InvalidZipCodeException extends RuntimeException {
     public InvalidZipCodeException() { super("CEP inválido foi inserido."); }

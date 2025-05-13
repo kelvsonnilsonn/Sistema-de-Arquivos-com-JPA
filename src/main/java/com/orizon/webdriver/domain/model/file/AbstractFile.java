@@ -3,6 +3,7 @@ package com.orizon.webdriver.domain.model.file;
 
 import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
 
+import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public abstract class AbstractFile implements AFileInterface{
+public abstract class AbstractFile implements AFileInterface {
     private int id;
     @Autowired
     private List<Permission> filePermissions;
@@ -43,16 +44,29 @@ public abstract class AbstractFile implements AFileInterface{
         }
     }
 
-    @Getter
-    public enum FileType{
-        TEXT(".txt"),
-        VIDEO(".wav"),
-        PHOTO(".jpg");
+    @Override
+    public String toString() {
+        return String.format(
+                """
+                Nome: %s
+                Tipo: %s
+                Tamanho: %d
+                Endereço: %s
+                Lançamento: %s
+                Permissões: %s
+                URL: %s
+                """,
+                fileInformations.getFileName(),
+                this.getClass().getSimpleName(), // Mostra "GenericFile" ou "VideoFile"
+                fileInformations.getFileData() != null ? fileInformations.getFileData().getFileSize() : 0,
+                fileInformations.getFileData() != null ?
+                        fileInformations.getFileData().getFileAddress().getFileLocation() : "N/A",
+                fileInformations.getFileData() != null ?
+                        fileInformations.getFileData().getFileReleaseDate() : "N/A",
+                filePermissions != null ? filePermissions : "Nenhuma",
+                fileInformations.getFileData() != null ?
+                        fileInformations.getFileData().getFileAddress().getFileUrl() : "N/A"
 
-        private final String description;
-
-        FileType(String description){
-            this.description = description;
-        }
+        );
     }
 }

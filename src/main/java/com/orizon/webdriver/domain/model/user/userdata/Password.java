@@ -1,6 +1,6 @@
 package com.orizon.webdriver.domain.model.user.userdata;
 
-import com.orizon.webdriver.exceptions.ShortPasswordException;
+import com.orizon.webdriver.domain.exceptions.ShortPasswordException;
 import lombok.Getter;
 import lombok.Setter;
 

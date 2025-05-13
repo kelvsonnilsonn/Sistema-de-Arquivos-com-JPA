@@ -14,4 +14,13 @@ public class FileData {
 
     public void setFileLocation(String location) {this.fileAddress.setFileLocation(location);}
     public void setFileURL(String URL) {this.fileAddress.setFileLocation(URL);}
+
+    @Override
+    public String toString() {
+        return "FileData{" +
+                "fileAddress=" + fileAddress +
+                ", fileSize=" + fileSize +
+                ", fileReleaseDate=" + fileReleaseDate +
+                '}';
+    }
 }

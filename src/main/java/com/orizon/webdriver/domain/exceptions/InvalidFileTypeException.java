@@ -1,4 +1,4 @@
-package com.orizon.webdriver.exceptions;
+package com.orizon.webdriver.domain.exceptions;
 
 public class InvalidFileTypeException extends RuntimeException {
     public InvalidFileTypeException() { super("O tipo de arquivo é inválido."); }

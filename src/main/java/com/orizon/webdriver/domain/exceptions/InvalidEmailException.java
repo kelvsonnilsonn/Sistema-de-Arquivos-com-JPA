@@ -1,4 +1,4 @@
-package com.orizon.webdriver.exceptions;
+package com.orizon.webdriver.domain.exceptions;
 
 public class InvalidEmailException extends RuntimeException {
     public InvalidEmailException() { super("Email inválido foi inserido."); }

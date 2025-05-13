@@ -9,4 +9,12 @@ import lombok.Setter;
 public class FileAddress {
     private String fileLocation;
     private String fileUrl;
+
+    @Override
+    public String toString() {
+        return "FileAddress{" +
+                "fileLocation='" + fileLocation + '\'' +
+                ", fileUrl='" + fileUrl + '\'' +
+                '}';
+    }
 }

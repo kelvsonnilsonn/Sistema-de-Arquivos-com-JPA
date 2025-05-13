@@ -18,4 +18,12 @@ public class FileInformations {
 
     public void setFileSize(int size){this.fileData.setFileSize(size);}
     public void setFileReleaseDate(Date date) {this.fileData.setFileReleaseDate(date);}
+
+    @Override
+    public String toString() {
+        return "FileInformations{" +
+                "fileData=" + fileData +
+                ", fileName='" + fileName + '\'' +
+                '}';
+    }
 }

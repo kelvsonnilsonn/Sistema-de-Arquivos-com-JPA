@@ -1,7 +1,7 @@
 package com.orizon.webdriver.domain.model.user.userdata;
 
 import com.orizon.webdriver.domain.model.dataregex.EmailRegex;
-import com.orizon.webdriver.exceptions.InvalidEmailException;
+import com.orizon.webdriver.domain.exceptions.InvalidEmailException;
 import lombok.Getter;
 import lombok.Setter;
 
