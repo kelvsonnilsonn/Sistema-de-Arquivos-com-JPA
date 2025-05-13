@@ -1,5 +1,6 @@
 package com.orizon.webdriver;
 
+import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.service.FileService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,9 +18,11 @@ public class WebdriverApplication {
 	public CommandLineRunner run(FileService fileService) {
 		return args -> {
 
+			AFileInterface file = fileService.createFile("Video");
 			System.out.println("Aplicação iniciada com sucesso!");
-			fileService.createFile("Video");
-
+			System.out.println(file);
+			fileService.updateFile(file);
+			System.out.println(file);
 		};
 	}
 

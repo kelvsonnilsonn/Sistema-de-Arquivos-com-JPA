@@ -17,28 +17,36 @@ public class FileService {
     private final List<AFileInterface> files;
     private final FileCreator fileCreater;
     private final FileDeleter fileDeleter;
+    private final FileUpdater fileUpdater;
     private final List<AbstractFile.Permission> initialPermission;
 
     @Autowired
-    public FileService(FileCreator fileCreater, FileDeleter fileDeleter, List<AbstractFile.Permission> initialPermission){
+    public FileService(FileCreator fileCreater, FileDeleter fileDeleter, FileUpdater fileUpdater, List<AbstractFile.Permission> initialPermission){
         this.files = new ArrayList<>();
         this.fileCreater = fileCreater;
         this.fileDeleter = fileDeleter;
+        this.fileUpdater = fileUpdater;
         this.initialPermission = initialPermission;
-    }
-
-    public void processFiles(){     // Carregar arquivos no banco
-        files.forEach(AFileInterface::save);
-        files.stream().map(AFileInterface::load).forEach(files::add);
     }
 
     public void deleteFile(AFileInterface file){
         fileDeleter.deleteFile(file);
     }
 
-    public void createFile(String type){
+    public AFileInterface createFile(String type){
         AFileInterface file = fileCreater.create(FileType.from(type.toUpperCase()), Duration.ofMinutes(2));
         ((AbstractFile) file).setFilePermissions(initialPermission);
-        System.out.println(file);
+        processFiles();
+        return file;
     }
+
+    public void updateFile(AFileInterface file){
+        fileUpdater.update(file);
+    }
+
+    private void processFiles(){     // Carregar arquivos no banco
+        files.forEach(AFileInterface::save);
+        files.stream().map(AFileInterface::load).forEach(files::add);
+    }
+
 }
