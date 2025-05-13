@@ -1,7 +1,6 @@
 package com.orizon.webdriver.configuration;
 
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.service.factory.FileFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

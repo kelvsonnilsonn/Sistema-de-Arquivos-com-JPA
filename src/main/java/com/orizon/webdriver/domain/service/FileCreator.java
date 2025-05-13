@@ -1,5 +1,6 @@
-package com.orizon.webdriver.domain.service.factory;
+package com.orizon.webdriver.domain.service;
 
+import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.file.fenum.FileType;
 import com.orizon.webdriver.domain.model.file.GenericFile;
@@ -9,22 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Scanner;
 
 @Component
-public class FileFactory {
+public class FileCreator {
 
     private final Scanner scan;
 
     @Autowired
-    public FileFactory(Scanner scan){
+    public FileCreator(Scanner scan){
         this.scan = scan;
     }
 
-    public AFileInterface create(FileType type){
+    public AFileInterface create(FileType type, Duration duration){
         return switch (type){
             case TEXT, PHOTO -> new GenericFile(new FileInformations(getFileName(type.getDescription())));
-            case VIDEO -> new VideoFile(new FileInformations(getFileName(type.getDescription())), Duration.ofMinutes(2));
+            case VIDEO -> new VideoFile(new FileInformations(getFileName(type.getDescription())), duration);
         };
     }
 

@@ -4,6 +4,7 @@ package com.orizon.webdriver.domain.model.file;
 import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
 
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import lombok.Data;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -12,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 public abstract class AbstractFile implements AFileInterface {
     private int id;
     @Autowired
