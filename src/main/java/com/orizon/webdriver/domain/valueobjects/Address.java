@@ -1,6 +1,5 @@
-package com.orizon.webdriver.domain.model.institution;
+package com.orizon.webdriver.domain.valueobjects;
 
-import com.orizon.webdriver.domain.model.institution.addressdata.ZipCode;
 import lombok.Getter;
 import lombok.Setter;
 

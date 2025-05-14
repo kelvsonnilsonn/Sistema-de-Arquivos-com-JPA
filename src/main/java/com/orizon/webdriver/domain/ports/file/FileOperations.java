@@ -1,11 +1,11 @@
-package com.orizon.webdriver.domain.model.file.finterface;
+package com.orizon.webdriver.domain.ports.file;
 
 import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.repository.FileRepository;
+import com.orizon.webdriver.infrastructure.repository.FileRepository;
 
-public interface AFileInterface {
+public interface FileOperations {
 
-    AFileInterface load();
+    FileOperations load();
 
     void save(FileRepository fileRepository);
 

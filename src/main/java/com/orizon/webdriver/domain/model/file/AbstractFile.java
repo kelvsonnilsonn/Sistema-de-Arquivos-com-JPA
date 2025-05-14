@@ -2,22 +2,23 @@ package com.orizon.webdriver.domain.model.file;
 
 
 import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.model.file.data.FileInformations;
 
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import lombok.Getter;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Setter
-public sealed abstract class AbstractFile implements AFileInterface permits VideoFile, GenericFile{
+public sealed abstract class AbstractFile implements FileOperations permits VideoFile, GenericFile{
 
     @Getter
     private int id;
@@ -27,11 +28,11 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
     @Autowired
     private List<Permission> filePermissions;
 
-    private final FileInformations fileInformations;
+    private final FileMetaData fileMetaData;
     private AbstractUser user;
 
-    public AbstractFile(FileInformations fileInformations){
-        this.fileInformations = fileInformations;
+    public AbstractFile(FileMetaData fileMetaData){
+        this.fileMetaData = fileMetaData;
         this.fileComments = new ArrayList<>();
     }
 
@@ -61,8 +62,8 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
 
     }
 
-    public String getFileName() { return this.fileInformations.getFileName(); }
-    public void setFileName(String name) { this.fileInformations.setFileName(name); }
+    public String getFileName() { return this.fileMetaData.getFileName(); }
+    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
 
     @Getter
     public enum Permission{
@@ -89,23 +90,22 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
                 📂 Endereço: %s
                 🗓️ Lançamento: %s
                 🔐 Permissões: %s
-                
                 🔗 URL: %s
                 """,
-                fileInformations.getFileName(),
-                ((AbstractUser) user).getUserLogin(),
+                fileMetaData.getFileName(),
+                user != null ? user.getUserLogin() : "N/A",
                 this.getClass().getSimpleName(),
-                fileInformations.getFileData() != null ? fileInformations.getFileData().getFileSize() : 0,
-                fileInformations.getFileData() != null ?
-                        fileInformations.getFileLocation() : "N/A",
-                fileInformations.getFileData() != null ?
-                        fileInformations.getFileData().getFileReleaseDate() : "N/A",
+                fileMetaData.getFileSize(),
+                fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
+                fileMetaData.getFileReleaseDate() != null ?
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                .format(fileMetaData.getFileReleaseDate().toInstant()
+                                        .atZone(ZoneId.systemDefault())) : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
                                 .map(Permission::getDescription)
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
-                fileInformations.getFileData() != null ?
-                        fileInformations.getFileURL() : "N/A"
+                fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A"
         );
     }
 }

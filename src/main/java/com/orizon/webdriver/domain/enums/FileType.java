@@ -1,4 +1,4 @@
-package com.orizon.webdriver.domain.model.file.fenum;
+package com.orizon.webdriver.domain.enums;
 
 import com.orizon.webdriver.domain.exceptions.InvalidFileTypeException;
 import lombok.Getter;

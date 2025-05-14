@@ -2,7 +2,7 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,26 +19,26 @@ public class UserService {
         this.logger = logger;
     }
 
-    public AFileInterface create(String type, AbstractUser user){
-        AFileInterface file = fileService.create(type);
+    public FileOperations create(String type, AbstractUser user){
+        FileOperations file = fileService.create(type);
         ((AbstractFile) file).setUser(user);
         user.addFile(file);
         logger.log(file, LogService.LogType.CREATE);
         return file;
     }
 
-    public void delete(AFileInterface file, AbstractUser user){
+    public void delete(FileOperations file, AbstractUser user){
         fileService.delete(file);
         user.deleteFile(file);
         logger.log(file, LogService.LogType.DELETE);
     }
 
-    public void edit(AFileInterface file){
+    public void edit(FileOperations file){
         fileService.update(file);
         logger.log(file, LogService.LogType.UPDATE);
     }
 
-    public void comment(AFileInterface file, String comment){
+    public void comment(FileOperations file, String comment){
         fileService.addComment(file, comment);
         logger.log(new Comment(comment));
     }

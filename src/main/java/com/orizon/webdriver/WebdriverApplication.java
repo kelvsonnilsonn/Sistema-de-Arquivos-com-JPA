@@ -1,12 +1,11 @@
 package com.orizon.webdriver;
 
-import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
-import com.orizon.webdriver.domain.model.institution.Address;
-import com.orizon.webdriver.domain.model.institution.Institution;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.User;
-import com.orizon.webdriver.domain.repository.InstitutionRepository;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.service.FileService;
+import com.orizon.webdriver.domain.service.SupportService;
+import com.orizon.webdriver.infrastructure.repository.InstitutionRepository;
 import com.orizon.webdriver.domain.service.InstitutionService;
 import com.orizon.webdriver.domain.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -22,28 +21,14 @@ public class WebdriverApplication {
 	}
 
 	@Bean
-	public CommandLineRunner run(UserService userService, InstitutionService institution, InstitutionRepository institutionRepository) {
+	public CommandLineRunner run(SupportService supportService, FileService fileService, UserService userService, InstitutionService institution, InstitutionRepository institutionRepository) {
 		return args -> {
-
-			System.out.println("Aplicação iniciada com sucesso!");
-			AbstractUser user1 = new User("Kelvson", "kelvsonnilson01@gmail.com", "K1234");
-			AbstractUser user2 = new User("Kelvson1", "kelvsonnilson01@gmail.com", "K1234");
-			AbstractUser user3 = new User("Kelvson2", "kelvsonnilson01@gmail.com", "K1234");
-
-			institutionRepository.getAllInstitutions();
-
-			Institution institution1 = institution.createInstitution("MOJANG", "Minecraft");
-			institution1.setAddress(new Address("Jaboatão dos Guararapes", "Pernambuco", "Barra de Jangada", "Rua Parnamirim"));
-			institution1.setZipCode("54470200");
-			institution1.getAddress().setComplement("Quadra 24b bloco C11");
-
-			institutionRepository.getAllInstitutions();
-
-			institution.deleteInstitution(0);
-
-			institutionRepository.getAllInstitutions();
-
+			AbstractUser user = new User("kelvson", "kelvsonnilson01@gmail.com", "12345");
+			supportService.addSupportRequest(user, "Urgente." ,"Preciso achar a cura de ser tão lindo.");
+			System.out.println(user);
+			supportService.getAllSupports();
+			supportService.checkSupport(user, 0);
+			System.out.println(user);
 		};
 	}
-
 }

@@ -1,9 +1,9 @@
-package com.orizon.webdriver.domain.model.institution;
+package com.orizon.webdriver.domain.model;
 
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
-import com.orizon.webdriver.domain.model.institution.addressdata.ZipCode;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.domain.valueobjects.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +19,7 @@ public class Institution {
     private String socialCause;
     private Address address;
     private final List<AbstractUser> users;
+    private Plan plano;
 
     public Institution(String name, String socialCause){
         this.name = Objects.requireNonNull(name, () -> {throw new ENFieldException();});

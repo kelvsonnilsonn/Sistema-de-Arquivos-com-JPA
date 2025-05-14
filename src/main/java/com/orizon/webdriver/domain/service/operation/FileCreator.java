@@ -1,10 +1,10 @@
 package com.orizon.webdriver.domain.service.operation;
 
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
-import com.orizon.webdriver.domain.model.file.fenum.FileType;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.enums.FileType;
 import com.orizon.webdriver.domain.model.file.GenericFile;
 import com.orizon.webdriver.domain.model.file.VideoFile;
-import com.orizon.webdriver.domain.model.file.data.FileInformations;
+import com.orizon.webdriver.domain.model.file.FileMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +21,10 @@ public class FileCreator {
         this.scan = scan;
     }
 
-    public AFileInterface create(FileType type, Duration duration){
+    public FileOperations create(FileType type, Duration duration){
         return switch (type){
-            case TEXT, PHOTO -> new GenericFile(new FileInformations(getFileName(type.getDescription())));
-            case VIDEO -> new VideoFile(new FileInformations(getFileName(type.getDescription())), duration);
+            case TEXT, PHOTO -> new GenericFile(new FileMetaData(getFileName(type.getDescription())));
+            case VIDEO -> new VideoFile(new FileMetaData(getFileName(type.getDescription())), duration);
         };
     }
 

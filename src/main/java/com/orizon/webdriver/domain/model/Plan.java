@@ -1,6 +1,5 @@
 package com.orizon.webdriver.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,13 +8,17 @@ import java.time.Duration;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class Plano {
+public class Plan {
 
-    private final int id;
+    private long id;
     private String name;
     private String userSpace;
     private Duration duration;
     private Date aquisitionDate;
+
+    public Plan(String name, String userSpace){
+        this.name = name;
+        this.userSpace = userSpace;
+    }
 
 }

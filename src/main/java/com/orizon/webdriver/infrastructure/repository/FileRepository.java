@@ -1,4 +1,4 @@
-package com.orizon.webdriver.domain.repository;
+package com.orizon.webdriver.infrastructure.repository;
 
 import org.springframework.stereotype.Repository;
 

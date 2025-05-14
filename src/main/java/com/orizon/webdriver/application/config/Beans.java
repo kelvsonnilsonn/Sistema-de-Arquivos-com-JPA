@@ -1,6 +1,5 @@
-package com.orizon.webdriver.configuration;
+package com.orizon.webdriver.application.config;
 
-import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

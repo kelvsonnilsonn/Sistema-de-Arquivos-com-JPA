@@ -1,6 +1,5 @@
-package com.orizon.webdriver.domain.model.institution.addressdata;
+package com.orizon.webdriver.domain.valueobjects;
 
-import com.orizon.webdriver.domain.model.dataregex.ZipCodeRegex;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,9 @@ import java.util.regex.Pattern;
 @Setter
 public class ZipCode {
 
-    private static final Pattern pattern = Pattern.compile(ZipCodeRegex.getZipCodeRegex());
+    private static final String ZIP_CODE_REGEX = "^[0-9]{5}-?[0-9]{3}$";
+
+    private static final Pattern pattern = Pattern.compile(ZIP_CODE_REGEX);
 
     private String zipcode;
 

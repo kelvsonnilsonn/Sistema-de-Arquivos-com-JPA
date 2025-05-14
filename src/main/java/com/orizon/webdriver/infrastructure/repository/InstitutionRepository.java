@@ -1,6 +1,6 @@
-package com.orizon.webdriver.domain.repository;
+package com.orizon.webdriver.infrastructure.repository;
 
-import com.orizon.webdriver.domain.model.institution.Institution;
+import com.orizon.webdriver.domain.model.Institution;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class InstitutionRepository {
 
     private final List<Institution> institutions;
-
 
     public void getAllInstitutions(){
         System.out.println(

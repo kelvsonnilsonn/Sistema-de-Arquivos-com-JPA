@@ -1,10 +1,7 @@
 package com.orizon.webdriver.domain.model.user;
 
-import com.orizon.webdriver.domain.model.user.userdata.UserAccess;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Date;
 
 @Getter
 @Setter

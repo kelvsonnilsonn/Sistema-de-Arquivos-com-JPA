@@ -1,7 +1,7 @@
 package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +9,12 @@ import java.time.Instant;
 
 @Service
 public class LogService {
-    public void log(AFileInterface file, LogType type){
-//        System.out.println(file + "\n\nLOG FEITO EM: " + Instant.now() + "\n" + type.getDescription());
+    public void log(FileOperations file, LogType type){
+        System.out.println(file + "\nLOG FEITO EM: " + Instant.now() + "\n" + type.getDescription());
     }
 
     public void log(Comment comment){
-        //System.out.println(comment + "\n\nLOG FEITO EM: " + Instant.now() + "\n" + LogType.COMMENT);
+        System.out.println(comment + "\nLOG FEITO EM: " + Instant.now() + "\n" + LogType.COMMENT);
     }
 
     @Getter

@@ -1,19 +1,18 @@
 package com.orizon.webdriver.domain.model.file;
 
-import com.orizon.webdriver.domain.model.file.data.FileInformations;
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
-import com.orizon.webdriver.domain.repository.FileRepository;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.infrastructure.repository.FileRepository;
 import lombok.Setter;
 
 @Setter
 public final class GenericFile extends AbstractFile{
 
-    public GenericFile(FileInformations fileInformations) {
-        super(fileInformations);
+    public GenericFile(FileMetaData fileMetaData) {
+        super(fileMetaData);
     }
 
     @Override
-    public AFileInterface load() {
+    public FileOperations load() {
         return this;
     }
 

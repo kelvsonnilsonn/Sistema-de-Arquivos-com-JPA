@@ -1,6 +1,5 @@
-package com.orizon.webdriver.domain.model.user.userdata;
+package com.orizon.webdriver.domain.valueobjects;
 
-import com.orizon.webdriver.domain.model.dataregex.EmailRegex;
 import com.orizon.webdriver.domain.exceptions.InvalidEmailException;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,11 @@ import java.util.regex.Pattern;
 @Setter
 public class Email {
 
-    private static final Pattern pattern = Pattern.compile(EmailRegex.getEmailRegex());
+    private static final String EMAIL_REGEX =
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+                    "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+    private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
 
     private String email;
 

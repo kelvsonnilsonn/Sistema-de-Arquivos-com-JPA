@@ -3,9 +3,9 @@ package com.orizon.webdriver.domain.service;
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InstitutionLimitException;
 import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
-import com.orizon.webdriver.domain.model.institution.Institution;
+import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
-import com.orizon.webdriver.domain.repository.InstitutionRepository;
+import com.orizon.webdriver.infrastructure.repository.InstitutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class InstitutionService {
     private final InstitutionRepository institutionRepository;
 
     @Autowired
-    public InstitutionService(InstitutionRepository institutionRepository){
+    public InstitutionService(InstitutionRepository institutionRepository) {
         this.institutionRepository = institutionRepository;
     }
 

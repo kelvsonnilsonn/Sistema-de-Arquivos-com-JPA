@@ -1,4 +1,4 @@
-package com.orizon.webdriver.domain.model.user.userdata;
+package com.orizon.webdriver.domain.valueobjects;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.orizon.webdriver.domain.service.operation;
 
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.ports.file.FileOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class FileUpdater {
         this.scan = scan;
     }
 
-    public void update(AFileInterface file){
+    public void update(FileOperations file){
         ((AbstractFile)file).setFileName(scan.nextLine());
     }
 }
