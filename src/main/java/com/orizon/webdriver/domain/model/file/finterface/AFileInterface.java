@@ -1,5 +1,6 @@
 package com.orizon.webdriver.domain.model.file.finterface;
 
+import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.repository.FileRepository;
 
 public interface AFileInterface {
@@ -9,4 +10,6 @@ public interface AFileInterface {
     void save(FileRepository fileRepository);
 
     void delete(FileRepository fileRepository);
+
+    void comment(Comment comment);
 }

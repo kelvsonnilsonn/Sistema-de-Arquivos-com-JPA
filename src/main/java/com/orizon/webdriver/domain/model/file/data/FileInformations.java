@@ -26,4 +26,7 @@ public class FileInformations {
                 ", fileName='" + fileName + '\'' +
                 '}';
     }
+
+    public String getFileURL() { return this.fileData.getFileURL(); }
+    public String getFileLocation() { return this.fileData.getFileLocation(); }
 }

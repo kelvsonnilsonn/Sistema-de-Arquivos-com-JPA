@@ -1,5 +1,6 @@
 package com.orizon.webdriver.domain.service;
 
+import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.file.fenum.FileType;
@@ -44,6 +45,10 @@ public class FileService {
         AFileInterface file = fileCreator.create(FileType.from(type.toUpperCase()), Duration.ofMinutes(2));
         ((AbstractFile) file).setFilePermissions(initialPermission);
         return file;
+    }
+
+    public void addComment(AFileInterface file, String comment){
+        file.comment(new Comment(comment));
     }
 
     public void update(AFileInterface file){

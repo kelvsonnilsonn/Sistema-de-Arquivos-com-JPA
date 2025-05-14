@@ -1,9 +1,9 @@
 package com.orizon.webdriver.domain.service;
 
+import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
-import com.orizon.webdriver.domain.model.user.uinterface.AUserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +36,11 @@ public class UserService {
     public void edit(AFileInterface file){
         fileService.update(file);
         logger.log(file, LogService.LogType.UPDATE);
+    }
+
+    public void comment(AFileInterface file, String comment){
+        fileService.addComment(file, comment);
+        logger.log(new Comment(comment));
     }
 
 }

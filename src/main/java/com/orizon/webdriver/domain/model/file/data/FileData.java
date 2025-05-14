@@ -23,4 +23,7 @@ public class FileData {
                 ", fileReleaseDate=" + fileReleaseDate +
                 '}';
     }
+
+    public String getFileURL() { return this.fileAddress.getFileUrl(); }
+    public String getFileLocation() { return this.fileAddress.getFileLocation(); }
 }

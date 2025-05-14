@@ -2,7 +2,6 @@ package com.orizon.webdriver.domain.model.file;
 
 import com.orizon.webdriver.domain.model.file.data.FileInformations;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
-import com.orizon.webdriver.domain.model.user.uinterface.AUserInterface;
 import com.orizon.webdriver.domain.repository.FileRepository;
 import lombok.Setter;
 
@@ -19,7 +18,7 @@ public final class GenericFile extends AbstractFile{
     }
 
     @Override
-    public void save(FileRepository fileRepository) {
+    public void save(FileRepository fileRepository){
 
     }
 
