@@ -12,13 +12,13 @@ public class LogService {
         System.out.println(file + "\n\nLOG FEITO EM: " + Instant.now() + "\n" + type.getDescription());
     }
 
+    @Getter
     public enum LogType{
         CREATE("Criação"),
         DELETE("Deleção"),
         UPDATE("Edição");
 
-        @Getter
-        private String description;
+        private final String description;
 
         LogType(String description){
             this.description = description;

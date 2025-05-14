@@ -19,11 +19,23 @@ public class UserService {
         this.logger = logger;
     }
 
-    public AFileInterface createFile(String type, AUserInterface user){
+    public AFileInterface create(String type, AbstractUser user){
         AFileInterface file = fileService.create(type);
         ((AbstractFile) file).setUser(user);
-        ((AbstractUser) user).addFile(file);
+        user.addFile(file);
         logger.log(file, LogService.LogType.CREATE);
         return file;
     }
+
+    public void delete(AFileInterface file, AbstractUser user){
+        fileService.delete(file);
+        user.deleteFile(file);
+        logger.log(file, LogService.LogType.DELETE);
+    }
+
+    public void edit(AFileInterface file){
+        fileService.update(file);
+        logger.log(file, LogService.LogType.UPDATE);
+    }
+
 }

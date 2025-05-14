@@ -1,6 +1,7 @@
 package com.orizon.webdriver.domain.model.user;
 
 import com.orizon.webdriver.domain.exceptions.DupliquedFileException;
+import com.orizon.webdriver.domain.exceptions.InexistentFileException;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.user.uinterface.AUserInterface;
 import com.orizon.webdriver.domain.model.user.userdata.UserAccess;
@@ -40,5 +41,12 @@ public sealed abstract class AbstractUser implements AUserInterface permits Admi
             throw new DupliquedFileException();
         }
         files.add(file);
+    }
+
+    public void deleteFile(AFileInterface file){
+        if(!files.contains(file)){
+            throw new InexistentFileException();
+        }
+        files.remove(file);
     }
 }

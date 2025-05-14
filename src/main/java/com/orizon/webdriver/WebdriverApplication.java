@@ -1,11 +1,10 @@
 package com.orizon.webdriver;
 
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.User;
 import com.orizon.webdriver.domain.model.user.uinterface.AUserInterface;
-import com.orizon.webdriver.domain.service.FileService;
 import com.orizon.webdriver.domain.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,12 +18,18 @@ public class WebdriverApplication {
 	}
 
 	@Bean
-	public CommandLineRunner run(FileService fileService, UserService userService) {
+	public CommandLineRunner run(UserService userService) {
 		return args -> {
 
 			System.out.println("Aplicação iniciada com sucesso!");
-			AUserInterface user1 = new User("Kelvson", "kelvsonnilson01@gmail.com", "K1234");
-			AFileInterface file = userService.createFile("VIDEO", user1);
+			AbstractUser user1 = new User("Kelvson", "kelvsonnilson01@gmail.com", "K1234");
+			AFileInterface file = userService.create("VIDEO", user1);
+			AFileInterface file2 = userService.create("VIDEO", user1);
+			System.out.println(user1.getUserFiles());
+			userService.edit(file);
+			System.out.println(user1.getUserFiles());
+			userService.delete(file, user1);
+			System.out.println(user1.getUserFiles());
 		};
 	}
 
