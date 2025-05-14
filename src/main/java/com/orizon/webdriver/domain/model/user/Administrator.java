@@ -9,19 +9,4 @@ public final class Administrator extends AbstractUser {
     public Administrator(String login, String email, String password) {
         super(login, email, password);
     }
-
-    @Override
-    public void load() {
-
-    }
-
-    @Override
-    public void edit() {
-
-    }
-
-    @Override
-    public void delete() {
-
-    }
 }

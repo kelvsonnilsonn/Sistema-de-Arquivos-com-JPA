@@ -1,12 +1,11 @@
 package com.orizon.webdriver.domain.model.institution;
 
 import com.orizon.webdriver.domain.model.institution.addressdata.ZipCode;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
+@Setter
 public class Address {
     private ZipCode zipcode;          // CEP (formato: "12345-678" ou "12345678")
     private String street;           // Nome da rua/av/alameda
@@ -15,22 +14,37 @@ public class Address {
     private String city;             // Cidade
     private String state;            // Estado (sigla: "SP", "RJ", etc.)
 
-    @Setter
     private String complement;       // Complemento (apartamento, bloco, etc.)
-    @Setter
     private String country;          // País (padrão: "Brasil" ou código ISO)
+
+    public Address(String city, String state, String neighborhood, String street){
+        this.city = city;
+        this.state = state;
+        this.neighborhood = neighborhood;
+        this.street = street;
+    }
+
+    public void setZipCode(String zipcode) { this.zipcode = new ZipCode(zipcode);}
 
     @Override
     public String toString() {
         return String.format(
-                "%s, %s - %s, %s - %s, %s, %s",
+                """
+                
+                🌐 País: %s
+                📍 Logradouro: %s, %s%s
+                🏙️ Bairro: %s
+                🏢 Cidade/Estado: %s/%s
+                🏷️ CEP: %s
+                """,
+                (country != null ? country : "Brasil"),
                 street,
                 number,
-                (complement != null ? complement : ""),
+                (complement != null && !complement.isBlank() ? " (" + complement + ")" : ""),
                 neighborhood,
                 city,
                 state,
-                zipcode.getFormattedZipCode()
+                zipcode != null ? zipcode.getFormattedZipCode() : "Não informado"
         );
     }
 }

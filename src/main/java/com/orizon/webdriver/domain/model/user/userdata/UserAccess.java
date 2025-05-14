@@ -1,7 +1,6 @@
 package com.orizon.webdriver.domain.model.user.userdata;
 
-import com.orizon.webdriver.domain.exceptions.EmptyLoginFieldException;
-import lombok.AllArgsConstructor;
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +15,10 @@ public class UserAccess{
     private Email email;
 
     public UserAccess(String login, String email, String password){
-        this.login = Objects.requireNonNull(login, () -> {throw new EmptyLoginFieldException();});
+        this.login = Objects.requireNonNull(login, () -> {throw new ENFieldException(this);});
         this.password = new Password(password);
         this.email = new Email(email);
     }
+
+    public String getEmail() { return this.email.getEmail(); }
 }
