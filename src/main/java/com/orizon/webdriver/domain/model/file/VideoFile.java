@@ -1,6 +1,6 @@
 package com.orizon.webdriver.domain.model.file;
 
-import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
+import com.orizon.webdriver.domain.model.file.data.FileInformations;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 
 import java.time.Duration;

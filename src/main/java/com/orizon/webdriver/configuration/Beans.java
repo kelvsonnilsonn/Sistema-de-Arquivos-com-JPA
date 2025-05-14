@@ -13,9 +13,7 @@ import java.util.Scanner;
 public class Beans {
 
     @Bean
-    public List<AbstractFile.Permission> filePermission(){
-        return new ArrayList<>(Arrays.asList(AbstractFile.Permission.values()));
-    }
+    public List<AbstractFile.Permission> filePermission(){ return new ArrayList<>(Arrays.asList(AbstractFile.Permission.values())); }
 
     @Bean
     public Scanner scan() { return new Scanner(System.in); }

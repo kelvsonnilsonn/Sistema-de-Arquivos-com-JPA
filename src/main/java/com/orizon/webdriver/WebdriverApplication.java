@@ -18,10 +18,10 @@ public class WebdriverApplication {
 	public CommandLineRunner run(FileService fileService) {
 		return args -> {
 
-			AFileInterface file = fileService.createFile("Video");
+			AFileInterface file = fileService.create("Video");
 			System.out.println("Aplicação iniciada com sucesso!");
 			System.out.println(file);
-			fileService.updateFile(file);
+			fileService.update(file);
 			System.out.println(file);
 		};
 	}

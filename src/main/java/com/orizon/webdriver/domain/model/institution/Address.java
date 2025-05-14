@@ -4,7 +4,6 @@ import com.orizon.webdriver.domain.model.institution.addressdata.ZipCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Configuration;
 
 @AllArgsConstructor
 @Getter

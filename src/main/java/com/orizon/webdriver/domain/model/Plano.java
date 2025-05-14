@@ -1,4 +1,4 @@
-package com.orizon.webdriver.model;
+package com.orizon.webdriver.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.orizon.webdriver.domain.service;
+package com.orizon.webdriver.domain.service.operation;
 
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
@@ -18,6 +18,6 @@ public class FileUpdater {
     }
 
     public void update(AFileInterface file){
-        ((AbstractFile)file).getFileInformations().setFileName(scan.nextLine());
+        ((AbstractFile)file).setFileName(scan.nextLine());
     }
 }

@@ -1,9 +1,9 @@
 package com.orizon.webdriver.domain.model.file;
 
-import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
+import com.orizon.webdriver.domain.model.file.data.FileInformations;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 
-public class GenericFile extends AbstractFile{
+public final class GenericFile extends AbstractFile{
 
     public GenericFile(FileInformations fileInformations) {
         super(fileInformations);

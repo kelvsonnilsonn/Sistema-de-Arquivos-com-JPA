@@ -1,10 +1,9 @@
 package com.orizon.webdriver.domain.model.file;
 
 
-import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
+import com.orizon.webdriver.domain.model.file.data.FileInformations;
 
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
-import lombok.Data;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Setter
-@Getter
-public abstract class AbstractFile implements AFileInterface {
+public sealed abstract class AbstractFile implements AFileInterface permits VideoFile, GenericFile{
+    @Getter
     private int id;
     @Autowired
     private List<Permission> filePermissions;
@@ -30,6 +29,9 @@ public abstract class AbstractFile implements AFileInterface {
     protected void addPermission(Permission permission) {
         filePermissions.add(permission);
     }
+
+    public String getFileName() { return this.fileInformations.getFileName(); }
+    public void setFileName(String name) { this.fileInformations.setFileName(name); }
 
     @Getter
     public enum Permission{

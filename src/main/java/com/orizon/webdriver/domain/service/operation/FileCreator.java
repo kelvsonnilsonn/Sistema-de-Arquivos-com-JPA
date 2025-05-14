@@ -1,16 +1,14 @@
-package com.orizon.webdriver.domain.service;
+package com.orizon.webdriver.domain.service.operation;
 
-import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.file.fenum.FileType;
 import com.orizon.webdriver.domain.model.file.GenericFile;
 import com.orizon.webdriver.domain.model.file.VideoFile;
-import com.orizon.webdriver.domain.model.file.filedatas.FileInformations;
+import com.orizon.webdriver.domain.model.file.data.FileInformations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Scanner;
 
 @Component

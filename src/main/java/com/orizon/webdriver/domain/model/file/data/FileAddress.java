@@ -1,6 +1,5 @@
-package com.orizon.webdriver.domain.model.file.filedatas;
+package com.orizon.webdriver.domain.model.file.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
