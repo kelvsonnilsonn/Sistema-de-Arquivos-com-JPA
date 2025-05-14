@@ -1,13 +1,12 @@
 package com.orizon.webdriver.domain.model.file.finterface;
 
+import com.orizon.webdriver.domain.repository.FileRepository;
+
 public interface AFileInterface {
 
     AFileInterface load();
 
-    default void save(){
-        // FileRepository.save(this);
-    }
-    default void deleteFile(){
-        // FileRepository.delete(this);
-    }
+    void save(FileRepository fileRepository);
+
+    void delete(FileRepository fileRepository);
 }

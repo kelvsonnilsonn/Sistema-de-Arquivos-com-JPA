@@ -4,6 +4,7 @@ import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
 import com.orizon.webdriver.domain.model.file.fenum.FileType;
 
+import com.orizon.webdriver.domain.repository.FileRepository;
 import com.orizon.webdriver.domain.service.operation.FileCreator;
 import com.orizon.webdriver.domain.service.operation.FileDeleter;
 import com.orizon.webdriver.domain.service.operation.FileUpdater;
@@ -22,19 +23,21 @@ public class FileService {
     private final FileCreator fileCreator;
     private final FileDeleter fileDeleter;
     private final FileUpdater fileUpdater;
+    private final FileRepository fileRepository;
     private final List<AbstractFile.Permission> initialPermission;
 
     @Autowired
-    public FileService(FileCreator fileCreator, FileDeleter fileDeleter, FileUpdater fileUpdater, List<AbstractFile.Permission> initialPermission){
+    public FileService(FileCreator fileCreator, FileDeleter fileDeleter, FileUpdater fileUpdater, FileRepository fileRepository, List<AbstractFile.Permission> initialPermission){
         this.files = new ArrayList<>();
         this.fileCreator = fileCreator;
         this.fileDeleter = fileDeleter;
         this.fileUpdater = fileUpdater;
+        this.fileRepository = fileRepository;
         this.initialPermission = initialPermission;
     }
 
     public void delete(AFileInterface file){
-        fileDeleter.deleteFile(file);
+        fileDeleter.delete(file, fileRepository);
     }
 
     public AFileInterface create(String type){
@@ -48,9 +51,7 @@ public class FileService {
     }
 
     public void search(int id){
-
         System.out.println(files.stream().filter(f -> ((AbstractFile) f).getId() == id));
-
     }
 
     public void search(String fileName){
@@ -62,7 +63,7 @@ public class FileService {
     }
 
     public void processFiles(){     // Carregar arquivos/atualizações no banco
-        files.forEach(AFileInterface::save);
+        files.forEach(file -> file.save(fileRepository));
         files.stream().map(AFileInterface::load).forEach(files::add);
     }
 }

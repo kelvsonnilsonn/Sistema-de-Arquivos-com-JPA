@@ -4,6 +4,8 @@ package com.orizon.webdriver.domain.model.file;
 import com.orizon.webdriver.domain.model.file.data.FileInformations;
 
 import com.orizon.webdriver.domain.model.file.finterface.AFileInterface;
+import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.domain.model.user.uinterface.AUserInterface;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -19,6 +21,7 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
     @Autowired
     private List<Permission> filePermissions;
     private final FileInformations fileInformations;
+    private AUserInterface user;
 
     public AbstractFile(FileInformations fileInformations){
         this.fileInformations = fileInformations;
@@ -52,6 +55,7 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
         return String.format(
                 """
                 Nome: %s
+                Criador: %s
                 Tipo: %s
                 Tamanho: %d
                 Endereço: %s
@@ -60,6 +64,7 @@ public sealed abstract class AbstractFile implements AFileInterface permits Vide
                 URL: %s
                 """,
                 fileInformations.getFileName(),
+                ((AbstractUser) user).getUserLogin(),
                 this.getClass().getSimpleName(), // Mostra "GenericFile" ou "VideoFile"
                 fileInformations.getFileData() != null ? fileInformations.getFileData().getFileSize() : 0,
                 fileInformations.getFileData() != null ?

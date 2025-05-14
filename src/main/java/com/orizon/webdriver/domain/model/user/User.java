@@ -10,9 +10,22 @@ import java.sql.Date;
 @Setter
 public final class User extends AbstractUser {
 
-    private int fkComment;
+    public User(String login, String email, String senha){
+        super(login, email, senha);
+    }
 
-    public User(int id, UserAccess userAccess, Date date){
-        super(id, userAccess, date);
+    @Override
+    public void load() {
+
+    }
+
+    @Override
+    public void edit() {
+
+    }
+
+    @Override
+    public void delete() {
+
     }
 }
