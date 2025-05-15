@@ -32,6 +32,10 @@ public class FileRepositoryImpl implements FileRepository {
         this.fileUpdater = fileUpdater;
     }
 
+    public List<FileOperations> getAllFiles(){
+        return new ArrayList<>(files);
+    }
+
     @Override
     public FileOperations create(String type, List<AbstractFile.Permission> initialPerms) {
         FileOperations file = fileCreator.create(FileType.from(type.toUpperCase()), Duration.ofMinutes(2));

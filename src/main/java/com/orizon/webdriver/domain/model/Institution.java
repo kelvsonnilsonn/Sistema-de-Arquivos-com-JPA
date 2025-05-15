@@ -45,12 +45,14 @@ public class Institution {
                 🆔 ID: %d
                 🎯 Causa Social: %s
                 📍 Endereço: %s
+                📋 Plano: %s
                 👥 Usuários Vinculados: %d
                 """,
                 name,
                 id,
                 socialCause,
                 address != null ? address.toString().replace("\n", "\n    ") : "Não informado",
+                plano != null ? plano.getName() : "Nenhum plano associado",
                 users.size()
         );
     }

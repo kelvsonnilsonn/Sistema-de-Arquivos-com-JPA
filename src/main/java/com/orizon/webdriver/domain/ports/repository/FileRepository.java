@@ -13,4 +13,5 @@ public interface FileRepository {
     Optional<FileOperations> search(int id);
     List<FileOperations> search(String fileName);
     boolean search(FileOperations file);
+    List<FileOperations> getAllFiles();
 }
