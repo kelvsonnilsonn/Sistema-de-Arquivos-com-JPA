@@ -6,11 +6,11 @@ import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.User;
 import com.orizon.webdriver.domain.ports.file.FileOperations;
 import com.orizon.webdriver.domain.ports.repository.FileRepository;
-import com.orizon.webdriver.domain.service.FileService;
-import com.orizon.webdriver.domain.service.SupportService;
-import com.orizon.webdriver.domain.service.InstitutionService;
-import com.orizon.webdriver.domain.service.UserService;
-import com.orizon.webdriver.infrastructure.repository.InstitutionRepository;
+import com.orizon.webdriver.domain.ports.repository.InstitutionRepository;
+import com.orizon.webdriver.domain.ports.service.FileService;
+import com.orizon.webdriver.domain.ports.service.InstitutionService;
+import com.orizon.webdriver.domain.ports.service.SupportService;
+import com.orizon.webdriver.domain.ports.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -301,7 +301,7 @@ public class WebdriverApplication {
 				long id = scanner.nextLong();
 				scanner.nextLine();
 				try {
-					supportService.checkSupport(user, id); // Corrigido para passar o usuário
+					supportService.checkSupport(id); // Corrigido para passar o usuário
 					System.out.println("✅ Ticket marcado como resolvido");
 				} catch (Exception e) {
 					System.out.println("❌ Erro: " + e.getMessage());

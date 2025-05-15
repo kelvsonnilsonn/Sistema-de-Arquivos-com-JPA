@@ -34,7 +34,7 @@ public class SupportRepositoryImpl implements SupportRepository {
         Support support = supports.stream().filter(s -> s.getId() == id)
                 .findFirst().orElseThrow(SupportException::new);
 
-        support.changeSuportStatus();
+        support.changeSupportStatus();
         supports.remove(support);
     }
 

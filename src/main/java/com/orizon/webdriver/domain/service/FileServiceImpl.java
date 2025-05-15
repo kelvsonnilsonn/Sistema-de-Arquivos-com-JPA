@@ -5,19 +5,20 @@ import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.ports.file.FileOperations;
 
 import com.orizon.webdriver.domain.ports.repository.FileRepository;
+import com.orizon.webdriver.domain.ports.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class FileService {
+public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
     private final List<AbstractFile.Permission> initialPermission;
 
     @Autowired
-    public FileService(FileRepository fileRepository, List<AbstractFile.Permission> initialPermission){
+    public FileServiceImpl(FileRepository fileRepository, List<AbstractFile.Permission> initialPermission){
         this.fileRepository = fileRepository;
         this.initialPermission = initialPermission;
     }
