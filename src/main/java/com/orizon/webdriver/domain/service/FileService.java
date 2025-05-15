@@ -42,8 +42,8 @@ public class FileService {
         fileRepository.search(id);
     }
 
-    public void search(String fileName){
-        fileRepository.search(fileName);
+    public List<FileOperations> search(String fileName){
+        return fileRepository.search(fileName);
     }
 
     public void search(FileOperations file){

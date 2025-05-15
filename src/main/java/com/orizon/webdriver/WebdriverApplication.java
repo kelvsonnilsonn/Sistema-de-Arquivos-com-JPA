@@ -5,17 +5,20 @@ import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.User;
 import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.ports.repository.FileRepository;
 import com.orizon.webdriver.domain.service.FileService;
 import com.orizon.webdriver.domain.service.SupportService;
 import com.orizon.webdriver.domain.service.InstitutionService;
 import com.orizon.webdriver.domain.service.UserService;
+import com.orizon.webdriver.infrastructure.repository.InstitutionRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
-
 @SpringBootApplication
 public class WebdriverApplication {
 
@@ -31,12 +34,13 @@ public class WebdriverApplication {
 	@Bean
 	public CommandLineRunner run(SupportService supportService, FileService fileService,
 								 UserService userService, InstitutionService institutionService,
+								 InstitutionRepository institutionRepository, FileRepository fileRepository,
 								 Scanner scanner) {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
 			// Dados temporários para demonstração
-			AbstractUser currentUser = criarUsuarioTemporario();
+			AbstractUser currentUser = new User("admin", "admin@orizon.com", "senha123");
 			Institution currentInstitution = null;
 
 			while (true) {
@@ -54,8 +58,8 @@ public class WebdriverApplication {
 
 				switch (opcao) {
 					case 1 -> currentUser = menuUsuarios(userService, scanner, currentUser);
-					case 2 -> menuArquivos(fileService, userService, scanner, currentUser);
-					case 3 -> currentInstitution = menuInstituicoes(institutionService, scanner, currentUser, currentInstitution);
+					case 2 -> menuArquivos(fileService, userService, scanner, currentUser, fileRepository);
+					case 3 -> currentInstitution = menuInstituicoes(institutionService, institutionRepository, scanner, currentUser, currentInstitution);
 					case 4 -> menuSuporte(supportService, scanner, currentUser);
 					case 5 -> visualizarDadosAtuais(currentUser, currentInstitution);
 					case 0 -> {
@@ -66,11 +70,6 @@ public class WebdriverApplication {
 				}
 			}
 		};
-	}
-
-	private AbstractUser criarUsuarioTemporario() {
-		// Implementação simplificada para demonstração
-		return new User("admin", "admin@orizon.com", "senha123");
 	}
 
 	private void visualizarDadosAtuais(AbstractUser user, Institution institution) {
@@ -96,23 +95,27 @@ public class WebdriverApplication {
 				String email = scanner.nextLine();
 				System.out.print("Senha: ");
 				String senha = scanner.nextLine();
-				// Na implementação real, isso seria feito via UserService
 				AbstractUser novoUser = new User(login, email, senha);
 				System.out.println("✅ Usuário criado: " + novoUser.getUserLogin());
 				return novoUser;
 			}
 			case 2 -> {
-				// Implementação simplificada
 				System.out.print("Digite o login do usuário: ");
 				String login = scanner.nextLine();
-				// Na implementação real, buscaria no repositório
-				System.out.println("⚠️ Funcionalidade completa precisa de implementação do repositório");
+				System.out.print("Digite a senha: ");
+				String senha = scanner.nextLine();
+				// Simulação de autenticação
+				if (login.equals(currentUser.getUserLogin())){
+					System.out.println("✅ Usuário autenticado");
+				} else {
+					System.out.println("⚠️ Usuário não encontrado, mantendo o atual");
+				}
 			}
 		}
 		return currentUser;
 	}
 
-	private void menuArquivos(FileService fileService, UserService userService, Scanner scanner, AbstractUser user) {
+	private void menuArquivos(FileService fileService, UserService userService, Scanner scanner, AbstractUser user, FileRepository fileRepository) {
 		System.out.println("\n=== GESTÃO DE ARQUIVOS ===");
 		System.out.println("1. Criar arquivo");
 		System.out.println("2. Deletar arquivo");
@@ -174,12 +177,30 @@ public class WebdriverApplication {
 				System.out.print("Digite o ID do arquivo: ");
 				int id = scanner.nextInt();
 				scanner.nextLine();
-				fileService.search(id);
+
+				// Busca no repositório de arquivos
+				Optional<FileOperations> arquivo = fileRepository.search(id);
+
+				if (arquivo.isPresent()) {
+					AbstractFile file = (AbstractFile) arquivo.get();
+					System.out.println("🔍 Arquivo encontrado:");
+					System.out.println(file); // Usa o toString() do AbstractFile
+				} else {
+					System.out.println("❌ Arquivo não encontrado");
+				}
 			}
 			case 5 -> {
 				System.out.print("Digite o nome do arquivo: ");
 				String nome = scanner.nextLine();
-				fileService.search(nome);
+				List<FileOperations> arquivos = fileService.search(nome);
+				if (arquivos.isEmpty()) {
+					System.out.println("❌ Nenhum arquivo encontrado");
+				} else {
+					System.out.println("🔍 Arquivos encontrados:");
+					arquivos.forEach(file ->
+							System.out.println("- " + ((AbstractFile) file).getFileName())
+					);
+				}
 			}
 			case 6 -> {
 				System.out.println("\n📂 SEUS ARQUIVOS:");
@@ -191,8 +212,8 @@ public class WebdriverApplication {
 		}
 	}
 
-	private Institution menuInstituicoes(InstitutionService institutionService, Scanner scanner,
-										 AbstractUser user, Institution currentInstitution) {
+	private Institution menuInstituicoes(InstitutionService institutionService, InstitutionRepository institutionRepository,
+										 Scanner scanner, AbstractUser user, Institution currentInstitution) {
 		System.out.println("\n=== GESTÃO DE INSTITUIÇÕES ===");
 		System.out.println("1. Criar instituição");
 		System.out.println("2. Vincular usuário");
@@ -232,14 +253,19 @@ public class WebdriverApplication {
 			}
 			case 3 -> {
 				System.out.println("\n🏢 INSTITUIÇÕES:");
-				// Implementação real precisaria de um repositório
-				System.out.println("- " + (currentInstitution != null ? currentInstitution.getName() : "Nenhuma instituição criada"));
+				institutionRepository.getAllInstitutions();
 			}
 			case 4 -> {
-				System.out.print("Digite o nome da instituição: ");
-				String nome = scanner.nextLine();
-				// Implementação real buscaria no repositório
-				System.out.println("⚠️ Funcionalidade completa precisa de implementação do repositório");
+				System.out.print("Digite o ID da instituição: ");
+				long id = scanner.nextLong();
+				scanner.nextLine();
+				Institution instituicao = institutionRepository.institutionSearch(id);
+				if (instituicao != null) {
+					System.out.println("✅ Instituição selecionada: " + instituicao.getName());
+					return instituicao;
+				} else {
+					System.out.println("❌ Instituição não encontrada");
+				}
 			}
 		}
 		return currentInstitution;
@@ -250,6 +276,7 @@ public class WebdriverApplication {
 		System.out.println("1. Abrir ticket");
 		System.out.println("2. Resolver ticket");
 		System.out.println("3. Listar meus tickets");
+		System.out.println("4. Listar todos tickets");
 		System.out.println("0. Voltar");
 		System.out.print("Escolha: ");
 
@@ -274,7 +301,7 @@ public class WebdriverApplication {
 				long id = scanner.nextLong();
 				scanner.nextLine();
 				try {
-					supportService.checkSupport(user ,id);
+					supportService.checkSupport(user, id); // Corrigido para passar o usuário
 					System.out.println("✅ Ticket marcado como resolvido");
 				} catch (Exception e) {
 					System.out.println("❌ Erro: " + e.getMessage());
@@ -287,6 +314,10 @@ public class WebdriverApplication {
 								" | Título: " + s.getTitle() +
 								" | Status: " + (s.isResolved() ? "✅ Resolvido" : "🟡 Pendente"))
 				);
+			}
+			case 4 -> {
+				System.out.println("\n🆘 TODOS OS TICKETS:");
+				supportService.getAllSupports();
 			}
 		}
 	}
