@@ -1,7 +1,7 @@
 package com.orizon.webdriver.domain.model.file;
 
 import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.infrastructure.repository.FileRepository;
+import com.orizon.webdriver.infrastructure.repository.FileRepositoryImpl;
 import lombok.Setter;
 
 @Setter
@@ -17,12 +17,12 @@ public final class GenericFile extends AbstractFile{
     }
 
     @Override
-    public void save(FileRepository fileRepository){
+    public void save(FileRepositoryImpl fileRepository){
 
     }
 
     @Override
-    public void delete(FileRepository fileRepository) {
+    public void delete(FileRepositoryImpl fileRepository) {
 
     }
 

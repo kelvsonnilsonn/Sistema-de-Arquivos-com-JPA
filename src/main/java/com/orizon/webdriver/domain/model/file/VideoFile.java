@@ -1,7 +1,7 @@
 package com.orizon.webdriver.domain.model.file;
 
 import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.infrastructure.repository.FileRepository;
+import com.orizon.webdriver.infrastructure.repository.FileRepositoryImpl;
 import lombok.Setter;
 
 import java.time.Duration;
@@ -22,12 +22,12 @@ public final class VideoFile extends AbstractFile{
     }
 
     @Override
-    public void save(FileRepository fileRepository) {
+    public void save(FileRepositoryImpl fileRepository) {
 
     }
 
     @Override
-    public void delete(FileRepository fileRepository) {
+    public void delete(FileRepositoryImpl fileRepository) {
 
     }
 

@@ -2,7 +2,6 @@ package com.orizon.webdriver.infrastructure.repository;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.SupportException;
-import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.ports.repository.SupportRepository;
 import com.orizon.webdriver.domain.model.Support;
 import org.springframework.stereotype.Repository;
@@ -18,6 +17,10 @@ public class SupportRepositoryImpl implements SupportRepository {
 
     public SupportRepositoryImpl(){
         this.supports = new ArrayList<>();
+    }
+
+    public void listSupports(){
+        supports.forEach(System.out::println);
     }
 
     @Override

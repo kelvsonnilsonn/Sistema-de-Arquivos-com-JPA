@@ -3,7 +3,7 @@ package com.orizon.webdriver.domain.service.operation;
 import com.orizon.webdriver.domain.exceptions.InvalidFileException;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.infrastructure.repository.FileRepository;
+import com.orizon.webdriver.domain.ports.repository.FileRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -16,6 +16,6 @@ public class FileDeleter {
             throw new InvalidFileException();
         }
 
-        file.delete(fileRepository);
+        fileRepository.delete(file);
     }
 }
