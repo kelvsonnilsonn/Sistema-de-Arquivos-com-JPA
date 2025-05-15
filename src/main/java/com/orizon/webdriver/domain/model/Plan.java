@@ -16,9 +16,34 @@ public class Plan {
     private Duration duration;
     private Date aquisitionDate;
 
-    public Plan(String name, String userSpace){
+    public Plan(String name, String userSpace) {
         this.name = name;
         this.userSpace = userSpace;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                """
+                        📋 Plano: %s
+                        🆔 ID: %d
+                        💾 Espaço do Usuário: %s
+                        ⏳ Duração: %s
+                        📅 Data de Aquisição: %s
+                        """,
+                name,
+                id,
+                userSpace,
+                duration != null ? formatDuration(duration) : "Não definida",
+                aquisitionDate != null ? aquisitionDate.toString() : "Não registrada"
+        );
+    }
+
+    private String formatDuration(Duration duration) {
+        long days = duration.toDays();
+        long hours = duration.toHoursPart();
+        long minutes = duration.toMinutesPart();
+
+        return String.format("%d dias, %02dh %02dm", days, hours, minutes);
+    }
 }
