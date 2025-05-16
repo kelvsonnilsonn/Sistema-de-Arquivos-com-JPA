@@ -4,6 +4,6 @@
 
 - Kelvson Nilson **( Java )**
 - Ricardo Nery **( Java + JDBC )**
-- Christian **( Java + JDBC + Modelo lógico )**
-- William **( Modelo lógico + Modelo Conceitual )**
+- Christian Araújo **( Java + JDBC + Modelo lógico )**
+- Willian Rodrigues **( Modelo lógico + Modelo Conceitual )**
 - Eliel Pereira **( Modelo conceitual )**
