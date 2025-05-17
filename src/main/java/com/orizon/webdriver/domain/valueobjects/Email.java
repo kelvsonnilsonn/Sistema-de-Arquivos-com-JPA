@@ -1,32 +1,37 @@
 package com.orizon.webdriver.domain.valueobjects;
 
-import com.orizon.webdriver.domain.exceptions.InvalidEmailException;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Objects;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import java.util.regex.Pattern;
 
+@Embeddable
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // Construtor sem args para Hibernate
 public class Email {
-
     private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-                    "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                    + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
 
     private String email;
 
-    public Email(String email){
+    public Email(String email) {
         validate(email);
         this.email = email;
     }
 
-    private void validate(String email){
-        Objects.requireNonNull(email, "O Email não pode ser nulo");
-        if(!pattern.matcher(email).matches())
-            throw new InvalidEmailException();
+    public static Email of(String email) {
+        return new Email(email);
     }
+
+    private void validate(String email) {
+        if (email == null || !pattern.matcher(email).matches()) {
+            throw new IllegalArgumentException("Email inválido: " + email);
+        }
+    }
+
 }

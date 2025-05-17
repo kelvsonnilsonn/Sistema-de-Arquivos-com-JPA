@@ -1,53 +1,44 @@
 package com.orizon.webdriver.domain.service;
 
-import com.orizon.webdriver.domain.model.Comment;
+import com.orizon.webdriver.domain.exceptions.InexistentFileException;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.ports.file.FileOperations;
-
 import com.orizon.webdriver.domain.ports.repository.FileRepository;
 import com.orizon.webdriver.domain.ports.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class FileServiceImpl implements FileService {
 
-    private final FileRepository fileRepository;
-    private final List<AbstractFile.Permission> initialPermission;
+    private final FileRepository fileDAO;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileRepository, List<AbstractFile.Permission> initialPermission){
-        this.fileRepository = fileRepository;
-        this.initialPermission = initialPermission;
+    public FileServiceImpl(FileRepository fileDAO){
+        this.fileDAO = fileDAO;
     }
 
-    public void delete(FileOperations file){
-        fileRepository.delete(file);
+    @Override
+    public void listAll() {
+        fileDAO.findAll().forEach(System.out::println);
     }
 
-    public FileOperations create(String type){
-        return fileRepository.create(type, initialPermission);
+    @Override
+    public AbstractFile findOne(Long id) {
+        return fileDAO.findById(id).orElseThrow(InexistentFileException::new);
     }
 
-    public void addComment(FileOperations file, String comment){
-        file.comment(new Comment(comment));
+    @Override
+    public void save(AbstractFile file) {
+        fileDAO.save(file);
     }
 
-    public void update(FileOperations file){
-        fileRepository.update(file);
+    @Override
+    public void delete(Long id) {
+        fileDAO.deleteById(id);
     }
 
-    public void search(int id){
-        fileRepository.search(id);
-    }
-
-    public List<FileOperations> search(String fileName){
-        return fileRepository.search(fileName);
-    }
-
-    public void search(FileOperations file){
-        fileRepository.search(file);
+    @Override
+    public void update(AbstractFile file) {
+        fileDAO.save(file);
     }
 }

@@ -1,56 +1,44 @@
 package com.orizon.webdriver.domain.service;
 
-import com.orizon.webdriver.domain.exceptions.ENFieldException;
-import com.orizon.webdriver.domain.exceptions.InstitutionLimitException;
 import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
 import com.orizon.webdriver.domain.model.Institution;
-import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.domain.ports.repository.InstitutionRepository;
 import com.orizon.webdriver.domain.ports.service.InstitutionService;
-import com.orizon.webdriver.infrastructure.repository.InstitutionRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class InstitutionServiceImpl implements InstitutionService {
 
-    private final InstitutionRepositoryImpl institutionRepository;
+    private final InstitutionRepository institutionDAO;
 
     @Autowired
-    public InstitutionServiceImpl(InstitutionRepositoryImpl institutionRepository) {
-        this.institutionRepository = institutionRepository;
+    public InstitutionServiceImpl(InstitutionRepository institutionDAO) {
+        this.institutionDAO = institutionDAO;
     }
 
     @Override
-    public Institution createInstitution(String name, String socialCause){
-        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
-        Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
-        Institution institution = new Institution(name, socialCause);
-        institutionRepository.addInstitution(institution);
-        return institution;
+    public void listAll() {
+        institutionDAO.findAll().forEach(System.out::println);
     }
 
     @Override
-    public void deleteInstitution(long id){
-        Institution founded = institutionRepository.institutionSearch(id);
-        if(founded == null){
-            throw new InvalidInstitutionException();
-        }
-
-        institutionRepository.deleteInstitution(founded);
+    public Institution findOne(Long id) {
+        return institutionDAO.findById(id).orElseThrow(InvalidInstitutionException::new);
     }
 
     @Override
-    public void addInstitutionUser(Institution institution, AbstractUser user){
-        Objects.requireNonNull(user, () -> {throw new ENFieldException();});
-        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
+    public void save(Institution institution){
+        institutionDAO.save(institution);
+    }
 
-        if(user.getInstitutionConection() != null){
-            throw new InstitutionLimitException();
-        }
+    @Override
+    public void delete(Long id) {
+        institutionDAO.deleteById(id);
+    }
 
-        institution.addInstitutionUser(user);
-        user.setInstitutionConection(institution);
+    @Override
+    public void update(Institution institution) {
+        institutionDAO.save(institution);
     }
 }

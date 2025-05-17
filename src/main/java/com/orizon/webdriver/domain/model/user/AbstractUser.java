@@ -1,71 +1,86 @@
 package com.orizon.webdriver.domain.model.user;
 
 import com.orizon.webdriver.domain.exceptions.DupliquedFileException;
-import com.orizon.webdriver.domain.exceptions.InexistentFileException;
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
+import com.orizon.webdriver.domain.model.Comment;
+import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Support;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.valueobjects.UserAccess;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Setter
-public sealed abstract class AbstractUser permits Administrator, User {
+@Getter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class AbstractUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Getter
-    private long id;
-    private final UserAccess userAccess;
-    @Getter
-    private final Instant createdUserDate;
-    @Getter
-    private final List<FileOperations> files;
-    @Getter
-    private final List<Support> supportRequests;
-    @Getter
-    private Institution institutionConection;
+    @Embedded
+    private UserAccess userAccess;
 
-    public List<FileOperations> getUserFiles() { return Collections.unmodifiableList(files); }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<AbstractFile> files = new HashSet<>();
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<Support> supportRequests = new HashSet<>();
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "institution_id")
+    private Institution institution;
+
+    @Column(name = "creation_date")
+    private Instant createdUserDate;
+
+    protected AbstractUser(){}
+
+    public Set<AbstractFile> getUserFiles() { return new HashSet<>(files); }
+
+    /*
+     *  Construtor padrão
+     *
+     *  E-mail e Password já possuem verificadores na suas próprias implementações
+     *  por isso não precisa verificar.
+     */
 
     public AbstractUser(String login, String email, String password){
+        if(login == null || login.isBlank()){
+            throw new ENFieldException();
+        }
         this.userAccess = new UserAccess(login, email, password);
         this.createdUserDate = Instant.now();
-        this.files = new ArrayList<>();
-        this.supportRequests = new ArrayList<>();
     }
+
+    /*
+    *   Permitido usar o bidirecional em AbstractUser graças ao POLIMORFISMO.
+    */
 
     public void addSupportRequest(Support supportRequest){
-        supportRequests.add(supportRequest);
+        Objects.requireNonNull(supportRequest, () -> {throw new ENFieldException();});
+        if(supportRequests.add(supportRequest)){
+            supportRequest.setAuthor(this);
+        }
     }
 
-    public void checkSupportRequest(Support supportRequest){
-        supportRequests.remove(supportRequest);
+    public void addFile(AbstractFile file){
+        Objects.requireNonNull(file, () -> {throw new ENFieldException();});
     }
 
     public String getUserLogin() { return this.userAccess.getLogin(); }
-
-    public void addFile(FileOperations file){
-        if(files.contains(file)){
-            throw new DupliquedFileException();
-        }
-        files.add(file);
-    }
-
-    public void deleteFile(FileOperations file){
-        if(!files.contains(file)){
-            throw new InexistentFileException();
-        }
-        files.remove(file);
-    }
 
     @Override
     public String toString() {
@@ -85,7 +100,7 @@ public sealed abstract class AbstractUser permits Administrator, User {
                 userAccess.getLogin(),
                 userAccess.getEmail(),
                 id,
-                institutionConection != null ? institutionConection.getName() : "Não vinculado",
+                institution != null ? institution.getName() : "Não vinculado",
                 dateFormatter.format(createdUserDate),
                 files.size(),
                 files.isEmpty() ? " Nenhum arquivo vinculado" :

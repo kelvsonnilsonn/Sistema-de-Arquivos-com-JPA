@@ -1,6 +1,9 @@
 package com.orizon.webdriver.domain.valueobjects;
 
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -8,6 +11,8 @@ import java.util.regex.Pattern;
 
 @Getter
 @Setter
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ZipCode {
 
     private static final String ZIP_CODE_REGEX = "^[0-9]{5}-?[0-9]{3}$";
@@ -20,6 +25,10 @@ public class ZipCode {
     public ZipCode(String zipcode) {
         validate(zipcode);
         this.zipcode = zipcode.replace("-", "");
+    }
+
+    public static ZipCode of(String zipcode) {
+        return new ZipCode(zipcode);
     }
 
     public String getFormattedZipCode() {

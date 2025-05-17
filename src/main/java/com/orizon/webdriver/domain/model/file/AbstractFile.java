@@ -2,68 +2,80 @@ package com.orizon.webdriver.domain.model.file;
 
 
 import com.orizon.webdriver.domain.model.Comment;
-
-import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.model.Support;
+import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
+import jakarta.persistence.*;
 import lombok.Getter;
-
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Setter
-public sealed abstract class AbstractFile implements FileOperations permits VideoFile, GenericFile{
+@Getter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "file_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class AbstractFile{
 
-    @Getter
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    private List<Comment> fileComments;
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> fileComments = new HashSet<>();
+
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<VersioningHistory> versions = new HashSet<>();
+
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Support> supportRequests;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private AbstractUser user;
 
     @Autowired
     private List<Permission> filePermissions;
 
+    @Embedded
     private final FileMetaData fileMetaData;
-    private AbstractUser user;
 
     public AbstractFile(FileMetaData fileMetaData){
         this.fileMetaData = fileMetaData;
-        this.fileComments = new ArrayList<>();
     }
+    public String getFileName(){ return this.fileMetaData.getFileName(); }
 
-    @Override
     public void comment(Comment comment) {
         fileComments.add(comment);
     }
 
-    public List<Comment> getComments() { return Collections.unmodifiableList(fileComments); }
-    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }
-
-    public void getCommentsInFile(){
-
-        if(!fileComments.isEmpty()){
-            System.out.println("💬 Todos os comentários:");
-            System.out.printf("%s",
-                    fileComments.stream().map(Comment::toString)
-                            .collect(Collectors.joining("\n")));
-        } else {
-            System.out.println("Nenhum comentário.");
-        }
-    }
-
-    protected void addPermission(Permission permission) {
-        filePermissions.add(permission);
-        System.out.println(fileComments);
-
-    }
-
-    public String getFileName() { return this.fileMetaData.getFileName(); }
-    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
+//    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }
+//
+//    public void getCommentsInFile(){
+//
+//        if(!fileComments.isEmpty()){
+//            System.out.println("💬 Todos os comentários:");
+//            System.out.printf("%s",
+//                    fileComments.stream().map(Comment::toString)
+//                            .collect(Collectors.joining("\n")));
+//        } else {
+//            System.out.println("Nenhum comentário.");
+//        }
+//    }
+//
+//    protected void addPermission(Permission permission) {
+//        filePermissions.add(permission);
+//        System.out.println(fileComments);
+//
+//    }
+//
+//    public String getFileName() { return this.fileMetaData.getFileName(); }
+//    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
 
     @Getter
     public enum Permission{
@@ -99,7 +111,7 @@ public sealed abstract class AbstractFile implements FileOperations permits Vide
                 fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
                 fileMetaData.getFileReleaseDate() != null ?
                         DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                                .format(fileMetaData.getFileReleaseDate().toInstant()
+                                .format(fileMetaData.getFileReleaseDate()
                                         .atZone(ZoneId.systemDefault())) : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
@@ -108,4 +120,9 @@ public sealed abstract class AbstractFile implements FileOperations permits Vide
                 fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A"
         );
     }
+
+    public enum FileType {
+        TEXT, VIDEO, PHOTO
+    }
+
 }

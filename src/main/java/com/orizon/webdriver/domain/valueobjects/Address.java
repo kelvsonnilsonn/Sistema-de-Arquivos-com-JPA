@@ -1,10 +1,12 @@
 package com.orizon.webdriver.domain.valueobjects;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Embeddable
 public class Address {
     private ZipCode zipcode;          // CEP (formato: "12345-678" ou "12345678")
     private String street;           // Nome da rua/av/alameda
