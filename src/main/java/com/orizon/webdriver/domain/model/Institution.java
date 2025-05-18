@@ -23,7 +23,7 @@ import java.util.Set;
 @Table(name="institutions")
 public class Institution {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "institution_name",nullable = false)
@@ -35,14 +35,14 @@ public class Institution {
     @Embedded
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
-    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Administrator> admins = new HashSet<>();
 
     public Institution(String name, String socialCause){

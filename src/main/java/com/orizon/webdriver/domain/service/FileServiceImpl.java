@@ -2,7 +2,7 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.InexistentFileException;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.ports.repository.FileRepository;
+import com.orizon.webdriver.infra.repositories.FileRepository;
 import com.orizon.webdriver.domain.ports.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

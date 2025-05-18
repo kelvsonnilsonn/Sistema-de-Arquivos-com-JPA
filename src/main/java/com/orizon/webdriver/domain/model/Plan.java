@@ -35,7 +35,7 @@ public class Plan {
     @Column(name = "acquisition_date")
     private LocalDate acquisitionDate;
 
-    @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER)
     private Set<Institution> institutions = new HashSet<>();
 
     public Plan(String name, String userSpace) {

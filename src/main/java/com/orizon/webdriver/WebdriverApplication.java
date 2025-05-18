@@ -5,9 +5,11 @@ import com.orizon.webdriver.domain.exceptions.InvalidPlanException;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Plan;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
+import com.orizon.webdriver.domain.model.file.GenericFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.User;
 import com.orizon.webdriver.domain.ports.service.*;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,11 +32,24 @@ public class WebdriverApplication {
 	}
 
 	@Bean
-	public CommandLineRunner run(CommentService commentService, FileService fileService, InstitutionService institutionService,
-								PlanService planService, SupportService supportService, UserService userService,
-								 VersionHistoryService versionHistoryService) {
+	public CommandLineRunner run(CommentService commentService, FileOperationService fileOperationService, FileService fileService,
+								 InstitutionService institutionService, PlanService planService, SupportService supportService,
+								 UserService userService, VersionHistoryService versionHistoryService) {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
+
+			System.out.println("\nLISTA DE USERS:");
+			userService.listAll();
+			System.out.println("\nLISTA DE ARQUIVOS:");
+			fileService.listAll();
+			System.out.println("\nLISTA DE COMENTARIOS:");
+			commentService.listAll();
+
+//			AbstractUser user = new User("Kelvson", "Kelvsonnilson01@gmail.com", "1234");
+//			AbstractFile file = new GenericFile("meu arquivo1");
+//			userService.save(user);
+//			fileService.save(file);
+//			commentService.create("Que alegria! Esse é o primeiro comentario que faço num arquivo meu!", user, file);
 		};
 	}
 }

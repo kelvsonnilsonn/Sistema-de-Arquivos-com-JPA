@@ -4,7 +4,7 @@ import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InvalidPlanException;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Plan;
-import com.orizon.webdriver.domain.ports.repository.PlanRepository;
+import com.orizon.webdriver.infra.repositories.PlanRepository;
 import com.orizon.webdriver.domain.ports.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

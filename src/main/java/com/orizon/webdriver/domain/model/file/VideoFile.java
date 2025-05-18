@@ -1,7 +1,9 @@
 package com.orizon.webdriver.domain.model.file;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;
@@ -11,9 +13,11 @@ import java.time.Duration;
 @DiscriminatorValue("Video")
 public class VideoFile extends AbstractFile{
 
-    private final Duration duration;
+    private Duration duration;
 
-    public VideoFile(FileMetaData fileMetaData, Duration duration) {
+    protected VideoFile(){}
+
+    public VideoFile(String fileMetaData, Duration duration) {
         super(fileMetaData);
         this.duration = duration;
     }

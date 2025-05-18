@@ -1,4 +1,4 @@
-package com.orizon.webdriver.domain.ports.repository;
+package com.orizon.webdriver.infra.repositories;
 
 import com.orizon.webdriver.domain.model.Support;
 import org.springframework.data.jpa.repository.JpaRepository;

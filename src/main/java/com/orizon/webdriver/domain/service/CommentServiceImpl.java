@@ -1,12 +1,20 @@
 package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.CommentInexistentException;
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.ports.repository.CommentRepository;
+import com.orizon.webdriver.domain.model.file.AbstractFile;
+import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.infra.repositories.CommentRepository;
 import com.orizon.webdriver.domain.ports.service.CommentService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Objects;
+
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentDAO;
@@ -26,17 +34,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void save(Comment comment) {
-        commentDAO.save(comment);
+    public void create(String body, AbstractUser user, AbstractFile file) {
+        Comment comment = new Comment(body);
+        if(user.addComment(comment) && file.addComment(comment)){
+            commentDAO.save(comment);
+        }
     }
 
     @Override
     public void delete(Long id) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         commentDAO.deleteById(id);
     }
 
     @Override
-    public void update(Comment comment) {
-        commentDAO.save(comment);
+    public void update(Long id, String body) {
+        Objects.requireNonNull(body, () -> {throw new ENFieldException();});
+        Comment toEdit = commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
+        toEdit.setBody(body);
+        toEdit.setTime(Instant.now());
+        commentDAO.save(toEdit);
     }
 }

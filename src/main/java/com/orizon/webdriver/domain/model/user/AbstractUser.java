@@ -1,8 +1,8 @@
 package com.orizon.webdriver.domain.model.user;
 
-import com.orizon.webdriver.domain.exceptions.DupliquedFileException;
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.model.Comment;
+import com.orizon.webdriver.domain.model.FileOperation;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Support;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
@@ -10,11 +10,14 @@ import com.orizon.webdriver.domain.valueobjects.UserAccess;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.LazyInitializationException;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Setter
@@ -24,24 +27,27 @@ import java.util.stream.Collectors;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class AbstractUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
     private UserAccess userAccess;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<AbstractFile> files = new HashSet<>();
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Support> supportRequests = new HashSet<>();
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     private Institution institution;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<FileOperation> fileOperations = new HashSet<>();
 
     @Column(name = "creation_date")
     private Instant createdUserDate;
@@ -76,6 +82,16 @@ public abstract class AbstractUser {
         }
     }
 
+    public boolean addComment(Comment comment) {
+        Objects.requireNonNull(comment, "Comentário não pode ser nulo");
+
+        if (this.comments.add(comment)) {
+            comment.setAuthor(this);
+            return true;
+        }
+        return false;
+    }
+
     public void addFile(AbstractFile file){
         Objects.requireNonNull(file, () -> {throw new ENFieldException();});
     }
@@ -90,30 +106,57 @@ public abstract class AbstractUser {
         return String.format(
                 """
                 🧑💻 Usuário: %s
-                📧 E-mail: %s
+                📧 Email: %s
                 🆔 ID: %d
                 🏢 Instituição: %s
                 📅 Criado em: %s
-                📂 Arquivos (%d):%s
-                🆘 Solicitações de Suporte (%d):%s
+                
+                📂 Arquivos (%d): %s
+                🆘 Solicitações de Suporte (%d): %s
+                💬 Comentários (%d): %s
+                ⚙️ Operações de Arquivo: (%d): %s
                 """,
                 userAccess.getLogin(),
                 userAccess.getEmail(),
                 id,
                 institution != null ? institution.getName() : "Não vinculado",
                 dateFormatter.format(createdUserDate),
+
+                // Seção de Arquivos
                 files.size(),
-                files.isEmpty() ? " Nenhum arquivo vinculado" :
+                files.isEmpty() ? "  Nenhum arquivo vinculado" :
                         files.stream()
-                                .map(f -> "\n   - " + ((AbstractFile) f).getFileName() + " (" + f.getClass().getSimpleName() + ")")
-                                .collect(Collectors.joining()),
+                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")")
+                                .collect(Collectors.joining("\n")),
+
+                // Seção de Solicitações de Suporte
                 supportRequests.size(),
-                supportRequests.isEmpty() ? " Nenhuma solicitação" :
+                supportRequests.isEmpty() ? "  Nenhuma solicitação" :
                         supportRequests.stream()
-                                .map(s -> "\n   - [" + s.getId() + "] " +
+                                .map(s -> "  - [" + s.getId() + "] " +
                                         (s.getTitle() != null ? s.getTitle() : "Sem título") +
                                         " - Status: " + (s.isResolved() ? "✅ Resolvido" : "🟡 Pendente"))
-                                .collect(Collectors.joining())
+                                .collect(Collectors.joining("\n")),
+
+                // Seção de Comentários
+                comments.size(),
+                comments.isEmpty() ? "  Nenhum comentário" :
+                        comments.stream()
+                                .map(c -> "  - [" + c.getId() + "] " +
+                                        (c.getBody() != null ?
+                                                (c.getBody().length() > 30 ?
+                                                        c.getBody().substring(0, 30) + "..." :
+                                                        c.getBody()) :
+                                                "Sem conteúdo"))
+                                .collect(Collectors.joining("\n")),
+
+                // Seção de Operações de Arquivo
+                fileOperations.size(),
+                fileOperations.isEmpty() ? "  Nenhuma operação" :
+                        fileOperations.stream()
+                                .map(op -> "  - [" + op.getId() + "] " + op.getOperationType() +
+                                        " em " + dateFormatter.format(op.getOperationDate()))
+                                .collect(Collectors.joining("\n"))
         );
     }
 }

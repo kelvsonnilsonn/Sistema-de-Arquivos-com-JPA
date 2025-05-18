@@ -1,7 +1,9 @@
 package com.orizon.webdriver.domain.model.file;
 
 
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.model.Comment;
+import com.orizon.webdriver.domain.model.FileOperation;
 import com.orizon.webdriver.domain.model.Support;
 import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
@@ -23,35 +25,57 @@ import java.util.stream.Collectors;
 public abstract class AbstractFile{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Comment> fileComments = new HashSet<>();
 
-    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<VersioningHistory> versions = new HashSet<>();
 
-    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Support> supportRequests;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private AbstractUser user;
 
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<FileOperation> operations = new HashSet<>();
+
     @Autowired
     private List<Permission> filePermissions;
 
     @Embedded
-    private final FileMetaData fileMetaData;
+    private FileMetaData fileMetaData;
 
-    public AbstractFile(FileMetaData fileMetaData){
-        this.fileMetaData = fileMetaData;
+    /*
+     *  Construtor
+     */
+    protected AbstractFile(){}
+
+    public AbstractFile(String fileMetaData){
+        this.fileMetaData = new FileMetaData(fileMetaData);
     }
+
+    /*
+     *  Construtor
+     */
+
     public String getFileName(){ return this.fileMetaData.getFileName(); }
 
-    public void comment(Comment comment) {
-        fileComments.add(comment);
+    public boolean addComment(Comment comment) {
+        Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
+        if(this.fileComments.add(comment)){
+            comment.setFile(this);
+            return true;
+        }
+        return false;
+    }
+
+    public void addOperation(AbstractUser user, String operationType) {
+        this.operations.add(new FileOperation(this, user, operationType));
     }
 
 //    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }
@@ -93,31 +117,85 @@ public abstract class AbstractFile{
 
     @Override
     public String toString() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                .withZone(ZoneId.systemDefault());
+
         return String.format(
                 """
-                📄 Nome: %s
-                👤 Criador: %s
+                📄 Arquivo: %s (ID: %d)
                 🏷️ Tipo: %s
+                👤 Criado por: %s
                 📏 Tamanho: %d bytes
-                📂 Endereço: %s
+                📂 Local: %s
                 🗓️ Lançamento: %s
-                🔐 Permissões: %s
                 🔗 URL: %s
+                🔐 Permissões: %s
+                
+                💬 Comentários (%d):%s
+                🔄 Versões (%d):%s
+                🆘 Solicitações (%d):%s
+                ⚙️ Operações (%d):%s
                 """,
+                // Informações básicas
                 fileMetaData.getFileName(),
-                user != null ? user.getUserLogin() : "N/A",
+                this.getId(),
                 this.getClass().getSimpleName(),
+                user != null ? user.getUserLogin() : "N/A",
                 fileMetaData.getFileSize(),
                 fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
                 fileMetaData.getFileReleaseDate() != null ?
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                                .format(fileMetaData.getFileReleaseDate()
-                                        .atZone(ZoneId.systemDefault())) : "N/A",
+                        dateFormatter.format(fileMetaData.getFileReleaseDate()) : "N/A",
+                fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
                                 .map(Permission::getDescription)
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
-                fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A"
+
+                // Comentários
+                fileComments.size(),
+                fileComments.isEmpty() ? " Nenhum" :
+                        fileComments.stream()
+                                .map(c -> "\n   - [" + c.getId() + "] " +
+                                        (c.getBody() != null ?
+                                                (c.getBody().length() > 25 ?
+                                                        c.getBody().substring(0, 25) + "..." :
+                                                        c.getBody()) : "Sem conteúdo") +
+                                        " (por " + (c.getAuthor() != null ? c.getAuthor().getUserLogin() : "N/A") + ")")
+                                .collect(Collectors.joining()),
+
+                // Versões
+                versions.size(),
+                versions.isEmpty() ? " Nenhuma" :
+                        versions.stream()
+                                .sorted(Comparator.comparing(VersioningHistory::getCreationDate).reversed())
+                                .map(v -> "\n   - v" + v.getId() +
+                                        " em " + dateFormatter.format(v.getCreationDate()) +
+                                        (v.getCommitMessage() != null ?
+                                                "\n     ↳ " + (v.getCommitMessage().length() > 40 ?
+                                                        v.getCommitMessage().substring(0, 40) + "..." :
+                                                        v.getCommitMessage()) : ""))
+                                .collect(Collectors.joining()),
+
+                // Solicitações
+                supportRequests != null ? supportRequests.size() : 0,
+                supportRequests == null || supportRequests.isEmpty() ? " Nenhuma" :
+                        supportRequests.stream()
+                                .map(s -> "\n   - [" + s.getId() + "] " +
+                                        (s.getTitle() != null ? s.getTitle() : "Sem título") +
+                                        " (" + (s.isResolved() ? "✅" : "🟡"))
+                                .collect(Collectors.joining()),
+
+                // Operações
+                operations.size(),
+                operations.isEmpty() ? " Nenhuma" :
+                        operations.stream()
+                                .sorted(Comparator.comparing(FileOperation::getOperationDate).reversed())
+                                .map(op -> "\n   - " + op.getOperationType() +
+                                        " por " + (op.getUser() != null ? op.getUser().getUserLogin() : "N/A") +
+                                        " em " + dateTimeFormatter.format(op.getOperationDate()))
+                                .collect(Collectors.joining())
         );
     }
 

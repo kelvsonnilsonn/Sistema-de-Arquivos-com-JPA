@@ -23,11 +23,11 @@ public class Support {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private AbstractUser author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")
     private Administrator admin;
 
@@ -37,7 +37,7 @@ public class Support {
     @Column(name = "body", nullable = false) // length = 255
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id")
     private AbstractFile file;
 

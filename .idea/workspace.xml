@@ -5,66 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Adicionado arquivo que representa o compartilhamento.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/exceptions/CommentInexistentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/exceptions/SupportInexistentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/exceptions/UserInexistentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/exceptions/VersionInexistentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/VersioningHistory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/CommentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/VersioningHistoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/VersionHistoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/FileOperation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileOperationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileOperationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/FileOperationsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/enums/FileType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/exceptions/SupportException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Institution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Institution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Plan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Plan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/VersioningHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/VersioningHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/GenericFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/GenericFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/VideoFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/VideoFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/file/FileOperations.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/FileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/FileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/InstitutionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/InstitutionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/PlanRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/PlanRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/SupportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/SupportRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/InstitutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/InstitutionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/LogService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/PlanService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/PlanService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/SupportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/SupportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/FileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/FileRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/InstitutionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/InstitutionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/PlanRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/PlanRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/SupportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/SupportRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/repository/VersioningHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/VersioningHistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/LogServiceImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/operation/FileCreator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/operation/FileDeleter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/operation/FileUpdater.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Email.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Email.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Password.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/Password.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/ShareFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/ShareFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/UserAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/UserAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/ZipCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/ZipCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infrastructure/package-info.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infrastructure/repository/FileRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infrastructure/repository/InstitutionRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infrastructure/repository/PlanRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infrastructure/repository/SupportRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/ShareFile.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,22 +87,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Main.executor": "Run",
-    "Application.WebdriverApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Kelvson/Desktop/ProjetoBD-WebDriver",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "vcs.Git"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.WebdriverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Kelvson/Desktop/ProjetoBD-WebDriver&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Kelvson\Desktop\ProjetoBD-WebDriver" />
@@ -148,6 +122,9 @@
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Kelvson\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="" />

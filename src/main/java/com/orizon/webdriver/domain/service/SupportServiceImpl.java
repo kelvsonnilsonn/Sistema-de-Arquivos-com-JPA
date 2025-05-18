@@ -5,7 +5,7 @@ import com.orizon.webdriver.domain.exceptions.SupportInexistentException;
 import com.orizon.webdriver.domain.model.Support;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
-import com.orizon.webdriver.domain.ports.repository.SupportRepository;
+import com.orizon.webdriver.infra.repositories.SupportRepository;
 import com.orizon.webdriver.domain.ports.service.SupportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,6 +2,7 @@ package com.orizon.webdriver.domain.model.file;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Embeddable
+@NoArgsConstructor
 public class FileMetaData {
     private String fileName;
     private int fileSize;

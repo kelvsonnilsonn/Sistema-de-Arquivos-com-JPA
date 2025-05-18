@@ -9,7 +9,9 @@ import lombok.Setter;
 @DiscriminatorValue("Generic")
 public class GenericFile extends AbstractFile{
 
-    public GenericFile(FileMetaData fileMetaData) {
+    protected GenericFile(){}
+
+    public GenericFile(String fileMetaData) {
         super(fileMetaData);
     }
 

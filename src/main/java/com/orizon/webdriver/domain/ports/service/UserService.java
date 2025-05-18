@@ -10,5 +10,4 @@ public interface UserService {
     void save(AbstractUser user);
     void delete(Long id);
     void update(AbstractUser user);
-    void comment(AbstractUser user, AbstractFile file, Comment comment);
 }

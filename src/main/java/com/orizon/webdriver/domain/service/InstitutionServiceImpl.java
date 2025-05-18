@@ -2,7 +2,7 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
 import com.orizon.webdriver.domain.model.Institution;
-import com.orizon.webdriver.domain.ports.repository.InstitutionRepository;
+import com.orizon.webdriver.infra.repositories.InstitutionRepository;
 import com.orizon.webdriver.domain.ports.service.InstitutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

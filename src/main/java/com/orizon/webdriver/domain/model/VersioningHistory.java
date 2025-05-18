@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -26,11 +28,11 @@ public class VersioningHistory {
     @Column(name = "creation_date")
     private Instant creationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "editor_id")
     private AbstractUser editor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id")
     private AbstractFile file;
 
@@ -45,6 +47,28 @@ public class VersioningHistory {
         }
         this.commitMessage = commit;
         this.creationDate = Instant.now();
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+
+        return String.format(
+                """
+                🔄 Versão #%d
+                📅 Data: %s
+                👤 Editor: %s
+                📄 Arquivo: %s
+                💬 Commit: %s
+                """,
+                id,
+                dateFormatter.format(creationDate),
+                editor != null ? editor.getUserLogin() : "N/A",
+                file != null ? file.getFileName() : "N/A",
+                commitMessage.length() > 100 ?
+                        commitMessage.substring(0, 100) + "..." : commitMessage
+        );
     }
 
 }

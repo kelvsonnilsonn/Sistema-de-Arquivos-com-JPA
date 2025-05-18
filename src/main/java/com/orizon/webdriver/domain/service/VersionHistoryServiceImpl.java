@@ -2,7 +2,7 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.VersionInexistentException;
 import com.orizon.webdriver.domain.model.VersioningHistory;
-import com.orizon.webdriver.domain.ports.repository.VersioningHistoryRepository;
+import com.orizon.webdriver.infra.repositories.VersioningHistoryRepository;
 import com.orizon.webdriver.domain.ports.service.VersionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

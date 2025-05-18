@@ -11,9 +11,7 @@ import lombok.Setter;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -22,7 +20,7 @@ import java.util.Set;
 @Table(name = "comments")
 public final class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "body")
@@ -49,17 +47,29 @@ public final class Comment {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
                 .withZone(ZoneId.systemDefault());
-        String formattedTime = formatter.format(time);
+        String formattedTime = time != null ? formatter.format(time) : "Data indefinida";
+
+        String authorInfo = (author != null)
+                ? String.format("%s (ID: %d)", author.getUserLogin(), author.getId())
+                : "Autor desconhecido";
+
+        String fileInfo = (file != null)
+                ? String.format("%s (ID: %d)", file.getFileName(), file.getId())
+                : "Arquivo não vinculado";
 
         return String.format(
                 """
-                        ➤ Comentário #%d
-                          Data: %s
-                          Texto: "%s"
-                        """,
+                💬 Comentário #%d
+                📅 Data: %s
+                📝 Texto: "%s"
+                🧑 Autor: %s
+                📂 Arquivo: %s
+                """,
                 id,
                 formattedTime,
-                body
+                body,
+                authorInfo,
+                fileInfo
         );
     }
 }

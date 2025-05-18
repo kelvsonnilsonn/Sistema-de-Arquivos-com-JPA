@@ -4,7 +4,7 @@ import com.orizon.webdriver.domain.exceptions.UserInexistentException;
 import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
-import com.orizon.webdriver.domain.ports.repository.UserRepository;
+import com.orizon.webdriver.infra.repositories.UserRepository;
 import com.orizon.webdriver.domain.ports.service.CommentService;
 import com.orizon.webdriver.domain.ports.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,6 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(UserRepository userDAO, CommentService commentDAO){
         this.userDAO = userDAO;
         this.commentDAO = commentDAO;
-    }
-
-    @Override
-    public void comment(AbstractUser user, AbstractFile file, Comment comment){
-        comment.setAuthor(user);
-        comment.setFile(file);
-        file.comment(comment);
-        commentDAO.save(comment);
     }
 
     @Override
