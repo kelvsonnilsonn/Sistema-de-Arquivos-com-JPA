@@ -6,12 +6,14 @@ import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Plan;
 import com.orizon.webdriver.infra.repositories.PlanRepository;
 import com.orizon.webdriver.domain.ports.service.PlanService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@Transactional
 public class PlanServiceImpl implements PlanService {
 
     private final PlanRepository planDAO;

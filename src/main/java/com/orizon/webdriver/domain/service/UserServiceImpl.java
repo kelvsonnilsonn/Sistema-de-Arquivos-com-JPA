@@ -7,10 +7,12 @@ import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.infra.repositories.UserRepository;
 import com.orizon.webdriver.domain.ports.service.CommentService;
 import com.orizon.webdriver.domain.ports.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userDAO;
