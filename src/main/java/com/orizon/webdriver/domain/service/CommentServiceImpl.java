@@ -44,9 +44,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
-        AbstractUser user = findOne(id).getAuthor();
-        AbstractFile file = findOne(id).getFile();
         Comment comment = findOne(id);
+        AbstractUser user = comment.getAuthor();
+        AbstractFile file = comment.getFile();
         if(user.removeComment(comment) && file.removeComment(comment)){
             commentDAO.deleteById(id);
         }
