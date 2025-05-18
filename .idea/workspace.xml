@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/FileOperationsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/repositories/FileOperationsRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
