@@ -102,8 +102,13 @@ public abstract class AbstractUser {
         return false;
     }
 
-    public void addFile(AbstractFile file){
+    public boolean addFile(AbstractFile file){
         Objects.requireNonNull(file, () -> {throw new ENFieldException();});
+        if(this.files.add(file)){
+            file.setUser(this);
+            return true;
+        }
+        return false;
     }
 
     public String getUserLogin() { return this.userAccess.getLogin(); }

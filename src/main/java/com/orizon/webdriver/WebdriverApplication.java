@@ -38,14 +38,12 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-			System.out.println(userService.findOne(1L));
-			System.out.println(fileService.findOne(1L));
+			AbstractUser user = userService.findOne(1L);
+			System.out.println(user);
 
-//			AbstractUser user = new User("Kelvson", "Kelvsonnilson01@gmail.com", "1234");
-//			AbstractFile file = new GenericFile("meu arquivo1");
-//			userService.save(user);
-//			fileService.save(file);
-//			commentService.create("Que alegria! Esse é o primeiro comentario que faço num arquivo meu!", user, file);
+//			fileService.create(user, "meu arquivo2", AbstractFile.FileType.VIDEO);
+//			System.out.println(user);
+//			System.out.println(user.getFiles());
 		};
 	}
 }
