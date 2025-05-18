@@ -42,7 +42,7 @@ public abstract class AbstractUser {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
@@ -82,6 +82,10 @@ public abstract class AbstractUser {
         }
     }
 
+    /*
+     *   Métodos para adição e remoção de comentários ↓
+     */
+
     public boolean addComment(Comment comment) {
         Objects.requireNonNull(comment, "Comentário não pode ser nulo");
 
@@ -102,6 +106,14 @@ public abstract class AbstractUser {
         return false;
     }
 
+    /*
+     *   Métodos para adição e remoção de comentários ↑
+     */
+
+    /*
+     *   Métodos para adição e remoção de arquivos ↓
+     */
+
     public boolean addFile(AbstractFile file){
         Objects.requireNonNull(file, () -> {throw new ENFieldException();});
         if(this.files.add(file)){
@@ -110,6 +122,19 @@ public abstract class AbstractUser {
         }
         return false;
     }
+
+    public boolean removeFile(AbstractFile file){
+        Objects.requireNonNull(file, () -> {throw new ENFieldException();});
+        if(this.files.remove(file)){
+            file.setUser(null);
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     *   Métodos para adição e remoção de arquivos ↑
+     */
 
     public String getUserLogin() { return this.userAccess.getLogin(); }
 
@@ -141,7 +166,7 @@ public abstract class AbstractUser {
                 files.size(),
                 files.isEmpty() ? "  Nenhum arquivo vinculado" :
                         files.stream()
-                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")")
+                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")" + "| ID: " + f.getId())
                                 .collect(Collectors.joining("\n")),
 
                 // Seção de Solicitações de Suporte

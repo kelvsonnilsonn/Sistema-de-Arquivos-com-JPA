@@ -32,6 +32,7 @@ public class WebdriverApplication {
 	}
 
 	@Bean
+	@Transactional
 	public CommandLineRunner run(CommentService commentService, FileOperationService fileOperationService, FileService fileService,
 								 InstitutionService institutionService, PlanService planService, SupportService supportService,
 								 UserService userService, VersionHistoryService versionHistoryService) {
@@ -40,6 +41,7 @@ public class WebdriverApplication {
 
 			AbstractUser user = userService.findOne(1L);
 			System.out.println(user);
+
 
 //			fileService.create(user, "meu arquivo2", AbstractFile.FileType.VIDEO);
 //			System.out.println(user);

@@ -4,6 +4,7 @@ import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.infra.repositories.InstitutionRepository;
 import com.orizon.webdriver.domain.ports.service.InstitutionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

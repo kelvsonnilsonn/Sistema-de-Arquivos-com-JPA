@@ -8,6 +8,7 @@ import com.orizon.webdriver.domain.model.file.VideoFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.ports.service.FileService;
 import com.orizon.webdriver.infra.repositories.FileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 @Service
+@Transactional
 public class FileServiceImpl implements FileService {
 
     private final FileRepository fileDAO;
@@ -57,7 +59,11 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void delete(Long id) {
-        fileDAO.deleteById(id);
+        AbstractFile file = findOne(id);
+        AbstractUser user = file.getUser();
+        if(user.removeFile(file)){
+            fileDAO.deleteById(id);
+        }
     }
 
     @Override
