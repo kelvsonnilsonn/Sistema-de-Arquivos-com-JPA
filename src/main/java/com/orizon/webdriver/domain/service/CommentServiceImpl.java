@@ -44,7 +44,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
-        commentDAO.deleteById(id);
+        AbstractUser user = commentDAO.findById(id).orElseThrow(CommentInexistentException::new).getAuthor();
+        AbstractFile file = commentDAO.findById(id).orElseThrow(CommentInexistentException::new).getFile();
+        Comment comment = commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
+        if(user.removeComment(comment) && file.removeComment(comment)){
+            commentDAO.deleteById(id);
+        }
     }
 
     @Override

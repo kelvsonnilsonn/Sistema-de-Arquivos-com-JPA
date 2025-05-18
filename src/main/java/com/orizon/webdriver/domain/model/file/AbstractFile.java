@@ -74,6 +74,15 @@ public abstract class AbstractFile{
         return false;
     }
 
+    public boolean removeComment(Comment comment){
+        Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
+        if(this.fileComments.remove(comment)){
+            comment.setFile(null);
+            return true;
+        }
+        return false;
+    }
+
     public void addOperation(AbstractUser user, String operationType) {
         this.operations.add(new FileOperation(this, user, operationType));
     }

@@ -38,12 +38,8 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-			System.out.println("\nLISTA DE USERS:");
-			userService.listAll();
-			System.out.println("\nLISTA DE ARQUIVOS:");
-			fileService.listAll();
-			System.out.println("\nLISTA DE COMENTARIOS:");
-			commentService.listAll();
+			System.out.println(userService.findOne(1L));
+			System.out.println(fileService.findOne(1L));
 
 //			AbstractUser user = new User("Kelvson", "Kelvsonnilson01@gmail.com", "1234");
 //			AbstractFile file = new GenericFile("meu arquivo1");

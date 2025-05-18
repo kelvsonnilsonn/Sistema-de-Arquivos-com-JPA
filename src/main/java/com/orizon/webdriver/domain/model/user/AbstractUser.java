@@ -92,6 +92,16 @@ public abstract class AbstractUser {
         return false;
     }
 
+    public boolean removeComment(Comment comment) {
+        Objects.requireNonNull(comment, "Comentário não pode ser nulo");
+
+        if (this.comments.remove(comment)) {
+            comment.setAuthor(null);
+            return true;
+        }
+        return false;
+    }
+
     public void addFile(AbstractFile file){
         Objects.requireNonNull(file, () -> {throw new ENFieldException();});
     }
