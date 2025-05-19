@@ -41,18 +41,10 @@ public class WebdriverApplication {
 								 UserService userService, VersionHistoryService versionHistoryService) {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
-
-			AbstractUser user = userService.findOne(1L);
-			System.out.println(user);
-
-			System.out.println(fileService.findOne(5L));
-			fileOperationService.listAll();
-//			fileService.update(5L, "nome alterado", FileOperation.OperationType.EDIT);
-//			fileService.create(user, "meu arquivo2", AbstractFile.FileType.VIDEO);
-
-
-//			System.out.println(user);
-//			System.out.println(user.getFiles());
+//			institutionService.update(1L, null, null);
+			institutionService.delete(1L);
+			institutionService.listAll();
+//			institutionService.save("HBO", "Streaming");
 		};
 	}
 

@@ -5,7 +5,7 @@ import com.orizon.webdriver.domain.model.Institution;
 public interface InstitutionService {
     void listAll();
     Institution findOne(Long id);
-    void save(Institution file);
+    void create(String nome, String socialCause);
     void delete(Long id);
-    void update(Institution institution);
+    void update(Long id, String name, String socialCause);
 }
