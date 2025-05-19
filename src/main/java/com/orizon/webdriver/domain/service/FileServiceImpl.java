@@ -2,11 +2,14 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InexistentFileException;
+import com.orizon.webdriver.domain.model.FileOperation;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
+import com.orizon.webdriver.domain.model.file.FileMetaData;
 import com.orizon.webdriver.domain.model.file.GenericFile;
 import com.orizon.webdriver.domain.model.file.VideoFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.ports.service.FileService;
+import com.orizon.webdriver.infra.repositories.FileOperationsRepository;
 import com.orizon.webdriver.infra.repositories.FileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +24,14 @@ import java.util.Scanner;
 public class FileServiceImpl implements FileService {
 
     private final FileRepository fileDAO;
+    private final FileOperationsRepository fileOperationsDAO;
     private final Scanner scan;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileDAO, Scanner scan){
+    public FileServiceImpl(FileRepository fileDAO,  FileOperationsRepository fileOperationsDAO, Scanner scan){
         this.fileDAO = fileDAO;
         this.scan = scan;
+        this.fileOperationsDAO = fileOperationsDAO;
     }
 
     @Override
@@ -67,7 +72,15 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void update(AbstractFile file) {
-        fileDAO.save(file);
+    public void update(Long id, String name, FileOperation.OperationType type) {
+        AbstractFile file = findOne(id);
+        AbstractUser user = file.getUser();
+        FileOperation operation = new FileOperation(file, user, type);
+
+        if(user.addFileOperation(operation) && file.addOperation(operation)){
+            file.setFileMetaData(new FileMetaData(name));
+            fileOperationsDAO.save(operation);
+            fileDAO.save(file);
+        }
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Getter
@@ -41,15 +42,52 @@ public class FileOperation {
     private LocalDateTime operationDate;
 
     @Column(name = "operation_type", nullable = false)
-    private String operationType;
+    private OperationType operationType;
 
-    public FileOperation(AbstractFile file, AbstractUser user, String operationType) {
+    public FileOperation(AbstractFile file, AbstractUser user, OperationType operationType) {
         this.file = Objects.requireNonNull(file);
         this.user = Objects.requireNonNull(user);
+        this.operationType = operationType;
         this.operationDate = LocalDateTime.now();
     }
 
-    public enum OperationType{
-        EDIT;
+    public enum OperationType {
+        EDIT("Edição"),
+        VIEW("Visualização"),
+        DOWNLOAD("Download"),
+        SHARE("Compartilhamento");
+
+        private final String description;
+
+        OperationType(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        return String.format(
+                """
+                🔄 Operação em Arquivo
+                🆔 ID: %d
+                📄 Arquivo: %s (ID: %s)
+                👤 Usuário: %s (ID: %s)
+                🏷️ Tipo: %s
+                ⏰ Data/Hora: %s
+                """,
+                id,
+                file != null ? file.getFileName() : "N/A",
+                file != null ? file.getId() : "N/A",
+                user != null ? user.getUserLogin() : "N/A",
+                user != null ? user.getId() : "N/A",
+                operationType.name(),
+                operationDate.format(dateFormatter)
+        );
     }
 }

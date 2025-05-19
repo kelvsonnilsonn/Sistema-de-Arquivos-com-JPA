@@ -83,8 +83,13 @@ public abstract class AbstractFile{
         return false;
     }
 
-    public void addOperation(AbstractUser user, String operationType) {
-        this.operations.add(new FileOperation(this, user, operationType));
+    public boolean addOperation(FileOperation operation) {
+        Objects.requireNonNull(operation, () -> {throw new ENFieldException();});
+        if(this.operations.add(operation)){
+            operation.setFile(this);
+            return true;
+        }
+        return false;
     }
 
 //    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }

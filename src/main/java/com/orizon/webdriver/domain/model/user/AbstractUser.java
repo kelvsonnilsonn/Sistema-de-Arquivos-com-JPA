@@ -136,6 +136,17 @@ public abstract class AbstractUser {
      *   Métodos para adição e remoção de arquivos ↑
      */
 
+    public boolean addFileOperation(FileOperation operation){
+
+        Objects.requireNonNull(operation, () -> {throw new ENFieldException();});
+        if(this.fileOperations.add(operation)){
+            operation.setUser(this);
+            return true;
+        }
+        return false;
+
+    }
+
     public String getUserLogin() { return this.userAccess.getLogin(); }
 
     @Override
