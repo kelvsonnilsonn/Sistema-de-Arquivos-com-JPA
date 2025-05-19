@@ -7,7 +7,10 @@ import com.orizon.webdriver.domain.model.user.AbstractUser;
 public interface UserService {
     void listAll();
     AbstractUser findOne(Long id);
-    void save(AbstractUser user);
+    void create(String name, String email, String password, String type);
     void delete(Long id);
     void update(AbstractUser user);
+    void updateUserName(Long id, String name);
+    void updateUserEmail(Long id, String email);
+    void updateUserPassword(Long id, String password);
 }

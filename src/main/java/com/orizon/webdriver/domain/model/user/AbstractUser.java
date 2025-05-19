@@ -54,8 +54,6 @@ public abstract class AbstractUser {
 
     protected AbstractUser(){}
 
-    public Set<AbstractFile> getUserFiles() { return new HashSet<>(files); }
-
     /*
      *  Construtor padrão
      *
@@ -177,11 +175,15 @@ public abstract class AbstractUser {
                 🏢 Instituição: %s
                 📅 Criado em: %s
                 
-                📂 Arquivos (%d): %s
-                🆘 Solicitações de Suporte (%d): %s
-                💬 Comentários (%d): %s
-                ⚙️ Operações de Arquivo: (%d): %s
-                """,
+                📂 Arquivos (%d):
+               %s
+                🆘 Solicitações de Suporte (%d):
+               %s
+                💬 Comentários (%d):
+               %s
+                ⚙️ Operações de Arquivo: (%d): 
+               %s
+               """,
                 userAccess.getLogin(),
                 userAccess.getEmail(),
                 id,

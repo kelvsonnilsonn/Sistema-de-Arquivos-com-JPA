@@ -25,8 +25,8 @@ public class Administrator extends AbstractUser {
     @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Support> resolvedSupports = new HashSet<>();
 
-    public Administrator(String login, String email, String password) {
-        super(login, email, password);
+    public Administrator(String name, String email, String password) {
+        super(name, email, password);
     }
 
     public void checkSupportRequest(Support supportRequest){
@@ -46,6 +46,6 @@ public class Administrator extends AbstractUser {
             throw new InstitutionLimitException();
         }
         this.setInstitution(institution);
-        institution.addAdmin(this);
+        institution.addConsumer(this);
     }
 }

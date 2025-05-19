@@ -51,17 +51,29 @@ public class Institution {
         this.socialCause = Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
     }
 
-    public void addUser(User user){
-        if(users.add(user)){
-            user.setInstitution(this);
+    /*
+     *   Métodos para adição e remoção de usuários ↓
+     */
+
+    public void addConsumer(AbstractUser user){
+        if(user instanceof User){
+            users.add(((User) user));
+        } else {
+            admins.add(((Administrator) user));
         }
     }
 
-    public void addAdmin(Administrator admin){
-        if(admins.add(admin)){
-            admin.setInstitution(this);
+    public void removeConsumer(AbstractUser user){
+        if(user instanceof User){
+            users.remove(((User) user));
+        } else {
+            admins.remove(((Administrator) user));
         }
     }
+
+    /*
+     *   Métodos para adição e remoção usuários  ↑
+     */
 
     public void setZipCode(String zipcode){ this.address.setZipCode(zipcode);}
 

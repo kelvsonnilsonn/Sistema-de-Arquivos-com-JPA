@@ -15,8 +15,8 @@ import java.util.Objects;
 @DiscriminatorValue("USER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class User extends AbstractUser {
-    public User(String login, String email, String senha){
-        super(login, email, senha);
+    public User(String name, String email, String password){
+        super(name, email, password);
     }
 
     public void joinInstitution(Institution institution){
@@ -25,6 +25,6 @@ public final class User extends AbstractUser {
             throw new InstitutionLimitException();
         }
         this.setInstitution(institution);
-        institution.addUser(this);
+        institution.addConsumer(this);
     }
 }

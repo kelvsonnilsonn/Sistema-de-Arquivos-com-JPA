@@ -34,4 +34,14 @@ public class UserAccess{
     private void setEmail(String email) { this.email = Email.of(email); }
 
     public String getEmail() { return this.email.getEmail(); }
+    public String getPassword()  { return this.password.getPass(); }
+
+    @Override
+    public String toString() {
+        return "UserAccess{" +
+                "login='" + login + '\'' +
+                ", password=" + password.getPass() +
+                ", email=" + email.getEmail() +
+                '}';
+    }
 }
