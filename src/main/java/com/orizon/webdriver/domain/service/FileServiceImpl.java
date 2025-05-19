@@ -3,6 +3,7 @@ package com.orizon.webdriver.domain.service;
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InexistentFileException;
 import com.orizon.webdriver.domain.model.FileOperation;
+import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.file.FileMetaData;
 import com.orizon.webdriver.domain.model.file.GenericFile;
@@ -11,6 +12,7 @@ import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.ports.service.FileService;
 import com.orizon.webdriver.infra.repositories.FileOperationsRepository;
 import com.orizon.webdriver.infra.repositories.FileRepository;
+import com.orizon.webdriver.infra.repositories.VersioningHistoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +27,16 @@ public class FileServiceImpl implements FileService {
 
     private final FileRepository fileDAO;
     private final FileOperationsRepository fileOperationsDAO;
+    private final VersioningHistoryRepository versioningHistoryDAO;
     private final Scanner scan;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileDAO,  FileOperationsRepository fileOperationsDAO, Scanner scan){
+    public FileServiceImpl(FileRepository fileDAO,  FileOperationsRepository fileOperationsDAO,
+                           VersioningHistoryRepository versioningHistoryDAO, Scanner scan){
         this.fileDAO = fileDAO;
         this.scan = scan;
         this.fileOperationsDAO = fileOperationsDAO;
+        this.versioningHistoryDAO = versioningHistoryDAO;
     }
 
     @Override
@@ -79,6 +84,8 @@ public class FileServiceImpl implements FileService {
 
         if(user.addFileOperation(operation) && file.addOperation(operation)){
             file.setFileMetaData(new FileMetaData(name));
+            String versionCommit = type.getDescription() + "o arquivo" + file.getFileName();
+            versioningHistoryDAO.save(new VersioningHistory(user, file, versionCommit));
             fileOperationsDAO.save(operation);
             fileDAO.save(file);
         }

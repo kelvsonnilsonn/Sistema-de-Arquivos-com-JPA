@@ -80,8 +80,7 @@ public class Support {
                 """
                 🆔 ID do Suporte: %d
                 ✍️ Autor: %s (ID: %d)
-                📝 Mensagem:
-                   "%s"
+                📝 Mensagem: "%s"
                 🔄 Status: %s
                 """,
                 id,

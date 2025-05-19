@@ -35,7 +35,7 @@ public abstract class AbstractFile{
     private Set<VersioningHistory> versions = new HashSet<>();
 
     @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<Support> supportRequests;
+    private Set<Support> supportRequests = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -44,8 +44,10 @@ public abstract class AbstractFile{
     @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<FileOperation> operations = new HashSet<>();
 
-    @Autowired
-    private List<Permission> filePermissions;
+    @Getter
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Permission> filePermissions = new HashSet<>();
 
     @Embedded
     private FileMetaData fileMetaData;
@@ -65,6 +67,11 @@ public abstract class AbstractFile{
 
     public String getFileName(){ return this.fileMetaData.getFileName(); }
 
+
+    /*
+     *   Métodos para adição e remoção de comentários no arquivo ↓
+     */
+
     public boolean addComment(Comment comment) {
         Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
         if(this.fileComments.add(comment)){
@@ -83,6 +90,36 @@ public abstract class AbstractFile{
         return false;
     }
 
+    /*
+     *   Métodos para adição e remoção de comentários no arquivo  ↑
+     */
+
+    /*
+     *   Métodos para adição e remoção de suportes no arquivo ↓
+     */
+
+    public boolean addSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.add(support)){
+            support.setFile(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.remove(support)){
+            support.setFile(null);
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     *   Métodos para adição e remoção de suportes no arquivo  ↑
+     */
+
     public boolean addOperation(FileOperation operation) {
         Objects.requireNonNull(operation, () -> {throw new ENFieldException();});
         if(this.operations.add(operation)){
@@ -92,8 +129,6 @@ public abstract class AbstractFile{
         return false;
     }
 
-//    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }
-//
 //    public void getCommentsInFile(){
 //
 //        if(!fileComments.isEmpty()){
@@ -106,11 +141,9 @@ public abstract class AbstractFile{
 //        }
 //    }
 //
-//    protected void addPermission(Permission permission) {
-//        filePermissions.add(permission);
-//        System.out.println(fileComments);
-//
-//    }
+    public void addPermission(Permission permission) {
+        filePermissions.add(permission);
+    }
 //
 //    public String getFileName() { return this.fileMetaData.getFileName(); }
 //    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
@@ -171,11 +204,11 @@ public abstract class AbstractFile{
                 fileComments.size(),
                 fileComments.isEmpty() ? " Nenhum" :
                         fileComments.stream()
-                                .map(c -> "\n   - [" + c.getId() + "] " +
+                                .map(c -> "\n   - " +
                                         (c.getBody() != null ?
                                                 (c.getBody().length() > 25 ?
-                                                        c.getBody().substring(0, 25) + "..." :
-                                                        c.getBody()) : "Sem conteúdo") +
+                                                        c.getBody().substring(0, 25) + "..." + " [ID: " + c.getId() + "] ":
+                                                        c.getBody() + " [ID: " + c.getId() + "] ") : "Sem conteúdo") +
                                         " (por " + (c.getAuthor() != null ? c.getAuthor().getUserLogin() : "N/A") + ")")
                                 .collect(Collectors.joining()),
 
@@ -196,9 +229,9 @@ public abstract class AbstractFile{
                 supportRequests != null ? supportRequests.size() : 0,
                 supportRequests == null || supportRequests.isEmpty() ? " Nenhuma" :
                         supportRequests.stream()
-                                .map(s -> "\n   - [" + s.getId() + "] " +
+                                .map(s -> "\n   - " +
                                         (s.getTitle() != null ? s.getTitle() : "Sem título") +
-                                        " (" + (s.isResolved() ? "✅" : "🟡"))
+                                        " (" + (s.isResolved() ? "✅" : "🟡" + ")" + " [ID: " + s.getId() + "] "))
                                 .collect(Collectors.joining()),
 
                 // Operações
@@ -208,7 +241,7 @@ public abstract class AbstractFile{
                                 .sorted(Comparator.comparing(FileOperation::getOperationDate).reversed())
                                 .map(op -> "\n   - " + op.getOperationType() +
                                         " por " + (op.getUser() != null ? op.getUser().getUserLogin() : "N/A") +
-                                        " em " + dateTimeFormatter.format(op.getOperationDate()))
+                                        " em " + dateTimeFormatter.format(op.getOperationDate()) + " [ID: " + op.getId() + "] ")
                                 .collect(Collectors.joining())
         );
     }

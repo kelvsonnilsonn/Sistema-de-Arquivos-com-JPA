@@ -33,13 +33,13 @@ public abstract class AbstractUser {
     @Embedded
     private UserAccess userAccess;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<AbstractFile> files = new HashSet<>();
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Support> supportRequests = new HashSet<>();
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -72,15 +72,30 @@ public abstract class AbstractUser {
     }
 
     /*
-    *   Permitido usar o bidirecional em AbstractUser graças ao POLIMORFISMO.
-    */
+     *   Métodos para adição e remoção de suportes no arquivo ↓
+     */
 
-    public void addSupportRequest(Support supportRequest){
-        Objects.requireNonNull(supportRequest, () -> {throw new ENFieldException();});
-        if(supportRequests.add(supportRequest)){
-            supportRequest.setAuthor(this);
+    public boolean addSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.add(support)){
+            support.setAuthor(this);
+            return true;
         }
+        return false;
     }
+
+    public boolean removeSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.remove(support)){
+            support.setAuthor(null);
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     *   Métodos para adição e remoção de suportes no arquivo  ↑
+     */
 
     /*
      *   Métodos para adição e remoção de comentários ↓
@@ -177,27 +192,27 @@ public abstract class AbstractUser {
                 files.size(),
                 files.isEmpty() ? "  Nenhum arquivo vinculado" :
                         files.stream()
-                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")" + "| ID: " + f.getId())
+                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")" + " [ID: " + f.getId() + "]")
                                 .collect(Collectors.joining("\n")),
 
                 // Seção de Solicitações de Suporte
                 supportRequests.size(),
                 supportRequests.isEmpty() ? "  Nenhuma solicitação" :
                         supportRequests.stream()
-                                .map(s -> "  - [" + s.getId() + "] " +
+                                .map(s -> "  - " +
                                         (s.getTitle() != null ? s.getTitle() : "Sem título") +
-                                        " - Status: " + (s.isResolved() ? "✅ Resolvido" : "🟡 Pendente"))
+                                        " - Status: " + (s.isResolved() ? "✅ Resolvido" : "🟡 Pendente") + " [ID: " + s.getId() + "]")
                                 .collect(Collectors.joining("\n")),
 
                 // Seção de Comentários
                 comments.size(),
                 comments.isEmpty() ? "  Nenhum comentário" :
                         comments.stream()
-                                .map(c -> "  - [" + c.getId() + "] " +
+                                .map(c -> "  - " +
                                         (c.getBody() != null ?
                                                 (c.getBody().length() > 30 ?
-                                                        c.getBody().substring(0, 30) + "..." :
-                                                        c.getBody()) :
+                                                        c.getBody().substring(0, 30) + "..." + " [ID: " + c.getId() + "] " :
+                                                        c.getBody() + " [ID: " + c.getId() + "] ") :
                                                 "Sem conteúdo"))
                                 .collect(Collectors.joining("\n")),
 
@@ -205,8 +220,8 @@ public abstract class AbstractUser {
                 fileOperations.size(),
                 fileOperations.isEmpty() ? "  Nenhuma operação" :
                         fileOperations.stream()
-                                .map(op -> "  - [" + op.getId() + "] " + op.getOperationType() +
-                                        " em " + dateFormatter.format(op.getOperationDate()))
+                                .map(op -> "  - " + op.getOperationType() +
+                                        " em " + dateFormatter.format(op.getOperationDate()) + " [ID: " + op.getId() + "]")
                                 .collect(Collectors.joining("\n"))
         );
     }
