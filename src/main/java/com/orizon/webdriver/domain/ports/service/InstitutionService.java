@@ -7,5 +7,7 @@ public interface InstitutionService {
     Institution findOne(Long id);
     void create(String nome, String socialCause);
     void delete(Long id);
-    void update(Long id, String name, String socialCause);
+    void update(Institution institution);
+    void updateInstitutionName(Long id, String name);
+    void updateInstitutionSocialCause(Long id, String socialCause);
 }

@@ -3,6 +3,7 @@ package com.orizon.webdriver.domain.service;
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
 import com.orizon.webdriver.domain.model.Institution;
+import com.orizon.webdriver.domain.model.Plan;
 import com.orizon.webdriver.infra.repositories.InstitutionRepository;
 import com.orizon.webdriver.domain.ports.service.InstitutionService;
 import jakarta.transaction.Transactional;
@@ -43,25 +44,33 @@ public class InstitutionServiceImpl implements InstitutionService {
     @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
-        if(findOne(id) != null){
-            institutionDAO.deleteById(id);
-        } else {
-            throw new InvalidInstitutionException();
-        }
+        Institution institution = findOne(id);
+        institution.getUsers().forEach(u -> u.setInstitution(null));
+        institutionDAO.deleteById(id);
     }
 
     @Override
-    public void update(Long id, String name, String socialCause) {
-        Institution institution = findOne(id);
-        if(name == null && socialCause == null){
-            return;
-        }
-        if(name == null && !socialCause.isBlank()){
-            institution.setSocialCause(socialCause);
-        }
-        if (socialCause == null && !name.isBlank()){
-            institution.setName(name);
-        }
+    public void update(Institution institution) {
+        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
         institutionDAO.save(institution);
     }
+
+    @Override
+    public void updateInstitutionName(Long id, String name) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
+        Institution institution = findOne(id);
+        institution.setName(name);
+        update(institution);
+    }
+
+    @Override
+    public void updateInstitutionSocialCause(Long id, String socialCause) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
+        Institution institution = findOne(id);
+        institution.setSocialCause(socialCause);
+        update(institution);
+    }
+
 }

@@ -41,10 +41,13 @@ public class WebdriverApplication {
 								 UserService userService, VersionHistoryService versionHistoryService) {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
-//			institutionService.update(1L, null, null);
-			institutionService.delete(1L);
+////			planService.create("Mojang", 10);
+//			Plan plan = planService.findOne(1L);
+//			Institution institution = institutionService.findOne(2L);
+//			planService.assignPlanToInstitution(plan,institution);
+			planService.delete(1L);
+			planService.listAll();
 			institutionService.listAll();
-//			institutionService.save("HBO", "Streaming");
 		};
 	}
 

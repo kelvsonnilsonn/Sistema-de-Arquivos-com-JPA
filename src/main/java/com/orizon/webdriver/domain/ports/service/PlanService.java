@@ -8,11 +8,12 @@ import java.time.Duration;
 public interface PlanService {
     void listAll();
     Plan findOne(Long id);
-    void save(Plan plan);
+    void create(String name, int userspace);
     void delete(Long id);
     void update(Plan plan);
+    void updatePlanName(Long id, String name);
     void assignPlanToInstitution(Plan plan, Institution institution);
-    void updatePlanDuration(Institution institution, Long newDuration);
-    void updatePlanUserSpace(Institution institution, String newUserSpace);
+    void updatePlanDuration(Long id, Long newDuration);
+    void updatePlanUserSpace(Long id, int newUserSpace);
     Plan getInstitutionPlan(Institution institution);
 }

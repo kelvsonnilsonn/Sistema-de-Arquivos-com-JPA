@@ -39,6 +39,7 @@ public class Institution {
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
+    @Getter
     @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<User> users = new HashSet<>();
 
@@ -60,10 +61,6 @@ public class Institution {
         if(admins.add(admin)){
             admin.setInstitution(this);
         }
-    }
-
-    public void getUsers(){
-        users.forEach(System.out::println);
     }
 
     public void setZipCode(String zipcode){ this.address.setZipCode(zipcode);}
