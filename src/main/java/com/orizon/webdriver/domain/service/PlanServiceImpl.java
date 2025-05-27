@@ -2,86 +2,109 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InvalidPlanException;
+import com.orizon.webdriver.domain.exceptions.PlanLimitExcededException;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Plan;
-import com.orizon.webdriver.domain.ports.repository.PlanRepository;
+import com.orizon.webdriver.infra.persistence.repositories.InstitutionRepository;
+import com.orizon.webdriver.infra.persistence.repositories.PlanRepository;
 import com.orizon.webdriver.domain.ports.service.PlanService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.util.List;
+import java.time.Instant;
 import java.util.Objects;
 
 @Service
+@Transactional
 public class PlanServiceImpl implements PlanService {
 
-    private final PlanRepository planRepository;
+    private final PlanRepository planDAO;
+    private final InstitutionRepository institutionDAO;
 
     @Autowired
-    public PlanServiceImpl(PlanRepository planRepository) {
-        this.planRepository = planRepository;
+    public PlanServiceImpl(PlanRepository planDAO, InstitutionRepository institutionDAO) {
+        this.planDAO = planDAO;
+        this.institutionDAO = institutionDAO;
     }
 
     @Override
-    public void deletePlan(long id) {
-        Plan plano = planRepository.getAllPlans().stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new InvalidPlanException("Plano não encontrado"));
-
-        planRepository.remove(plano);
+    public void listAll() {
+        planDAO.findAll().forEach(System.out::println);
     }
 
     @Override
-    public Plan createPlan(String name, String userSpace) {
+    public Plan findOne(Long id) {
+        return planDAO.findById(id).orElseThrow(InvalidPlanException::new);
+    }
+
+    @Override
+    public void create(String name, int userspace) {
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
-        Objects.requireNonNull(userSpace, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(userspace, () -> {throw new ENFieldException();});
+        Plan plan = new Plan(name, userspace);
+        planDAO.save(plan);
+    }
 
-        Plan plan = new Plan(name, userSpace);
-        planRepository.add(plan);
-        return plan;
+    @Override
+    public void delete(Long id) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Plan plan = findOne(id);
+        plan.getInstitutions().forEach(i -> i.setPlan(null));
+        planDAO.deleteById(id);
+    }
+
+    @Override
+    public void update(Plan plan) {
+        Objects.requireNonNull(plan, () -> {throw new ENFieldException();});
+        planDAO.save(plan);
+    }
+
+    @Override
+    public void updatePlanName(Long id, String name) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
+        Plan plan = findOne(id);
+        plan.setName(name);
+        update(plan);
     }
 
     @Override
     public void assignPlanToInstitution(Plan plan, Institution institution) {
         Objects.requireNonNull(plan, () -> {throw new ENFieldException();});
         Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
+        plan.addInstitution(institution);
+        plan.setAcquisitionDate(Instant.now());
+        institution.setPlan(plan);
 
-        institution.setPlano(plan);
+        institutionDAO.save(institution);
+        update(plan);
     }
 
     @Override
-    public void updatePlanDuration(Institution institution, Duration newDuration) {
-        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
+    public void updatePlanDuration(Long id, Long newDuration) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(newDuration, () -> {throw new ENFieldException();});
 
-        if (institution.getPlano() == null) {
-            throw new InvalidPlanException("Instituição não possui um plano associado");
-        }
-
-        institution.getPlano().setDuration(newDuration);
+        Plan plan = findOne(id);
+        plan.setDurationInSeconds(newDuration);
+        update(plan);
     }
 
     @Override
-    public void updatePlanUserSpace(Institution institution, String newUserSpace) {
-        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
+    public void updatePlanUserSpace(Long id, int newUserSpace) {
         Objects.requireNonNull(newUserSpace, () -> {throw new ENFieldException();});
-
-        if (institution.getPlano() == null) {
-            throw new InvalidPlanException("Instituição não possui um plano associado");
+        Plan plan = findOne(id);
+        if(plan.getUserSpace() > newUserSpace){
+            throw new PlanLimitExcededException();
         }
-
-        institution.getPlano().setUserSpace(newUserSpace);
+        plan.setUserSpace(newUserSpace);
+        update(plan);
     }
 
     @Override
     public Plan getInstitutionPlan(Institution institution) {
         Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
-        return institution.getPlano();
-    }
-
-    @Override
-    public List<Plan> getAllAvailablePlans() {
-        return planRepository.getAllPlans();
+        return institution.getPlan();
     }
 }

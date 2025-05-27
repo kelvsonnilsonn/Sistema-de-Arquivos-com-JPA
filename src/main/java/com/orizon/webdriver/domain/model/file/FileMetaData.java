@@ -1,17 +1,20 @@
 package com.orizon.webdriver.domain.model.file;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-
+import java.time.Instant;
 
 @Getter
 @Setter
+@Embeddable
+@NoArgsConstructor
 public class FileMetaData {
     private String fileName;
     private int fileSize;
-    private Date fileReleaseDate;
+    private Instant fileReleaseDate;
     private String fileLocation;
     private String fileUrl;
 

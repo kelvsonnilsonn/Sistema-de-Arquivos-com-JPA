@@ -1,29 +1,18 @@
 package com.orizon.webdriver.domain.model.file;
 
-import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.infrastructure.repository.FileRepositoryImpl;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Setter;
 
 @Setter
-public final class GenericFile extends AbstractFile{
+@Entity
+@DiscriminatorValue("Generic")
+public class GenericFile extends AbstractFile{
 
-    public GenericFile(FileMetaData fileMetaData) {
+    protected GenericFile(){}
+
+    public GenericFile(String fileMetaData) {
         super(fileMetaData);
-    }
-
-    @Override
-    public FileOperations load() {
-        return this;
-    }
-
-    @Override
-    public void save(FileRepositoryImpl fileRepository){
-
-    }
-
-    @Override
-    public void delete(FileRepositoryImpl fileRepository) {
-
     }
 
     @Override

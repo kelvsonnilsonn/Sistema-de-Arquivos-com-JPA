@@ -1,34 +1,25 @@
 package com.orizon.webdriver.domain.model.file;
 
-import com.orizon.webdriver.domain.ports.file.FileOperations;
-import com.orizon.webdriver.infrastructure.repository.FileRepositoryImpl;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;
 
 @Setter
-public final class VideoFile extends AbstractFile{
+@Entity
+@DiscriminatorValue("Video")
+public class VideoFile extends AbstractFile{
 
-    private final Duration duration;
+    private Duration duration;
 
-    public VideoFile(FileMetaData fileMetaData, Duration duration) {
+    protected VideoFile(){}
+
+    public VideoFile(String fileMetaData, Duration duration) {
         super(fileMetaData);
         this.duration = duration;
-    }
-
-    @Override
-    public FileOperations load() {
-        return this;
-    }
-
-    @Override
-    public void save(FileRepositoryImpl fileRepository) {
-
-    }
-
-    @Override
-    public void delete(FileRepositoryImpl fileRepository) {
-
     }
 
     @Override

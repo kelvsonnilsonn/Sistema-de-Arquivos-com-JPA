@@ -1,51 +1,115 @@
 package com.orizon.webdriver.domain.service;
 
-import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
+import com.orizon.webdriver.domain.exceptions.UserInexistentException;
+import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.domain.model.user.Administrator;
+import com.orizon.webdriver.domain.model.user.User;
+import com.orizon.webdriver.domain.valueobjects.UserAccess;
+import com.orizon.webdriver.infra.persistence.repositories.UserRepository;
+import com.orizon.webdriver.domain.ports.service.CommentService;
 import com.orizon.webdriver.domain.ports.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
-    private final FileServiceImpl fileService;
-    private final LogServiceImpl logger;
+    private final UserRepository userDAO;
+    private final CommentService commentDAO;
 
     @Autowired
-    public UserServiceImpl(FileServiceImpl fileService, LogServiceImpl logger){
-        this.fileService = fileService;
-        this.logger = logger;
+    public UserServiceImpl(UserRepository userDAO, CommentService commentDAO){
+        this.userDAO = userDAO;
+        this.commentDAO = commentDAO;
     }
 
     @Override
-    public FileOperations create(String type, AbstractUser user){
-        FileOperations file = fileService.create(type);
-        ((AbstractFile) file).setUser(user);
-        user.addFile(file);
-        logger.log(file, LogServiceImpl.LogType.CREATE);
-        return file;
+    public void listAll() {
+        userDAO.findAll().forEach(System.out::println);
     }
 
     @Override
-    public void delete(FileOperations file, AbstractUser user){
-        fileService.delete(file);
-        user.deleteFile(file);
-        logger.log(file, LogServiceImpl.LogType.DELETE);
+    public AbstractUser findOne(Long id) {
+        return userDAO.findById(id).orElseThrow(UserInexistentException::new);
     }
 
     @Override
-    public void edit(FileOperations file){
-        fileService.update(file);
-        logger.log(file, LogServiceImpl.LogType.UPDATE);
+    public void create(String name, String email, String password, boolean isAdmin) {
+        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(email, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(password, () -> {throw new ENFieldException();});
+        AbstractUser user;
+        if(isAdmin){
+            user = new Administrator(name, email, password);
+        } else {
+            user = new User(name, email, password);
+        }
+        userDAO.save(user);
     }
 
     @Override
-    public void comment(FileOperations file, String comment){
-        fileService.addComment(file, comment);
-        logger.log(new Comment(comment));
+    public void delete(Long id) {
+        AbstractUser user = findOne(id);
+        Institution institution = user.getInstitution();
+        if(institution != null){
+            user.setInstitution(null);
+            institution.removeConsumer(user);
+        }
+        userDAO.deleteById(id);
     }
 
+    @Override
+    public void update(AbstractUser user) {
+        Objects.requireNonNull(user, () -> {throw new ENFieldException();});
+        userDAO.save(user);
+    }
+
+    @Override
+    public void updateUserName(Long id, String name) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
+        if(name.isBlank()){
+            throw new RuntimeException("Problema ao mudar nome.");
+        }
+        AbstractUser user = findOne(id);
+        UserAccess data = user.getUserAccess();
+        String actualEmail = data.getEmail();
+        String actualPassword = data.getPassword();
+        user.setUserAccess(new UserAccess(name, actualEmail, actualPassword));
+        update(user);
+    }
+
+    @Override
+    public void updateUserEmail(Long id, String email) {
+        AbstractUser user = findOne(id);
+        UserAccess data = user.getUserAccess();
+        String name = data.getLogin();
+        String actualPassword = data.getPassword();
+        try {
+            user.setUserAccess(new UserAccess(name, email, actualPassword));
+            update(user);
+        } catch (IllegalArgumentException e){
+            throw new RuntimeException("Problema ao mudar email.");
+        }
+    }
+
+    @Override
+    public void updateUserPassword(Long id, String password) {
+        AbstractUser user = findOne(id);
+        UserAccess data = user.getUserAccess();
+        String actualName = data.getLogin();
+        String actualEmail = data.getEmail();
+        try{
+            user.setUserAccess(new UserAccess(actualName, actualEmail, password));
+            update(user);
+        } catch (IllegalArgumentException e){
+            throw new RuntimeException("Problema ao mudar senha.");
+        }
+    }
 }

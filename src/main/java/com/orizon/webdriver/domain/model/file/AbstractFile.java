@@ -1,69 +1,155 @@
 package com.orizon.webdriver.domain.model.file;
 
 
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
+import com.orizon.webdriver.domain.exceptions.InvalidFileTypeException;
 import com.orizon.webdriver.domain.model.Comment;
-
-import com.orizon.webdriver.domain.ports.file.FileOperations;
+import com.orizon.webdriver.domain.model.FileOperation;
+import com.orizon.webdriver.domain.model.Support;
+import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
+import jakarta.persistence.*;
 import lombok.Getter;
-
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Setter
-public sealed abstract class AbstractFile implements FileOperations permits VideoFile, GenericFile{
+@Getter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "file_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class AbstractFile{
 
-    @Getter
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private List<Comment> fileComments;
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Comment> fileComments = new HashSet<>();
 
-    @Autowired
-    private List<Permission> filePermissions;
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<VersioningHistory> versions = new HashSet<>();
 
-    private final FileMetaData fileMetaData;
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Support> supportRequests = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private AbstractUser user;
 
-    public AbstractFile(FileMetaData fileMetaData){
-        this.fileMetaData = fileMetaData;
-        this.fileComments = new ArrayList<>();
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<FileOperation> operations = new HashSet<>();
+
+    @Getter
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Permission> filePermissions = new HashSet<>();
+
+    @Embedded
+    private FileMetaData fileMetaData;
+
+    /*
+     *  Construtor
+     */
+    protected AbstractFile(){}
+
+    public AbstractFile(String fileMetaData){
+        this.fileMetaData = new FileMetaData(fileMetaData);
     }
 
-    @Override
-    public void comment(Comment comment) {
-        fileComments.add(comment);
-    }
+    /*
+     *  Construtor
+     */
 
-    public List<Comment> getComments() { return Collections.unmodifiableList(fileComments); }
-    public List<Permission> getFilePermissions() { return new ArrayList<>(filePermissions); }
+    public String getFileName(){ return this.fileMetaData.getFileName(); }
 
-    public void getCommentsInFile(){
 
-        if(!fileComments.isEmpty()){
-            System.out.println("💬 Todos os comentários:");
-            System.out.printf("%s",
-                    fileComments.stream().map(Comment::toString)
-                            .collect(Collectors.joining("\n")));
-        } else {
-            System.out.println("Nenhum comentário.");
+    /*
+     *   Métodos para adição e remoção de comentários no arquivo ↓
+     */
+
+    public boolean addComment(Comment comment) {
+        Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
+        if(this.fileComments.add(comment)){
+            comment.setFile(this);
+            return true;
         }
+        return false;
     }
 
-    protected void addPermission(Permission permission) {
+    public boolean removeComment(Comment comment){
+        Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
+        if(this.fileComments.remove(comment)){
+            comment.setFile(null);
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     *   Métodos para adição e remoção de comentários no arquivo  ↑
+     */
+
+    /*
+     *   Métodos para adição e remoção de suportes no arquivo ↓
+     */
+
+    public boolean addSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.add(support)){
+            support.setFile(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeSupportRequest(Support support){
+        Objects.requireNonNull(support, () -> {throw new ENFieldException();});
+        if(this.supportRequests.remove(support)){
+            support.setFile(null);
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     *   Métodos para adição e remoção de suportes no arquivo  ↑
+     */
+
+    public boolean addOperation(FileOperation operation) {
+        Objects.requireNonNull(operation, () -> {throw new ENFieldException();});
+        if(this.operations.add(operation)){
+            operation.setFile(this);
+            return true;
+        }
+        return false;
+    }
+
+//    public void getCommentsInFile(){
+//
+//        if(!fileComments.isEmpty()){
+//            System.out.println("💬 Todos os comentários:");
+//            System.out.printf("%s",
+//                    fileComments.stream().map(Comment::toString)
+//                            .collect(Collectors.joining("\n")));
+//        } else {
+//            System.out.println("Nenhum comentário.");
+//        }
+//    }
+//
+    public void addPermission(Permission permission) {
         filePermissions.add(permission);
-        System.out.println(fileComments);
-
     }
-
-    public String getFileName() { return this.fileMetaData.getFileName(); }
-    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
+//
+//    public String getFileName() { return this.fileMetaData.getFileName(); }
+//    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
 
     @Getter
     public enum Permission{
@@ -81,31 +167,107 @@ public sealed abstract class AbstractFile implements FileOperations permits Vide
 
     @Override
     public String toString() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                .withZone(ZoneId.systemDefault());
+
         return String.format(
                 """
-                📄 Nome: %s
-                👤 Criador: %s
+                📄 Arquivo: %s (ID: %d)
                 🏷️ Tipo: %s
+                👤 Criado por: %s
                 📏 Tamanho: %d bytes
-                📂 Endereço: %s
+                📂 Local: %s
                 🗓️ Lançamento: %s
-                🔐 Permissões: %s
                 🔗 URL: %s
+                🔐 Permissões: %s
+                
+                💬 Comentários (%d):%s
+                🔄 Versões (%d):%s
+                🆘 Solicitações (%d):%s
+                ⚙️ Operações (%d):%s
                 """,
+                // Informações básicas
                 fileMetaData.getFileName(),
-                user != null ? user.getUserLogin() : "N/A",
+                this.getId(),
                 this.getClass().getSimpleName(),
+                user != null ? user.getUserLogin() : "N/A",
                 fileMetaData.getFileSize(),
                 fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
                 fileMetaData.getFileReleaseDate() != null ?
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                                .format(fileMetaData.getFileReleaseDate().toInstant()
-                                        .atZone(ZoneId.systemDefault())) : "N/A",
+                        dateFormatter.format(fileMetaData.getFileReleaseDate()) : "N/A",
+                fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
                                 .map(Permission::getDescription)
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
-                fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A"
+
+                // Comentários
+                fileComments.size(),
+                fileComments.isEmpty() ? " Nenhum" :
+                        fileComments.stream()
+                                .map(c -> "\n   - " +
+                                        (c.getBody() != null ?
+                                                (c.getBody().length() > 25 ?
+                                                        c.getBody().substring(0, 25) + "..." + " [ID: " + c.getId() + "] ":
+                                                        c.getBody() + " [ID: " + c.getId() + "] ") : "Sem conteúdo") +
+                                        " (por " + (c.getAuthor() != null ? c.getAuthor().getUserLogin() : "N/A") + ")")
+                                .collect(Collectors.joining()),
+
+                // Versões
+                versions.size(),
+                versions.isEmpty() ? " Nenhuma" :
+                        versions.stream()
+                                .sorted(Comparator.comparing(VersioningHistory::getCreationDate).reversed())
+                                .map(v -> "\n   - v" + v.getId() +
+                                        " em " + dateFormatter.format(v.getCreationDate()) +
+                                        (v.getCommitMessage() != null ?
+                                                "\n     ↳ " + (v.getCommitMessage().length() > 40 ?
+                                                        v.getCommitMessage().substring(0, 40) + "..." :
+                                                        v.getCommitMessage()) : ""))
+                                .collect(Collectors.joining()),
+
+                // Solicitações
+                supportRequests != null ? supportRequests.size() : 0,
+                supportRequests == null || supportRequests.isEmpty() ? " Nenhuma" :
+                        supportRequests.stream()
+                                .map(s -> "\n   - " +
+                                        (s.getTitle() != null ? s.getTitle() : "Sem título") +
+                                        " (" + (s.isResolved() ? "✅" : "🟡" + ")" + " [ID: " + s.getId() + "] "))
+                                .collect(Collectors.joining()),
+
+                // Operações
+                operations.size(),
+                operations.isEmpty() ? " Nenhuma" :
+                        operations.stream()
+                                .sorted(Comparator.comparing(FileOperation::getOperationDate).reversed())
+                                .map(op -> "\n   - " + op.getOperationType() +
+                                        " por " + (op.getUser() != null ? op.getUser().getUserLogin() : "N/A") +
+                                        " em " + dateTimeFormatter.format(op.getOperationDate()) + " [ID: " + op.getId() + "] ")
+                                .collect(Collectors.joining())
         );
     }
+
+    @Getter
+    public enum FileType {
+        TEXT(".txt"),
+        VIDEO(".wav"),
+        PHOTO(".jpg");
+
+        private final String description;
+
+        public static FileType from(String type){
+            try{
+                return FileType.valueOf(type);
+            } catch (IllegalArgumentException e){
+                throw new InvalidFileTypeException();
+            }
+        }
+
+        FileType(String description){
+            this.description = description;
+        }
+    }
+
 }

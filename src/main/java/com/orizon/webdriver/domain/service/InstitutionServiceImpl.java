@@ -1,56 +1,75 @@
 package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
-import com.orizon.webdriver.domain.exceptions.InstitutionLimitException;
 import com.orizon.webdriver.domain.exceptions.InvalidInstitutionException;
 import com.orizon.webdriver.domain.model.Institution;
-import com.orizon.webdriver.domain.model.user.AbstractUser;
+import com.orizon.webdriver.infra.persistence.repositories.InstitutionRepository;
 import com.orizon.webdriver.domain.ports.service.InstitutionService;
-import com.orizon.webdriver.infrastructure.repository.InstitutionRepositoryImpl;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@Transactional
 public class InstitutionServiceImpl implements InstitutionService {
 
-    private final InstitutionRepositoryImpl institutionRepository;
+    private final InstitutionRepository institutionDAO;
 
     @Autowired
-    public InstitutionServiceImpl(InstitutionRepositoryImpl institutionRepository) {
-        this.institutionRepository = institutionRepository;
+    public InstitutionServiceImpl(InstitutionRepository institutionDAO) {
+        this.institutionDAO = institutionDAO;
     }
 
     @Override
-    public Institution createInstitution(String name, String socialCause){
+    public void listAll() {
+        institutionDAO.findAll().forEach(System.out::println);
+    }
+
+    @Override
+    public Institution findOne(Long id) {
+        return institutionDAO.findById(id).orElseThrow(InvalidInstitutionException::new);
+    }
+
+    @Override
+    public void create(String name, String socialCause){
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
         Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
         Institution institution = new Institution(name, socialCause);
-        institutionRepository.addInstitution(institution);
-        return institution;
+        institutionDAO.save(institution);
     }
 
     @Override
-    public void deleteInstitution(long id){
-        Institution founded = institutionRepository.institutionSearch(id);
-        if(founded == null){
-            throw new InvalidInstitutionException();
-        }
-
-        institutionRepository.deleteInstitution(founded);
+    public void delete(Long id) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Institution institution = findOne(id);
+        institution.getUsers().forEach(u -> u.setInstitution(null));
+        institutionDAO.deleteById(id);
     }
 
     @Override
-    public void addInstitutionUser(Institution institution, AbstractUser user){
-        Objects.requireNonNull(user, () -> {throw new ENFieldException();});
+    public void update(Institution institution) {
         Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
-
-        if(user.getInstitutionConection() != null){
-            throw new InstitutionLimitException();
-        }
-
-        institution.addInstitutionUser(user);
-        user.setInstitutionConection(institution);
+        institutionDAO.save(institution);
     }
+
+    @Override
+    public void updateInstitutionName(Long id, String name) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(name, () -> {throw new ENFieldException();});
+        Institution institution = findOne(id);
+        institution.setName(name);
+        update(institution);
+    }
+
+    @Override
+    public void updateInstitutionSocialCause(Long id, String socialCause) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
+        Institution institution = findOne(id);
+        institution.setSocialCause(socialCause);
+        update(institution);
+    }
+
 }
