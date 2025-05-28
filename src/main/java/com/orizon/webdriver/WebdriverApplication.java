@@ -33,9 +33,11 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-			fileService.shareFile(fileService.findById(1L), userService.findOne(1L), userService.findOne(2L),
-					Set.of(Permission.PermissionType.SAVE, Permission.PermissionType.EDIT));
-			fileService.getUserPermissions(1L, 2L).forEach(System.out::println);
+//			institutionService.create("SUS", "Saúde Pública");
+			institutionService.updateAddress(1L, "54470-200",
+					"Rua das Flores", "123",
+					"Centro", "Recife", "Pernambuco",
+					"Brasil", "Recife");
 		};
 	}
 }

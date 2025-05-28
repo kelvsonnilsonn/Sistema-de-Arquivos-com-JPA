@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Address {
     private ZipCode zipcode;          // CEP (formato: "12345-678" ou "12345678")
     private String street;           // Nome da rua/av/alameda
@@ -17,16 +17,8 @@ public class Address {
     private String neighborhood;     // Bairro
     private String city;             // Cidade
     private String state;            // Estado (sigla: "SP", "RJ", etc.)
-
     private String complement;       // Complemento (apartamento, bloco, etc.)
     private String country;          // País (padrão: "Brasil" ou código ISO)
-
-    public Address(String city, String state, String neighborhood, String street){
-        this.city = city;
-        this.state = state;
-        this.neighborhood = neighborhood;
-        this.street = street;
-    }
 
     public void setZipCode(String zipcode) { this.zipcode = new ZipCode(zipcode);}
 
