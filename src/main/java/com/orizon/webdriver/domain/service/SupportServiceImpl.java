@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Service
@@ -26,17 +27,6 @@ public class SupportServiceImpl implements SupportService {
     }
 
     @Override
-    public void listAll() {
-        supportDAO.findAll().forEach(System.out::println);
-    }
-
-    @Override
-    public Support findOne(Long id) {
-        return supportDAO.findById(id).orElseThrow(SupportInexistentException::new);
-    }
-
-
-    @Override
     public void create(AbstractUser user, AbstractFile file, String title, String body){
         Objects.requireNonNull(user, () -> {throw new ENFieldException();});
         Objects.requireNonNull(body, () -> {throw new ENFieldException();});
@@ -48,10 +38,22 @@ public class SupportServiceImpl implements SupportService {
     }
 
     @Override
+    public void findAll() {
+        supportDAO.findAll().forEach(System.out::println);
+    }
+
+    @Override
+    public Support findById(Long id) {
+        return supportDAO.findById(id).orElseThrow(SupportInexistentException::new);
+    }
+
+
+
+    @Override
     public void delete(Long id) {
-        AbstractFile file = findOne(id).getFile();
-        AbstractUser user = findOne(id).getAuthor();
-        Support support = findOne(id);
+        AbstractFile file = findById(id).getFile();
+        AbstractUser user = findById(id).getAuthor();
+        Support support = findById(id);
         if(user.removeSupportRequest(support) && file.removeSupportRequest(support)){
             supportDAO.deleteById(id);
         }
@@ -64,10 +66,27 @@ public class SupportServiceImpl implements SupportService {
     }
 
     @Override
-    public void resolveSupportRequest(Long id, Administrator admin){
-        Support support = findOne(id);
-        admin.resolveSupportRequest(support);
-        support.isResolved();
+    public void assignAdminToSupport(Long supportId, AbstractUser admin){
+        if(!(admin instanceof Administrator)) {
+            throw new ENFieldException("Somente admins podem ser linkados a pedidos de suporte.");
+        }
+
+        Support support = supportDAO.findById(supportId).orElseThrow();
+        support.setAdmin((Administrator) admin);
+        support.setStatus(Support.SupportStatus.PENDING);
+        update(support);
+    }
+
+    @Override
+    public void resolveSupport(Long supportId, AbstractUser admin){
+        if(!(admin instanceof Administrator)) {
+            throw new ENFieldException("Somente admins podem resolver pedidos de suporte.");
+        }
+
+        Support support = supportDAO.findById(supportId).orElseThrow();
+        ((Administrator) admin).resolveSupportRequest(support);
+        support.setStatus(Support.SupportStatus.RESOLVED);
+        support.setResolvedDate(Instant.now());
         update(support);
     }
 }

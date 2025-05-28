@@ -33,7 +33,8 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-			planService.delete(1L);
+			fileService.findAll();
+			supportService.findAll();
 		};
 	}
 }

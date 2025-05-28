@@ -10,7 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Getter
@@ -42,16 +45,20 @@ public class Support {
     private AbstractFile file;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private SupportStatus status;
 
     @Column(name = "creation_date")
     private Instant creation;
 
+    @Column(name = "resolved_date")
+    private Instant resolvedDate;
+
     public enum SupportStatus {
-        PENDING, RESOLVED, REJECTED
+        CREATED, PENDING, RESOLVED, REJECTED
     }
 
-    private void setStatus(SupportStatus status){
+    public void setStatus(SupportStatus status){
         if(this.status == SupportStatus.RESOLVED && status != SupportStatus.RESOLVED){
             throw new IllegalArgumentException("Proibido mudar o status de um suporte já fechado.");
         }
@@ -71,22 +78,40 @@ public class Support {
         this.title = Objects.requireNonNull(title, () -> {throw new ENFieldException();});
         this.body = Objects.requireNonNull(body, () -> {throw new ENFieldException();});
         this.creation = Instant.now();
-        this.status = SupportStatus.PENDING;
+        this.status = SupportStatus.CREATED;
     }
 
     @Override
     public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+                .withZone(ZoneId.systemDefault());
+
         return String.format(
                 """
                 🆔 ID do Suporte: %d
+                📌 Título: "%s"
                 ✍️ Autor: %s (ID: %d)
-                📝 Mensagem: "%s"
+                %s%s📝 Mensagem: "%s"
+                📂 Arquivo relacionado: %s (ID: %d)
                 🔄 Status: %s
+                📅 Criado em: %s
+                %s
                 """,
                 id,
-                author.getUserLogin(), author.getId(),
-                body,
-                status == SupportStatus.RESOLVED ? "✅ Resolvido" : "🟡 Pendente"
+                title,
+                author.getUserLogin(),
+                author.getId(),
+                admin != null ? "👨💼 Admin responsável: " + admin.getUserLogin() + " (ID: " + admin.getId() + ")\n" : "",
+                resolvedDate != null ? "✅ Resolvido em: " + dateFormatter.format(resolvedDate) + "\n" : "não resolvido\n",
+                body.length() > 100 ? body.substring(0, 100) + "..." : body,  // Limita o tamanho da mensagem
+                file != null ? file.getFileName() : "Nenhum arquivo",
+                file != null ? file.getId() : "N/A",
+                status == SupportStatus.RESOLVED ? "✅ Resolvido" :
+                        status == SupportStatus.PENDING ? "🟡 Pendente" : "Não vinculado a um administrador.",
+                dateFormatter.format(creation),
+                status == SupportStatus.RESOLVED && resolvedDate != null ?
+                        "⏱️ Tempo para resolução: " +
+                                Duration.between(creation, resolvedDate).toHours() + " horas" : ""
         );
     }
 }

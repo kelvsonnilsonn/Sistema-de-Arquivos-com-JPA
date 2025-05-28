@@ -6,10 +6,11 @@ import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.Administrator;
 
 public interface SupportService {
-    void listAll();
-    Support findOne(Long id);
+    void findAll();
+    Support findById(Long id);
     void create(AbstractUser user, AbstractFile file, String title, String body);
     void delete(Long id);
     void update(Support support);
-    void resolveSupportRequest(Long id, Administrator admin);
+    void assignAdminToSupport(Long supportId, AbstractUser admin);
+    void resolveSupport(Long supportId, AbstractUser admin);
 }

@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Implementado atualização de endereço">
+    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Implementado validações e atualizações no serviço de planos">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/PlanService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/PlanService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/SupportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/SupportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,7 +193,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748442135331</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Implementado validações e atualizações no serviço de planos">
+      <option name="closed" value="true" />
+      <created>1748442854444</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748442854444</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -205,6 +216,7 @@
     <MESSAGE value="Introdução de Permissões - 2; Criado acrescentamento de permissões por ID + Acrescentamento de funcionalidades básicas + Correção de nomes" />
     <MESSAGE value="Introdução de Permissões - 3; Implementado obtenção de permissões e validações na operação de compartilhamento de arquivos." />
     <MESSAGE value="Implementado atualização de endereço" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementado atualização de endereço" />
+    <MESSAGE value="Implementado validações e atualizações no serviço de planos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementado validações e atualizações no serviço de planos" />
   </component>
 </project>

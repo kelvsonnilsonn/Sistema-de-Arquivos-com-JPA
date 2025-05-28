@@ -169,56 +169,55 @@ public abstract class AbstractFile{
                 🆘 Solicitações (%d):%s
                 ⚙️ Operações (%d):%s
                 """,
-                // Informações básicas
+                // Informações básicas (8 parâmetros)
                 fileMetaData.getFileName(),
                 this.getId(),
                 this.getClass().getSimpleName(),
                 user != null ? user.getUserLogin() : "N/A",
                 fileMetaData.getFileSize(),
                 fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
-                fileMetaData.getFileReleaseDate() != null ?
-                        dateFormatter.format(fileMetaData.getFileReleaseDate()) : "N/A",
+                fileMetaData.getFileReleaseDate() != null ? dateFormatter.format(fileMetaData.getFileReleaseDate()) : "N/A",
                 fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
                                 .map(p -> p.getType().toString())
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
 
-                // Comentários
+                // Comentários (2 parâmetros)
                 fileComments.size(),
                 fileComments.isEmpty() ? " Nenhum" :
                         fileComments.stream()
                                 .map(c -> "\n   - " +
                                         (c.getBody() != null ?
                                                 (c.getBody().length() > 25 ?
-                                                        c.getBody().substring(0, 25) + "..." + " [ID: " + c.getId() + "] ":
+                                                        c.getBody().substring(0, 25) + "..." + " [ID: " + c.getId() + "] " :
                                                         c.getBody() + " [ID: " + c.getId() + "] ") : "Sem conteúdo") +
                                         " (por " + (c.getAuthor() != null ? c.getAuthor().getUserLogin() : "N/A") + ")")
                                 .collect(Collectors.joining()),
 
-                // Versões
+                // Versões (2 parâmetros)
                 versions.size(),
                 versions.isEmpty() ? " Nenhuma" :
                         versions.stream()
                                 .sorted(Comparator.comparing(VersioningHistory::getCreationDate).reversed())
                                 .map(v -> "\n   - v" + v.getId() +
-                                        " em " + dateFormatter.format(v.getCreationDate()) +
+                                        " em " + dateTimeFormatter.format(v.getCreationDate()) +
                                         (v.getCommitMessage() != null ?
                                                 "\n     ↳ " + (v.getCommitMessage().length() > 40 ?
                                                         v.getCommitMessage().substring(0, 40) + "..." :
                                                         v.getCommitMessage()) : ""))
                                 .collect(Collectors.joining()),
 
-                // Solicitações
+                // Solicitações (2 parâmetros)
                 supportRequests != null ? supportRequests.size() : 0,
                 supportRequests == null || supportRequests.isEmpty() ? " Nenhuma" :
                         supportRequests.stream()
                                 .map(s -> "\n   - " +
                                         (s.getTitle() != null ? s.getTitle() : "Sem título") +
-                                        " (" + (s.isResolved() ? "✅" : "🟡" + ")" + " [ID: " + s.getId() + "] "))
+                                        " (" + (s.isResolved() ? "✅" : s.getStatus() == Support.SupportStatus.PENDING ? "🟡 Pendente" : "Não vinculado a um administrador.") + ") [ID: " + s.getId() + "] ")
                                 .collect(Collectors.joining()),
 
-                // Operações
+                // Operações (2 parâmetros)
                 operations.size(),
                 operations.isEmpty() ? " Nenhuma" :
                         operations.stream()
