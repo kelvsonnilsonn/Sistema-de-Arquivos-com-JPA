@@ -2,9 +2,11 @@ package com.orizon.webdriver.domain.service;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InvalidPlanException;
+import com.orizon.webdriver.domain.exceptions.PlanInvalidLimitException;
 import com.orizon.webdriver.domain.exceptions.PlanLimitExcededException;
 import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.Plan;
+import com.orizon.webdriver.domain.ports.service.InstitutionService;
 import com.orizon.webdriver.infra.persistence.repositories.InstitutionRepository;
 import com.orizon.webdriver.infra.persistence.repositories.PlanRepository;
 import com.orizon.webdriver.domain.ports.service.PlanService;
@@ -29,16 +31,6 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void listAll() {
-        planDAO.findAll().forEach(System.out::println);
-    }
-
-    @Override
-    public Plan findOne(Long id) {
-        return planDAO.findById(id).orElseThrow(InvalidPlanException::new);
-    }
-
-    @Override
     public void create(String name, int userspace) {
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
         Objects.requireNonNull(userspace, () -> {throw new ENFieldException();});
@@ -47,9 +39,20 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public void findAll() {
+        planDAO.findAll().forEach(System.out::println);
+    }
+
+    @Override
+    public Plan findById(Long id) {
+        return planDAO.findById(id).orElseThrow(InvalidPlanException::new);
+    }
+
+
+    @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
-        Plan plan = findOne(id);
+        Plan plan = findById(id);
         plan.getInstitutions().forEach(i -> i.setPlan(null));
         planDAO.deleteById(id);
     }
@@ -61,18 +64,20 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void updatePlanName(Long id, String name) {
+    public void updateName(Long id, String name) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
-        Plan plan = findOne(id);
+        Plan plan = findById(id);
         plan.setName(name);
         update(plan);
     }
 
     @Override
-    public void assignPlanToInstitution(Plan plan, Institution institution) {
-        Objects.requireNonNull(plan, () -> {throw new ENFieldException();});
-        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
+    public void assignToInstitution(Long planId, Long institutionId) {
+        Objects.requireNonNull(planId, () -> {throw new ENFieldException();});
+        Objects.requireNonNull(institutionId, () -> {throw new ENFieldException();});
+        Plan plan = findById(planId);
+        Institution institution = institutionDAO.findById(institutionId).orElseThrow();
         plan.addInstitution(institution);
         plan.setAcquisitionDate(Instant.now());
         institution.setPlan(plan);
@@ -82,29 +87,28 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void updatePlanDuration(Long id, Long newDuration) {
+    public void updateDuration(Long id, Long newDuration) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Objects.requireNonNull(newDuration, () -> {throw new ENFieldException();});
 
-        Plan plan = findOne(id);
+        Plan plan = findById(id);
         plan.setDurationInSeconds(newDuration);
         update(plan);
     }
 
     @Override
-    public void updatePlanUserSpace(Long id, int newUserSpace) {
-        Objects.requireNonNull(newUserSpace, () -> {throw new ENFieldException();});
-        Plan plan = findOne(id);
-        if(plan.getUserSpace() > newUserSpace){
+    public void updateUserSpace(Long id, int newUserSpace) {
+        Objects.requireNonNull(id, () -> {throw new ENFieldException();});
+
+        if (newUserSpace <= 0) {
+            throw new PlanInvalidLimitException();
+        }
+
+        Plan plan = findById(id);
+        if (newUserSpace < plan.getUserSpace()) {
             throw new PlanLimitExcededException();
         }
         plan.setUserSpace(newUserSpace);
         update(plan);
-    }
-
-    @Override
-    public Plan getInstitutionPlan(Institution institution) {
-        Objects.requireNonNull(institution, () -> {throw new ENFieldException();});
-        return institution.getPlan();
     }
 }

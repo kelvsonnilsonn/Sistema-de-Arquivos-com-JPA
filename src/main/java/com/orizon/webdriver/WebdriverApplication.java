@@ -33,11 +33,7 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-//			institutionService.create("SUS", "Saúde Pública");
-			institutionService.updateAddress(1L, "54470-200",
-					"Rua das Flores", "123",
-					"Centro", "Recife", "Pernambuco",
-					"Brasil", "Recife");
+			planService.delete(1L);
 		};
 	}
 }
