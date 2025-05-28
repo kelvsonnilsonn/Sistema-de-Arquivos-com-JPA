@@ -47,12 +47,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void listAll() {
+    public void findAll() {
         fileDAO.findAll().forEach(System.out::println);
     }
 
     @Override
-    public AbstractFile findOne(Long id) {
+    public AbstractFile findById(Long id) {
         return fileDAO.findById(id).orElseThrow(InexistentFileException::new);
     }
 
@@ -76,7 +76,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void delete(Long id) {
-        AbstractFile file = findOne(id);
+        AbstractFile file = findById(id);
         AbstractUser user = file.getUser();
         if(user.removeFile(file)){
             fileDAO.deleteById(id);
@@ -84,8 +84,14 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public void addPermission(Long fileId, Long userId, Permission.PermissionType perm){
+        Permission permission = new Permission(fileId, userId, perm);
+        filePermissionsDAO.save(permission);
+    }
+
+    @Override
     public void update(Long id, String name, FileOperation.OperationType type) {
-        AbstractFile file = findOne(id);
+        AbstractFile file = findById(id);
         AbstractUser user = file.getUser();
         FileOperation operation = new FileOperation(file, user, type);
 
@@ -105,7 +111,7 @@ public class FileServiceImpl implements FileService {
         fileOperationsDAO.save(operation);
         // Adiciona as permissões
         for (Permission.PermissionType permission : permissions) {
-            Permission permissionEntity = new Permission(file, receiver, permission);
+            Permission permissionEntity = new Permission(file.getId(), receiver.getId(), permission);
             filePermissionsDAO.save(permissionEntity);
         }
     }

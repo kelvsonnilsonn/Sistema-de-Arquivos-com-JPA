@@ -18,8 +18,17 @@ public class FileOperationServiceImpl implements FileOperationService {
     }
 
     @Override
-    public void listAll() {
+    public void create(FileOperation operation) {
+        fileOperationDAO.save(operation);
+    }
+
+    @Override
+    public void findAll() {
         fileOperationDAO.findAll().forEach(System.out::println);
+    }
+
+    public FileOperation findById(Long id){
+        return fileOperationDAO.findById(id).orElseThrow();
     }
 
     @Override
@@ -32,8 +41,10 @@ public class FileOperationServiceImpl implements FileOperationService {
         return fileOperationDAO.findByUserId(id);
     }
 
-    @Override
-    public void save(FileOperation operation) {
+    public void update(FileOperation operation){
         fileOperationDAO.save(operation);
     }
+
+
+
 }

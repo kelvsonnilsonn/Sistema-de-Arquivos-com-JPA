@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -24,16 +25,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void listAll() {
-        commentDAO.findAll().forEach(System.out::println);
-    }
-
-    @Override
-    public Comment findOne(Long id) {
-        return commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
-    }
-
-    @Override
     public void create(String body, AbstractUser user, AbstractFile file) {
         Comment comment = new Comment(body);
         if(user.addComment(comment) && file.addComment(comment)){
@@ -42,9 +33,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment findById(Long id) {
+        return commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
+    }
+
+    @Override
+    public void findAll() {
+        commentDAO.findAll().forEach(System.out::println);
+    }
+
+
+
+    @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
-        Comment comment = findOne(id);
+        Comment comment = findById(id);
         AbstractUser user = comment.getAuthor();
         AbstractFile file = comment.getFile();
         if(user.removeComment(comment) && file.removeComment(comment)){
@@ -59,5 +62,15 @@ public class CommentServiceImpl implements CommentService {
         toEdit.setBody(body);
         toEdit.setTime(Instant.now());
         commentDAO.save(toEdit);
+    }
+
+    @Override
+    public Set<Comment> findByFileId(Long fileId){
+        return commentDAO.findByFileId(fileId);
+    }
+
+    @Override
+    public Set<Comment> findByAuthorId(Long authorId){
+        return commentDAO.findByAuthorId(authorId);
     }
 }

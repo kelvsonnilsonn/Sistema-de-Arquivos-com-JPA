@@ -36,9 +36,10 @@ public class WebdriverApplication {
 			userService.create("kelvson", "kelvson@gmail.com", "12345678", true);
 			fileService.create(userService.findOne(1L), "txt", AbstractFile.FileType.TEXT);
 			userService.create("joao", "kelvson2@gmail.com", "12345678", false);
-			fileService.shareFile(fileService.findOne(1L),
+			fileService.shareFile(fileService.findById(1L),
 					userService.findOne(1L), userService.findOne(2L),
 					Set.of(Permission.PermissionType.EDIT, Permission.PermissionType.DELETE));
+			fileService.addPermission(1L, 2L, Permission.PermissionType.SAVE);
 		};
 	}
 }

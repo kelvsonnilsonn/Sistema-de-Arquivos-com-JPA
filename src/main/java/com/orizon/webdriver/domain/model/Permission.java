@@ -19,20 +19,18 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "file_id", nullable = false)
-    private AbstractFile file;
+    @Column(nullable = false)
+    private Long fileId;
 
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)
-    private AbstractUser receiver;
+    @Column(nullable = false)
+    private Long receiverId;
 
     @Column(nullable = false)
     private String type;
 
-    public Permission(AbstractFile file, AbstractUser receiver, PermissionType type) {
-        this.file = file;
-        this.receiver = receiver;
+    public Permission(Long fileId, Long receiverId, PermissionType type) {
+        this.fileId = fileId;
+        this.receiverId = receiverId;
         this.type = type.getDescription();
     }
 

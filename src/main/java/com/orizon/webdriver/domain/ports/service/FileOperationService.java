@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface FileOperationService {
-    void listAll();
+    void findAll();
     Set<FileOperation> findByFileId(Long id);
     Set<FileOperation> findByUserId(Long id);
-    void save(FileOperation operation);
+    void create(FileOperation operation);
+    void update(FileOperation operation);
 }
