@@ -3,10 +3,7 @@ package com.orizon.webdriver.domain.model.file;
 
 import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.InvalidFileTypeException;
-import com.orizon.webdriver.domain.model.Comment;
-import com.orizon.webdriver.domain.model.FileOperation;
-import com.orizon.webdriver.domain.model.Support;
-import com.orizon.webdriver.domain.model.VersioningHistory;
+import com.orizon.webdriver.domain.model.*;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -47,9 +44,7 @@ public abstract class AbstractFile{
     @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<FileOperation> operations = new HashSet<>();
 
-    @Getter
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
+    @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Permission> filePermissions = new HashSet<>();
 
     @Embedded
@@ -151,20 +146,6 @@ public abstract class AbstractFile{
 //    public String getFileName() { return this.fileMetaData.getFileName(); }
 //    public void setFileName(String name) { this.fileMetaData.setFileName(name); }
 
-    @Getter
-    public enum Permission{
-        SAVE("Salvar"),
-        DELETE("Deletar"),
-        LOAD("Carregar"),
-        EDIT("Editar");
-
-        private final String description;
-
-        Permission(String description) {
-            this.description = description;
-        }
-    }
-
     @Override
     public String toString() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -200,7 +181,7 @@ public abstract class AbstractFile{
                 fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
-                                .map(Permission::getDescription)
+                                .map(Permission::getType)
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
 
                 // Comentários

@@ -3,12 +3,11 @@ package com.orizon.webdriver.domain.model;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -16,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "file_operations")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class FileOperation {
 
     /*
@@ -43,10 +42,10 @@ public class FileOperation {
     private AbstractUser receiver;
 
     @Column(name = "operation_date", nullable = false)
-    private LocalDateTime operationDate;
+    private Instant operationDate;
 
     @Column(name = "operation_type", nullable = false)
-    private OperationType operationType;
+    private String operationType;
 
     /**
      * Construtor para realizar qualquer operação.
@@ -54,11 +53,12 @@ public class FileOperation {
      * @param user o usuário do arquivo (não nulo).
      * @param operationType o tipo a operação a ser realizada (não nulo).
      */
+
     public FileOperation(AbstractFile file, AbstractUser user, OperationType operationType) {
         this.file = Objects.requireNonNull(file);
         this.user = Objects.requireNonNull(user);
-        this.operationType = operationType;
-        this.operationDate = LocalDateTime.now();
+        this.operationType = operationType.getDescription();
+        this.operationDate = Instant.now();
     }
 
     /**
@@ -68,10 +68,13 @@ public class FileOperation {
      * @param user o usuário que está compartilhando o arquivo (dono)
      * @param receiver o usuário que receberá o arquivo
      */
+
     public FileOperation(AbstractFile file, AbstractUser user, AbstractUser receiver) {
         this.file = Objects.requireNonNull(file);
         this.user = Objects.requireNonNull(user);
-        this.operationDate = LocalDateTime.now();
+        this.receiver = Objects.requireNonNull(receiver);
+        this.operationType = OperationType.SHARE.getDescription();
+        this.operationDate = Instant.now();
     }
 
     @Getter
@@ -91,8 +94,6 @@ public class FileOperation {
 
     @Override
     public String toString() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
         return String.format(
                 """
                 🔄 Operação em Arquivo
@@ -107,8 +108,8 @@ public class FileOperation {
                 file != null ? file.getId() : "N/A",
                 user != null ? user.getUserLogin() : "N/A",
                 user != null ? user.getId() : "N/A",
-                operationType.name(),
-                operationDate.format(dateFormatter)
+                operationType,
+                operationDate != null ? DateTimeFormatter.ISO_INSTANT.format(operationDate) : "Data indefinida"
         );
     }
 }
