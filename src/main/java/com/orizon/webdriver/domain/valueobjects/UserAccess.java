@@ -16,16 +16,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAccess{
 
-    private String login;
-
     @Embedded
     private Password password;
 
     @Embedded
     private Email email;
 
-    public UserAccess(String login, String email, String password){
-        this.login = Objects.requireNonNull(login, () -> {throw new ENFieldException(this);});
+    public UserAccess(String email, String password){
         setPassword(password);
         setEmail(email);
     }
@@ -39,7 +36,6 @@ public class UserAccess{
     @Override
     public String toString() {
         return "UserAccess{" +
-                "login='" + login + '\'' +
                 ", password=" + password.getPass() +
                 ", email=" + email.getEmail() +
                 '}';

@@ -30,6 +30,9 @@ public abstract class AbstractUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "login")
+    private String username;
+
     @Embedded
     private UserAccess userAccess;
 
@@ -65,7 +68,8 @@ public abstract class AbstractUser {
         if(login == null || login.isBlank()){
             throw new ENFieldException();
         }
-        this.userAccess = new UserAccess(login, email, password);
+        this.username = login;
+        this.userAccess = new UserAccess(email, password);
         this.createdUserDate = Instant.now();
     }
 
@@ -160,8 +164,6 @@ public abstract class AbstractUser {
 
     }
 
-    public String getUserLogin() { return this.userAccess.getLogin(); }
-
     @Override
     public String toString() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -184,7 +186,7 @@ public abstract class AbstractUser {
                 ⚙️ Operações de Arquivo: (%d): 
                %s
                """,
-                userAccess.getLogin(),
+                username,
                 userAccess.getEmail(),
                 id,
                 institution != null ? institution.getName() : "Não vinculado",
