@@ -14,6 +14,7 @@ public interface FileService {
     void delete(Long id);
     void update(Long id, String name, FileOperation.OperationType type);
     void shareFile(AbstractFile file, AbstractUser owner, AbstractUser receiver, Set<Permission.PermissionType> permissions);
-    Set<Permission.PermissionType> getUserPermissions(AbstractFile file, AbstractUser user);
+    Set<Permission.PermissionType> getUserPermissions(Long fileId, Long userId);
     void addPermission(Long fileId, Long userId, Permission.PermissionType perm);
+    boolean hasPermission(AbstractUser user, AbstractFile file, Permission.PermissionType permission);
 }

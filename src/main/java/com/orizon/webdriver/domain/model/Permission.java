@@ -25,26 +25,31 @@ public class Permission {
     @Column(nullable = false)
     private Long receiverId;
 
-    @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PermissionType type;
 
     public Permission(Long fileId, Long receiverId, PermissionType type) {
         this.fileId = fileId;
         this.receiverId = receiverId;
-        this.type = type.getDescription();
+        this.type = type;
     }
 
     @Getter
     public enum PermissionType{
-        SAVE("Salvar"),
-        DELETE("Deletar"),
-        LOAD("Carregar"),
-        EDIT("Editar");
+        SAVE,
+        DELETE,
+        LOAD,
+        EDIT,
+        SHARE;
+    }
 
-        private final String description;
-
-        PermissionType(String description) {
-            this.description = description;
-        }
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", fileId=" + fileId +
+                ", receiverId=" + receiverId +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

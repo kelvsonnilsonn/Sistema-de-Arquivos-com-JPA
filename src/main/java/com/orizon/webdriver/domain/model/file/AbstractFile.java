@@ -181,7 +181,7 @@ public abstract class AbstractFile{
                 fileMetaData.getFileUrl() != null ? fileMetaData.getFileUrl() : "N/A",
                 filePermissions != null && !filePermissions.isEmpty() ?
                         filePermissions.stream()
-                                .map(Permission::getType)
+                                .map(p -> p.getType().toString())
                                 .collect(Collectors.joining(", ")) : "Nenhuma",
 
                 // Comentários
