@@ -1,14 +1,14 @@
 package com.orizon.webdriver.domain.model.file;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Duration;
 
 @Setter
+@Getter
 @Entity
 @DiscriminatorValue("Video")
 public class VideoFile extends AbstractFile{

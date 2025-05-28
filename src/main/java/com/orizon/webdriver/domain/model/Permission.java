@@ -40,6 +40,8 @@ public class Permission {
         DELETE,
         LOAD,
         EDIT,
+        VIEW,
+        COMMENT,
         SHARE;
     }
 

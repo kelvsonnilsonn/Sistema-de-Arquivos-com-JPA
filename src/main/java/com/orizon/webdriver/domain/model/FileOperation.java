@@ -104,7 +104,7 @@ public class FileOperation {
                 ⏰ Data/Hora: %s
                 """,
                 id,
-                file != null ? file.getFileName() : "N/A",
+                file != null ? file.getName() : "N/A",
                 file != null ? file.getId() : "N/A",
                 user != null ? user.getUsername() : "N/A",
                 user != null ? user.getId() : "N/A",

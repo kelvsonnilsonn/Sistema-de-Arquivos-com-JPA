@@ -11,14 +11,8 @@ import java.time.Instant;
 @Setter
 @Embeddable
 @NoArgsConstructor
-public class FileMetaData {
-    private String fileName;
-    private int fileSize;
+public class FileMetaData { private int fileSize;
     private Instant fileReleaseDate;
     private String fileLocation;
     private String fileUrl;
-
-    public FileMetaData(String fileName){
-        this.fileName = fileName;
-    }
 }

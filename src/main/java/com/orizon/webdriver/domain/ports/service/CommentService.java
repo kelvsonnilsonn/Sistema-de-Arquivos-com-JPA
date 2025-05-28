@@ -9,7 +9,7 @@ import java.util.Set;
 public interface CommentService {
     void findAll();
     Comment findById(Long id);
-    void create(String body, AbstractUser user, AbstractFile file);
+    void create(Comment comment);
     void delete(Long id);
     void update(Long id, String body);
     Set<Comment> findByFileId(Long fileId);

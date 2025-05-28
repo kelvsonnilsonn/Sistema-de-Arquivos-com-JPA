@@ -12,7 +12,6 @@ import com.orizon.webdriver.infra.persistence.repositories.CommentRepository;
 import com.orizon.webdriver.infra.persistence.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +57,9 @@ public class UserServiceImpl implements UserService{
         return userDAO.findById(id).orElseThrow(UserInexistentException::new);
     }
 
+    public AbstractUser findByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
 
     @Override
     public void delete(Long id) {
@@ -116,7 +118,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void promoteToAdmin(Long userId) {
-        userDAO.unpromoteAdmin(userId);
+        userDAO.promoteToAdmin(userId);
     }
 
     @Override
@@ -142,5 +144,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public void logout() {
         this.currentUser = null;
+    }
+
+    public AbstractUser getCurrentUser() {
+        if (this.currentUser == null) {
+            throw new UserInexistentException();
+        }
+        return this.currentUser;
     }
 }

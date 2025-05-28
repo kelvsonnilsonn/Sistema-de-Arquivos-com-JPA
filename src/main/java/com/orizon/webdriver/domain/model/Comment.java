@@ -26,8 +26,8 @@ public final class Comment {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "time")
-    private Instant time;
+    @Column(name = "create_date")
+    private Instant createdAt;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -39,7 +39,7 @@ public final class Comment {
 
     public Comment(String body) {
         this.body = Objects.requireNonNull(body, "O comentário não pode ser nulo.");
-        this.time = Instant.now();
+        this.createdAt = Instant.now();
     }
 
 
@@ -47,14 +47,14 @@ public final class Comment {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
                 .withZone(ZoneId.systemDefault());
-        String formattedTime = time != null ? formatter.format(time) : "Data indefinida";
+        String formattedTime = createdAt != null ? formatter.format(createdAt) : "Data indefinida";
 
         String authorInfo = (author != null)
                 ? String.format("%s (ID: %d)", author.getUsername(), author.getId())
                 : "Autor desconhecido";
 
         String fileInfo = (file != null)
-                ? String.format("%s (ID: %d)", file.getFileName(), file.getId())
+                ? String.format("%s (ID: %d)", file.getName(), file.getId())
                 : "Arquivo não vinculado";
 
         return String.format(

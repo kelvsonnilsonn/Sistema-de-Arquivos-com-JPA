@@ -8,8 +8,8 @@ public interface InstitutionService {
     void create(String nome, String socialCause);
     void delete(Long id);
     void update(Institution institution);
-    void updateInstitutionName(Long id, String name);
-    void updateInstitutionSocialCause(Long id, String socialCause);
+    void updateName(Long id, String name);
+    void updateSocialCause(Long id, String socialCause);
     void updateAddress(Long institutionId, String zipcode, String street, String number,
                        String neighborhood, String city, String state,
                        String country, String complement);

@@ -9,6 +9,7 @@ public interface FileOperationService {
     void findAll();
     Set<FileOperation> findByFileId(Long id);
     Set<FileOperation> findByUserId(Long id);
+    FileOperation findById(Long id);
     void create(FileOperation operation);
     void update(FileOperation operation);
 }

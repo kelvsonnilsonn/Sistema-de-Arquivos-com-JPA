@@ -15,4 +15,6 @@ public interface UserService {
     void logout();
     void promoteToAdmin(Long userId);
     void removeInstitutionFromUser(Long userId);
+    AbstractUser getCurrentUser();
+    AbstractUser findByUsername(String username);
 }

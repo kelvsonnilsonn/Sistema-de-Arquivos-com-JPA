@@ -65,7 +65,7 @@ public class VersioningHistory {
                 id,
                 dateFormatter.format(creationDate),
                 editor != null ? editor.getUsername() : "N/A",
-                file != null ? file.getFileName() : "N/A",
+                file != null ? file.getName() : "N/A",
                 commitMessage.length() > 100 ?
                         commitMessage.substring(0, 100) + "..." : commitMessage
         );

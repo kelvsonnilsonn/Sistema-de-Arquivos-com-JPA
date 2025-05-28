@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -27,6 +28,9 @@ public abstract class AbstractFile{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "file_name")
+    private String name;
 
     @OneToMany(mappedBy = "file", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Comment> fileComments = new HashSet<>();
@@ -50,33 +54,25 @@ public abstract class AbstractFile{
     @Embedded
     private FileMetaData fileMetaData;
 
-    /*
-     *  Construtor
-     */
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @Column(name = "last_modifier")
+    private Instant lastModifier;
+
     protected AbstractFile(){}
 
-    public AbstractFile(String fileMetaData){
-        this.fileMetaData = new FileMetaData(fileMetaData);
+    public AbstractFile(String filename){
+        this.name = filename;
+        this.createdAt = Instant.now();
+        this.lastModifier = Instant.now();
     }
 
-    /*
-     *  Construtor
-     */
-
-    public String getFileName(){ return this.fileMetaData.getFileName(); }
-
-
-    /*
-     *   Métodos para adição e remoção de comentários no arquivo ↓
-     */
-
-    public boolean addComment(Comment comment) {
+    public void addComment(Comment comment) {
         Objects.requireNonNull(comment, () -> {throw new ENFieldException();});
         if(this.fileComments.add(comment)){
             comment.setFile(this);
-            return true;
         }
-        return false;
     }
 
     public boolean removeComment(Comment comment){
@@ -170,7 +166,7 @@ public abstract class AbstractFile{
                 ⚙️ Operações (%d):%s
                 """,
                 // Informações básicas (8 parâmetros)
-                fileMetaData.getFileName(),
+                this.name,
                 this.getId(),
                 this.getClass().getSimpleName(),
                 user != null ? user.getUsername() : "N/A",

@@ -196,7 +196,7 @@ public abstract class AbstractUser {
                 files.size(),
                 files.isEmpty() ? "  Nenhum arquivo vinculado" :
                         files.stream()
-                                .map(f -> "  - " + f.getFileName() + " (" + f.getClass().getSimpleName() + ")" + " [ID: " + f.getId() + "]")
+                                .map(f -> "  - " + f.getName() + " (" + f.getClass().getSimpleName() + ")" + " [ID: " + f.getId() + "]")
                                 .collect(Collectors.joining("\n")),
 
                 // Seção de Solicitações de Suporte

@@ -25,11 +25,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void create(String body, AbstractUser user, AbstractFile file) {
-        Comment comment = new Comment(body);
-        if(user.addComment(comment) && file.addComment(comment)){
-            commentDAO.save(comment);
-        }
+    public void create(Comment comment) {
+        commentDAO.save(comment);
     }
 
     @Override
@@ -60,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
         Objects.requireNonNull(body, () -> {throw new ENFieldException();});
         Comment toEdit = commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
         toEdit.setBody(body);
-        toEdit.setTime(Instant.now());
+        toEdit.setCreatedAt(Instant.now());
         commentDAO.save(toEdit);
     }
 

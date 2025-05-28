@@ -57,7 +57,7 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void updateInstitutionName(Long id, String name) {
+    public void updateName(Long id, String name) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
         Institution institution = findById(id);
@@ -66,7 +66,7 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void updateInstitutionSocialCause(Long id, String socialCause) {
+    public void updateSocialCause(Long id, String socialCause) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Objects.requireNonNull(socialCause, () -> {throw new ENFieldException();});
         Institution institution = findById(id);

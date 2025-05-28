@@ -4,22 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Implementado procedimento para linkar administrador ao pedido de suporte + procedimento para resolver pedido de suporte.">
+    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Implementação de procedimento de promover user a administrador + ajustes nos nomes dos procedimentos/métodos + inicialização de sistema de login.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/application/ApplicationMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/FileOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/FileOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Support.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/VersioningHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/VersioningHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/Permission.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/AbstractFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/VideoFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/VideoFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/user/AbstractUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileOperationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileOperationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/InstitutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/InstitutionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/VersionHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/VersionHistoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/UserAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/valueobjects/UserAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/FileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/FileRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/VersioningHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/infra/persistence/repositories/VersioningHistoryRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +37,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Exception" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -50,6 +57,9 @@
     &quot;accountId&quot;: &quot;18aefead-a88f-4ac9-9753-6c443596e2ea&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -218,7 +228,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748444388973</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Ajustes em toStrings + implementação de atualização de mensagens de versões">
+      <option name="closed" value="true" />
+      <created>1748451985627</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748451985627</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Implementação de procedimento de promover user a administrador + ajustes nos nomes dos procedimentos/métodos + inicialização de sistema de login.">
+      <option name="closed" value="true" />
+      <created>1748452052017</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748452052017</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -235,6 +261,8 @@
     <MESSAGE value="Implementado atualização de endereço" />
     <MESSAGE value="Implementado validações e atualizações no serviço de planos" />
     <MESSAGE value="Implementado procedimento para linkar administrador ao pedido de suporte + procedimento para resolver pedido de suporte." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementado procedimento para linkar administrador ao pedido de suporte + procedimento para resolver pedido de suporte." />
+    <MESSAGE value="Ajustes em toStrings + implementação de atualização de mensagens de versões" />
+    <MESSAGE value="Implementação de procedimento de promover user a administrador + ajustes nos nomes dos procedimentos/métodos + inicialização de sistema de login." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementação de procedimento de promover user a administrador + ajustes nos nomes dos procedimentos/métodos + inicialização de sistema de login." />
   </component>
 </project>

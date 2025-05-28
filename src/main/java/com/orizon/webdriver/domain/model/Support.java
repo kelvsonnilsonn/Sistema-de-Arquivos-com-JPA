@@ -104,7 +104,7 @@ public class Support {
                 admin != null ? "👨💼 Admin responsável: " + admin.getUsername() + " (ID: " + admin.getId() + ")\n" : "",
                 resolvedDate != null ? "✅ Resolvido em: " + dateFormatter.format(resolvedDate) + "\n" : "não resolvido\n",
                 body.length() > 100 ? body.substring(0, 100) + "..." : body,  // Limita o tamanho da mensagem
-                file != null ? file.getFileName() : "Nenhum arquivo",
+                file != null ? file.getName() : "Nenhum arquivo",
                 file != null ? file.getId() : "N/A",
                 status == SupportStatus.RESOLVED ? "✅ Resolvido" :
                         status == SupportStatus.PENDING ? "🟡 Pendente" : "Não vinculado a um administrador.",

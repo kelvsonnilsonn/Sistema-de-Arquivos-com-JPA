@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
@@ -34,17 +35,26 @@ public class FileServiceImpl implements FileService {
     private final FileOperationsRepository fileOperationsDAO;
     private final VersioningHistoryRepository versioningHistoryDAO;
     private final FilePermissionsRepository filePermissionsDAO;
-    private final Scanner scan;
 
     @Autowired
     public FileServiceImpl(FileRepository fileDAO,  FileOperationsRepository fileOperationsDAO,
-                           VersioningHistoryRepository versioningHistoryDAO, FilePermissionsRepository filePermissionsDAO,
-                           Scanner scan){
+                           VersioningHistoryRepository versioningHistoryDAO, FilePermissionsRepository filePermissionsDAO){
         this.fileDAO = fileDAO;
-        this.scan = scan;
         this.fileOperationsDAO = fileOperationsDAO;
         this.versioningHistoryDAO = versioningHistoryDAO;
         this.filePermissionsDAO = filePermissionsDAO;
+    }
+
+    @Override
+    public Set<AbstractFile> findVisibleFiles(AbstractUser user) {
+        if (user instanceof Administrator) {
+            // Admins veem tudo
+            return new HashSet<>(fileDAO.findAll());
+        } else {
+            // Usuários normais veem apenas seus arquivos + compartilhados
+            Set<AbstractFile> userFiles = fileDAO.findByUserId(user.getId());
+            return new HashSet<>(userFiles);
+        }
     }
 
     @Override
@@ -58,18 +68,22 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void create(AbstractUser user, String filename, AbstractFile.FileType type) {
-        Objects.requireNonNull(filename, () -> {throw new ENFieldException();});
-        Objects.requireNonNull(type, () -> {throw new ENFieldException();});
+    public AbstractFile findByName(String name) {
+        return fileDAO.findByName(name);
+    }
 
-        AbstractFile file;
-        if (type == AbstractFile.FileType.VIDEO) {
-            long duration = scan.nextLong();
-            file = new VideoFile(filename, Duration.ofSeconds(duration));
-        } else {
-            file = new GenericFile(filename);
-        }
+    @Override
+    public AbstractFile findByNameAndOwnerId(String name, Long ownerId) {
+        return fileDAO.findByNameAndUserId(name, ownerId);
+    }
 
+    @Override
+    public Set<AbstractFile> findByUserId(Long ownerId) {
+        return fileDAO.findByUserId(ownerId);
+    }
+
+    @Override
+    public void create(AbstractFile file, AbstractUser user) {
         if(user.addFile(file)){
             fileDAO.save(file);
         }
@@ -85,18 +99,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void update(Long id, String name, FileOperation.OperationType type) {
-        AbstractFile file = findById(id);
-        AbstractUser user = file.getUser();
-        FileOperation operation = new FileOperation(file, user, type);
-
-        if(user.addFileOperation(operation) && file.addOperation(operation)){
-            file.setFileMetaData(new FileMetaData(name));
-            String versionCommit = type.getDescription() + "o arquivo" + file.getFileName();
-            versioningHistoryDAO.save(new VersioningHistory(user, file, versionCommit));
-            fileOperationsDAO.save(operation);
-            fileDAO.save(file);
-        }
+    public void update(AbstractFile file, VersioningHistory version, FileOperation.OperationType type) {
+        versioningHistoryDAO.save(version);
+        file.setLastModifier(Instant.now());
+        FileOperation operation = new FileOperation(file, file.getUser(), type);
+        fileOperationsDAO.save(operation);
+        fileDAO.save(file);
     }
 
     /**

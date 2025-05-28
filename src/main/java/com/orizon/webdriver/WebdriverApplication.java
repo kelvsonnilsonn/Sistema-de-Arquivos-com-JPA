@@ -1,5 +1,6 @@
 package com.orizon.webdriver;
 
+import com.orizon.webdriver.application.ApplicationMenu;
 import com.orizon.webdriver.domain.ports.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
@@ -29,8 +30,11 @@ public class WebdriverApplication {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 
-			userService.promoteToAdmin(2L);
+			Scanner scan = new Scanner(System.in);
+			ApplicationMenu menu = new ApplicationMenu(scan, userService, fileService, institutionService, planService,
+					supportService, commentService, fileOperationService, versionHistoryService);
 
+			menu.start();
 		};
 	}
 }

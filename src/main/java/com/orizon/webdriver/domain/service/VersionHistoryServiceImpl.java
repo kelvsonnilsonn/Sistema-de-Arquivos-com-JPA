@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @Transactional
 public class VersionHistoryServiceImpl implements VersionHistoryService {
@@ -33,6 +35,11 @@ public class VersionHistoryServiceImpl implements VersionHistoryService {
     @Override
     public VersioningHistory findById(Long id) {
         return versionHistoryDAO.findById(id).orElseThrow(VersionInexistentException::new);
+    }
+
+    @Override
+    public Set<VersioningHistory> findByFileId(Long fileId){
+        return versionHistoryDAO.findByFileId(fileId);
     }
 
     @Override

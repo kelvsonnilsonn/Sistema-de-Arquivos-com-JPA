@@ -14,7 +14,4 @@ public interface UserRepository extends JpaRepository<AbstractUser, Long> {
     @Query(nativeQuery = true, value = "UPDATE abstract_user SET user_type = 'ADMIN' WHERE id = :userId")
     void promoteToAdmin(@Param("userId") Long id);
 
-    @Modifying
-    @Query(nativeQuery = true, value = "UPDATE abstract_user SET user_type = 'USER' WHERE id = :userId")
-    void unpromoteAdmin(@Param("userId") Long id);
 }
