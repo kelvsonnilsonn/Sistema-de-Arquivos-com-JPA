@@ -99,9 +99,9 @@ public class Support {
                 """,
                 id,
                 title,
-                author.getUserLogin(),
+                author.getUsername(),
                 author.getId(),
-                admin != null ? "👨💼 Admin responsável: " + admin.getUserLogin() + " (ID: " + admin.getId() + ")\n" : "",
+                admin != null ? "👨💼 Admin responsável: " + admin.getUsername() + " (ID: " + admin.getId() + ")\n" : "",
                 resolvedDate != null ? "✅ Resolvido em: " + dateFormatter.format(resolvedDate) + "\n" : "não resolvido\n",
                 body.length() > 100 ? body.substring(0, 100) + "..." : body,  // Limita o tamanho da mensagem
                 file != null ? file.getFileName() : "Nenhum arquivo",

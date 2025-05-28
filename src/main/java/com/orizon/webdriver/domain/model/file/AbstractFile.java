@@ -173,7 +173,7 @@ public abstract class AbstractFile{
                 fileMetaData.getFileName(),
                 this.getId(),
                 this.getClass().getSimpleName(),
-                user != null ? user.getUserLogin() : "N/A",
+                user != null ? user.getUsername() : "N/A",
                 fileMetaData.getFileSize(),
                 fileMetaData.getFileLocation() != null ? fileMetaData.getFileLocation() : "N/A",
                 fileMetaData.getFileReleaseDate() != null ? dateFormatter.format(fileMetaData.getFileReleaseDate()) : "N/A",
@@ -192,7 +192,7 @@ public abstract class AbstractFile{
                                                 (c.getBody().length() > 25 ?
                                                         c.getBody().substring(0, 25) + "..." + " [ID: " + c.getId() + "] " :
                                                         c.getBody() + " [ID: " + c.getId() + "] ") : "Sem conteúdo") +
-                                        " (por " + (c.getAuthor() != null ? c.getAuthor().getUserLogin() : "N/A") + ")")
+                                        " (por " + (c.getAuthor() != null ? c.getAuthor().getUsername() : "N/A") + ")")
                                 .collect(Collectors.joining()),
 
                 // Versões (2 parâmetros)
@@ -223,7 +223,7 @@ public abstract class AbstractFile{
                         operations.stream()
                                 .sorted(Comparator.comparing(FileOperation::getOperationDate).reversed())
                                 .map(op -> "\n   - " + op.getOperationType() +
-                                        " por " + (op.getUser() != null ? op.getUser().getUserLogin() : "N/A") +
+                                        " por " + (op.getUser() != null ? op.getUser().getUsername() : "N/A") +
                                         " em " + dateTimeFormatter.format(op.getOperationDate()) + " [ID: " + op.getId() + "] ")
                                 .collect(Collectors.joining())
         );

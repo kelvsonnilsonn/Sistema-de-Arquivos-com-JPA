@@ -50,7 +50,7 @@ public final class Comment {
         String formattedTime = time != null ? formatter.format(time) : "Data indefinida";
 
         String authorInfo = (author != null)
-                ? String.format("%s (ID: %d)", author.getUserLogin(), author.getId())
+                ? String.format("%s (ID: %d)", author.getUsername(), author.getId())
                 : "Autor desconhecido";
 
         String fileInfo = (file != null)

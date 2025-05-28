@@ -1,5 +1,6 @@
 package com.orizon.webdriver.domain.service;
 
+import com.orizon.webdriver.domain.exceptions.ENFieldException;
 import com.orizon.webdriver.domain.exceptions.VersionInexistentException;
 import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.infra.persistence.repositories.VersioningHistoryRepository;
@@ -20,18 +21,31 @@ public class VersionHistoryServiceImpl implements VersionHistoryService {
     }
 
     @Override
-    public void listAll() {
+    public void create(VersioningHistory version) {
+        versionHistoryDAO.save(version);
+    }
+
+    @Override
+    public void findAll() {
         versionHistoryDAO.findAll().forEach(System.out::println);
     }
 
     @Override
-    public VersioningHistory findOne(Long id) {
+    public VersioningHistory findById(Long id) {
         return versionHistoryDAO.findById(id).orElseThrow(VersionInexistentException::new);
     }
 
     @Override
-    public void save(VersioningHistory version) {
-        versionHistoryDAO.save(version);
+    public void updateVersionMessage(Long versionId, String newMessage) {
+        VersioningHistory version = versionHistoryDAO.findById(versionId)
+                .orElseThrow(() -> new ENFieldException("Versão não encontrada."));
+
+        if (newMessage == null || newMessage.isBlank()) {
+            throw new ENFieldException("Mensagem não pode ser nula ou vazia.");
+        }
+
+        version.setCommitMessage(newMessage);
+        update(version);
     }
 
     @Override
