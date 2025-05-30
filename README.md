@@ -5,7 +5,7 @@ O Hibernate é uma ferramenta conhecida como ferramenta de **Mapeamento e Objeto
 Sendo Open Source, ele tornou-se uma das maiores ferramentas de ORM do mercado e inspirações para **especificações**, como o **JPA**.
 
 ## Java Persistence API (JPA)
-A **Java persistence API)** surgiu baseando-se no Hibenate. 
+A **Java persistence API** surgiu baseando-se no Hibenate. 
 Ela é um ‘framework’ leve utilizado principalmente para persistência de dados em aplicações Java e possui uma gama de funcionalidades.
 
 ## Objetivo do projeto
