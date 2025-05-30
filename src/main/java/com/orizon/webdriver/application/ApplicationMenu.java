@@ -876,7 +876,9 @@ public class ApplicationMenu {
             System.out.println("Duração: " + ((VideoFile) fileOpt).getDuration() + " segundos");
         }
 
-        System.out.println("Tamanho: " + fileOpt.getFileMetaData().getFileSize() + " bytes");
+        if(fileOpt.getFileMetaData() != null){
+            System.out.println("Tamanho: " + fileOpt.getFileMetaData().getFileSize() + " bytes");
+        }
 
         // Mostra versões (apenas os comentários)
         if (!fileOpt.getVersions().isEmpty()) {
