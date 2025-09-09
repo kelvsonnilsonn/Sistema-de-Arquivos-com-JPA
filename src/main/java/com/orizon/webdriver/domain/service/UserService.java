@@ -6,7 +6,6 @@ import com.orizon.webdriver.domain.model.Institution;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.Administrator;
 import com.orizon.webdriver.domain.model.user.User;
-import com.orizon.webdriver.domain.ports.service.UserService;
 import com.orizon.webdriver.domain.valueobjects.UserAccess;
 import com.orizon.webdriver.infra.persistence.repositories.CommentRepository;
 import com.orizon.webdriver.infra.persistence.repositories.UserRepository;
@@ -20,7 +19,7 @@ import java.util.Objects;
 @Service
 @Transactional
 @Getter
-public class UserServiceImpl implements UserService{
+public class UserService {
 
     private final UserRepository userDAO;
     private final CommentRepository commentDAO;
@@ -28,12 +27,11 @@ public class UserServiceImpl implements UserService{
     private AbstractUser currentUser;
 
     @Autowired
-    public UserServiceImpl(UserRepository userDAO, CommentRepository commentDAO){
+    public UserService(UserRepository userDAO, CommentRepository commentDAO){
         this.userDAO = userDAO;
         this.commentDAO = commentDAO;
     }
 
-    @Override
     public void create(String name, String email, String password, boolean isAdmin) {
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
         Objects.requireNonNull(email, () -> {throw new ENFieldException();});
@@ -47,12 +45,10 @@ public class UserServiceImpl implements UserService{
         userDAO.save(user);
     }
 
-    @Override
     public void findAll() {
         userDAO.findAll().forEach(System.out::println);
     }
 
-    @Override
     public AbstractUser findById(Long id) {
         return userDAO.findById(id).orElseThrow(UserInexistentException::new);
     }
@@ -61,7 +57,6 @@ public class UserServiceImpl implements UserService{
         return userDAO.findByUsername(username);
     }
 
-    @Override
     public void delete(Long id) {
         AbstractUser user = findById(id);
         Institution institution = user.getInstitution();
@@ -72,13 +67,11 @@ public class UserServiceImpl implements UserService{
         userDAO.deleteById(id);
     }
 
-    @Override
     public void update(AbstractUser user) {
         Objects.requireNonNull(user, () -> {throw new ENFieldException();});
         userDAO.save(user);
     }
 
-    @Override
     public void updateUserName(Long id, String name) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Objects.requireNonNull(name, () -> {throw new ENFieldException();});
@@ -90,7 +83,6 @@ public class UserServiceImpl implements UserService{
         update(user);
     }
 
-    @Override
     public void updateUserEmail(Long id, String email) {
         AbstractUser user = findById(id);
         UserAccess data = user.getUserAccess();
@@ -103,7 +95,6 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    @Override
     public void updateUserPassword(Long id, String password) {
         AbstractUser user = findById(id);
         UserAccess data = user.getUserAccess();
@@ -116,12 +107,10 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    @Override
     public void promoteToAdmin(Long userId) {
         userDAO.promoteToAdmin(userId);
     }
 
-    @Override
     public void removeInstitutionFromUser(Long userId) {
         AbstractUser user = userDAO.findById(userId)
                 .orElseThrow(UserInexistentException::new);
@@ -130,7 +119,6 @@ public class UserServiceImpl implements UserService{
         update(user);
     }
 
-    @Override
     public boolean login(String login, String password) {
         AbstractUser userOpt = userDAO.findByUsername(login);
 
@@ -141,7 +129,6 @@ public class UserServiceImpl implements UserService{
         return false;
     }
 
-    @Override
     public void logout() {
         this.currentUser = null;
     }

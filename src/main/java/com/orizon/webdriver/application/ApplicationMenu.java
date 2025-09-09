@@ -6,10 +6,9 @@ import com.orizon.webdriver.domain.model.file.GenericFile;
 import com.orizon.webdriver.domain.model.file.VideoFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.Administrator;
-import com.orizon.webdriver.domain.ports.service.*;
+import com.orizon.webdriver.domain.service.*;
 import com.orizon.webdriver.domain.valueobjects.UserAccess;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.time.Duration;

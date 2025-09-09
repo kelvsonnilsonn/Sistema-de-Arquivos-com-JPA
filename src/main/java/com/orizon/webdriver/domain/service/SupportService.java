@@ -7,7 +7,6 @@ import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.Administrator;
 import com.orizon.webdriver.infra.persistence.repositories.SupportRepository;
-import com.orizon.webdriver.domain.ports.service.SupportService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +16,15 @@ import java.util.Objects;
 
 @Service
 @Transactional
-public class SupportServiceImpl implements SupportService {
+public class SupportService {
 
     private final SupportRepository supportDAO;
 
     @Autowired
-    public SupportServiceImpl(SupportRepository supportDAO){
+    public SupportService(SupportRepository supportDAO){
         this.supportDAO = supportDAO;
     }
 
-    @Override
     public void create(AbstractUser user, AbstractFile file, String title, String body){
         Objects.requireNonNull(user, () -> {throw new ENFieldException();});
         Objects.requireNonNull(body, () -> {throw new ENFieldException();});
@@ -37,19 +35,16 @@ public class SupportServiceImpl implements SupportService {
         }
     }
 
-    @Override
     public void findAll() {
         supportDAO.findAll().forEach(System.out::println);
     }
 
-    @Override
     public Support findById(Long id) {
         return supportDAO.findById(id).orElseThrow(SupportInexistentException::new);
     }
 
 
 
-    @Override
     public void delete(Long id) {
         AbstractFile file = findById(id).getFile();
         AbstractUser user = findById(id).getAuthor();
@@ -59,13 +54,11 @@ public class SupportServiceImpl implements SupportService {
         }
     }
 
-    @Override
     public void update(Support support) {
         Objects.requireNonNull(support, () -> {throw new ENFieldException();});
         supportDAO.save(support);
     }
 
-    @Override
     public void assignAdminToSupport(Long supportId, AbstractUser admin){
         if(!(admin instanceof Administrator)) {
             throw new ENFieldException("Somente admins podem ser linkados a pedidos de suporte.");
@@ -77,7 +70,6 @@ public class SupportServiceImpl implements SupportService {
         update(support);
     }
 
-    @Override
     public void resolveSupport(Long supportId, AbstractUser admin){
         if(!(admin instanceof Administrator)) {
             throw new ENFieldException("Somente admins podem resolver pedidos de suporte.");

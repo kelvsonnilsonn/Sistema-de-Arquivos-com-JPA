@@ -1,7 +1,7 @@
 package com.orizon.webdriver;
 
 import com.orizon.webdriver.application.ApplicationMenu;
-import com.orizon.webdriver.domain.ports.service.*;
+import com.orizon.webdriver.domain.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,8 +25,8 @@ public class WebdriverApplication {
 	@Bean
 	@Transactional
 	public CommandLineRunner run(CommentService commentService, FileOperationService fileOperationService, FileService fileService,
-								 InstitutionService institutionService, PlanService planService, SupportService supportService,
-								 UserService userService, VersionHistoryService versionHistoryService) {
+                                 InstitutionService institutionService, PlanService planService, SupportService supportService,
+                                 UserService userService, VersionHistoryService versionHistoryService) {
 		return args -> {
 			System.out.println("🚀 Sistema WebDriver Iniciado\n");
 

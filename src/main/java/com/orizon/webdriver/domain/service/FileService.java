@@ -6,12 +6,8 @@ import com.orizon.webdriver.domain.model.FileOperation;
 import com.orizon.webdriver.domain.model.Permission;
 import com.orizon.webdriver.domain.model.VersioningHistory;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
-import com.orizon.webdriver.domain.model.file.FileMetaData;
-import com.orizon.webdriver.domain.model.file.GenericFile;
-import com.orizon.webdriver.domain.model.file.VideoFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.domain.model.user.Administrator;
-import com.orizon.webdriver.domain.ports.service.FileService;
 import com.orizon.webdriver.infra.persistence.repositories.FileOperationsRepository;
 import com.orizon.webdriver.infra.persistence.repositories.FilePermissionsRepository;
 import com.orizon.webdriver.infra.persistence.repositories.FileRepository;
@@ -20,16 +16,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
 import java.util.Set;
 
 @Service
 @Transactional
-public class FileServiceImpl implements FileService {
+public class FileService {
 
     private final FileRepository fileDAO;
     private final FileOperationsRepository fileOperationsDAO;
@@ -37,15 +30,14 @@ public class FileServiceImpl implements FileService {
     private final FilePermissionsRepository filePermissionsDAO;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileDAO,  FileOperationsRepository fileOperationsDAO,
-                           VersioningHistoryRepository versioningHistoryDAO, FilePermissionsRepository filePermissionsDAO){
+    public FileService(FileRepository fileDAO, FileOperationsRepository fileOperationsDAO,
+                       VersioningHistoryRepository versioningHistoryDAO, FilePermissionsRepository filePermissionsDAO){
         this.fileDAO = fileDAO;
         this.fileOperationsDAO = fileOperationsDAO;
         this.versioningHistoryDAO = versioningHistoryDAO;
         this.filePermissionsDAO = filePermissionsDAO;
     }
 
-    @Override
     public Set<AbstractFile> findVisibleFiles(AbstractUser user) {
         if (user instanceof Administrator) {
             // Admins veem tudo
@@ -57,39 +49,32 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    @Override
     public void findAll() {
         fileDAO.findAll().forEach(System.out::println);
     }
 
-    @Override
     public AbstractFile findById(Long id) {
         return fileDAO.findById(id).orElseThrow(InexistentFileException::new);
     }
 
-    @Override
     public AbstractFile findByName(String name) {
         return fileDAO.findByName(name);
     }
 
-    @Override
     public AbstractFile findByNameAndOwnerId(String name, Long ownerId) {
         return fileDAO.findByNameAndUserId(name, ownerId);
     }
 
-    @Override
     public Set<AbstractFile> findByUserId(Long ownerId) {
         return fileDAO.findByUserId(ownerId);
     }
 
-    @Override
     public void create(AbstractFile file, AbstractUser user) {
         if(user.addFile(file)){
             fileDAO.save(file);
         }
     }
 
-    @Override
     public void delete(Long id) {
         AbstractFile file = findById(id);
         AbstractUser user = file.getUser();
@@ -98,7 +83,6 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    @Override
     public void update(AbstractFile file, VersioningHistory version, FileOperation.OperationType type) {
         versioningHistoryDAO.save(version);
         file.setLastModifier(Instant.now());
@@ -123,7 +107,6 @@ public class FileServiceImpl implements FileService {
      * @example
      * shareFile(file, owner, receiver, Set.of(Permission.PermissionType.READ, Permission.PermissionType.WRITE));
      * */
-    @Override
     public void shareFile(AbstractFile file, AbstractUser owner, AbstractUser receiver, Set<Permission.PermissionType> permissions){
 
         if(!file.getUser().getId().equals(owner.getId())) {
@@ -164,7 +147,6 @@ public class FileServiceImpl implements FileService {
      * @return {@code true} se o usuário tiver permissão, {@code false} caso contrário.
      */
 
-    @Override
     public boolean hasPermission(AbstractUser user, AbstractFile file, Permission.PermissionType permission) {
         if (file.getUser().equals(user)) {
             return true;
@@ -178,13 +160,11 @@ public class FileServiceImpl implements FileService {
         return filePermissionsDAO.findByFileIdAndReceiverId(file.getId(), user.getId()).contains(permission);
     }
 
-    @Override
     public void addPermission(Long fileId, Long userId, Permission.PermissionType perm){
         Permission permission = new Permission(fileId, userId, perm);
         filePermissionsDAO.save(permission);
     }
 
-    @Override
     public Set<Permission.PermissionType> getUserPermissions(Long fileId, Long userId) {
         return filePermissionsDAO.findByFileIdAndReceiverId(fileId, userId);
     }

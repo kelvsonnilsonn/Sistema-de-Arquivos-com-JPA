@@ -4,11 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="Operação de menu e autenticação implementados.">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="3b5c5a8b-2474-49b2-9ae6-27887a4a675b" name="Changes" comment="refactor: remove unused interfaces&#10;&#10;- Removed one-to-one interface-class pattern that violated interface segregation principle&#10;- Interfaces should define contracts for multiple implementations, not single classes&#10;- Keeping interfaces only when actually used by multiple classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/WebdriverApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/application/ApplicationMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/application/ApplicationMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/model/file/FileMetaData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/CommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileOperationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/FileService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/InstitutionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/PlanService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/SupportService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/ports/service/VersionHistoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileOperationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileOperationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/InstitutionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/PlanService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/SupportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,12 +49,12 @@
     &quot;assignee&quot;: &quot;kelvsonnilsonn&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kelvsonnilsonn/SpringTest&quot;,
-    &quot;accountId&quot;: &quot;18aefead-a88f-4ac9-9753-6c443596e2ea&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/kelvsonnilsonn/Sistema-de-Arquivos-com-JPA",
+    "accountId": "5530678f-d95f-4104-aaf8-421468b97eed"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/com/orizon/webdriver/domain/service/VersionHistoryServiceImpl.java" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -53,7 +69,7 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2wRkoK8y9xqCuqvFaQsHcJ64i8h" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -254,6 +270,7 @@
     <MESSAGE value="Ajustes em toStrings + implementação de atualização de mensagens de versões" />
     <MESSAGE value="Implementação de procedimento de promover user a administrador + ajustes nos nomes dos procedimentos/métodos + inicialização de sistema de login." />
     <MESSAGE value="Operação de menu e autenticação implementados." />
-    <option name="LAST_COMMIT_MESSAGE" value="Operação de menu e autenticação implementados." />
+    <MESSAGE value="refactor: remove unused interfaces&#10;&#10;- Removed one-to-one interface-class pattern that violated interface segregation principle&#10;- Interfaces should define contracts for multiple implementations, not single classes&#10;- Keeping interfaces only when actually used by multiple classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: remove unused interfaces&#10;&#10;- Removed one-to-one interface-class pattern that violated interface segregation principle&#10;- Interfaces should define contracts for multiple implementations, not single classes&#10;- Keeping interfaces only when actually used by multiple classes" />
   </component>
 </project>

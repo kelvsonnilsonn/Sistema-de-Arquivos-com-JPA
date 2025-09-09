@@ -6,7 +6,6 @@ import com.orizon.webdriver.domain.model.Comment;
 import com.orizon.webdriver.domain.model.file.AbstractFile;
 import com.orizon.webdriver.domain.model.user.AbstractUser;
 import com.orizon.webdriver.infra.persistence.repositories.CommentRepository;
-import com.orizon.webdriver.domain.ports.service.CommentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -16,32 +15,28 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class CommentServiceImpl implements CommentService {
+public class CommentService {
 
     private final CommentRepository commentDAO;
 
-    public CommentServiceImpl(CommentRepository commentDAO){
+    public CommentService(CommentRepository commentDAO){
         this.commentDAO = commentDAO;
     }
 
-    @Override
     public void create(Comment comment) {
         commentDAO.save(comment);
     }
 
-    @Override
     public Comment findById(Long id) {
         return commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
     }
 
-    @Override
     public void findAll() {
         commentDAO.findAll().forEach(System.out::println);
     }
 
 
 
-    @Override
     public void delete(Long id) {
         Objects.requireNonNull(id, () -> {throw new ENFieldException();});
         Comment comment = findById(id);
@@ -52,7 +47,6 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-    @Override
     public void update(Long id, String body) {
         Objects.requireNonNull(body, () -> {throw new ENFieldException();});
         Comment toEdit = commentDAO.findById(id).orElseThrow(CommentInexistentException::new);
@@ -61,12 +55,10 @@ public class CommentServiceImpl implements CommentService {
         commentDAO.save(toEdit);
     }
 
-    @Override
     public Set<Comment> findByFileId(Long fileId){
         return commentDAO.findByFileId(fileId);
     }
 
-    @Override
     public Set<Comment> findByAuthorId(Long authorId){
         return commentDAO.findByAuthorId(authorId);
     }
